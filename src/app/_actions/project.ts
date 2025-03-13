@@ -39,7 +39,7 @@ export async function updateObject(
   } catch (e) {
     //console.debug("Error from fetching project :");
     //console.debug(e);
-    return { error: "error from fetching project process", e};
+    return { error: "error from fetching project process", e };
   }
 }
 
@@ -49,7 +49,7 @@ export async function deleteObject(objectId: string, projectId: string) {
     const res = await fetch(`/api/projects/${projectId}/objects/${objectId}`, {
       method: "DELETE",
     });
-    console.debug(res)
+    console.debug(res);
   } catch (e) {
     console.debug("Error from deletion :");
     console.debug(e);
@@ -83,7 +83,7 @@ export async function fetchProjects(username: string) {
   } catch (e) {
     //console.debug("Error from fetching projects :");
     //console.debug(e);
-    return { error: "error from fetching projects process", e};
+    return { error: "error from fetching projects process", e };
   }
 }
 
@@ -104,7 +104,7 @@ export async function createProject(props: BaseProjectProp, username?: string) {
     //console.debug(data);
     return data;
   } catch (e) {
-    return { error: "error from creating project process", e};
+    return { error: "error from creating project process", e };
   }
 }
 
@@ -123,6 +123,6 @@ export async function getArchives(archiveProps: ArchiveProps) {
     const data = await res.json();
     return JSON.parse(data);
   } catch (e) {
-    return { error: "error from getting public projects", e};
+    return { error: "error from getting public projects", e };
   }
 }

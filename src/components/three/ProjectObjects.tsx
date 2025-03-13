@@ -62,7 +62,6 @@ export function ArchiveObjects({
 
 function MeshObject({ obj, selected, handleSelected }: MeshProps) {
   const { position, scale, rotation } = toMatrix4decompose(obj.matrix);
-  const [] = useState();
   // XXX temporary for error catch
   // projectId 53
   const newRotation = rotation.map((d) => (isNaN(d) ? 0 : d)) as any;

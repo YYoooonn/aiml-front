@@ -40,7 +40,7 @@ export default function Archive() {
 }
 
 // FIXME !!
-function ArchiveRouter(){
+function ArchiveRouter() {
   const { modals, open, close } = useModals();
   const searchParams = useSearchParams();
   useEffect(() => {
@@ -53,5 +53,5 @@ function ArchiveRouter(){
     }
   }, [searchParams]);
 
-  return(<></>)
+  return <></>;
 }
