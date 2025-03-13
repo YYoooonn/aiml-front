@@ -1,7 +1,7 @@
 import { LeftAisleLayout } from "./layout";
 import { User, Archive, Editor, Workspace } from "./module/exports";
-import LeftAisle from "./LeftAisle";
-import RightAisle from "./RightAisle";
+import LeftAisle from "./leftAisle";
+import RightAisle from "./rightAisle";
 
 export { LeftAisle, RightAisle };
 

@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { geistSans, rajdhani } from "@/assets/fonts";
-import { Header, Footer, LeftAisle, RightAisle } from "@/components/components";
+import { Header, Footer } from "@/components/components";
 import "@/styles/global.css";
 import * as styles from "./layout.css";
 import Image from "next/image";
