@@ -16,8 +16,8 @@ jobs:
     - name: Build Docker image & push
       run: |
         docker login -u ${{ secrets.DOCKER_ID }} -p ${{ secrets.DOCKER_PASSWORD }}
-        docker build --build-arg NEXT_PUBLIC_HOSTNAME="${{NEXT_PUBLIC_HOSTNAME}}"\
-        --build-arg BACKEND_API_BASE="${{BACKEND_API_BASE}}"\
+        docker build --build-arg NEXT_PUBLIC_HOSTNAME="${{env.NEXT_PUBLIC_HOSTNAME}}"\
+        --build-arg BACKEND_API_BASE="${{env.BACKEND_API_BASE}}"\
         -t $DOCKER_ID/frontend . -f ./docker/next.Dockerfile
         docker push $DOCKER_ID/frontend:latest
 
