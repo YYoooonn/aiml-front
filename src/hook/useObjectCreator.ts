@@ -37,6 +37,12 @@ const DEFAULT: ObjectConstructor = {
   material: undefined,
 };
 
+const dimHandler = (val: XYZ) => val.map((v) => (v ? v : 0)) as XYZ;
+const colorHandler = (val: string) => {
+  const hex = val.split("#", 2)[1];
+  return hex && parseInt(hex, 16) ? "#".concat(hex) : "#575757";
+};
+
 export const useObjectCreator = create<ObjectConstructor & NewObjectAction>()(
   (set, get) => ({
     ...DEFAULT,
@@ -51,9 +57,10 @@ export const useObjectCreator = create<ObjectConstructor & NewObjectAction>()(
     },
     reset: () => set({ ...DEFAULT }),
     setScale: (val: XYZ) => set({ scale: val }),
-    setPosition: (val: XYZ) => set({ position: val }),
-    setRotation: (val: XYZ) => set({ rotation: val }),
-    setMaterial: (material: string) => set({ material: material }),
+    setPosition: (val: XYZ) => set({ position: dimHandler(val) }),
+    setRotation: (val: XYZ) => set({ rotation: dimHandler(val) }),
+    setMaterial: (material: string) =>
+      set({ material: colorHandler(material) }),
     update: async (id: string) => {
       const { type, position, scale, rotation, material } = get();
       if (type && position && scale && rotation && material) {
