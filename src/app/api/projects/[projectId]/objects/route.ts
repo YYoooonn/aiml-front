@@ -24,7 +24,7 @@ export async function POST(
       // TODO : RestfulAPI - difference in status message
       const res = await response.text();
       return NextResponse.json(
-        { error: res ? res : "ERROR FROM POSTING OBJECT" },
+        { error: res },
         {
           status: 200,
           headers: ApiResponseHeader,
