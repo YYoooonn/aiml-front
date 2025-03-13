@@ -50,7 +50,7 @@ importers:
     devDependencies:
       '@types/node':
         specifier: ^20
-        version: 20.16.13
+        version: 20.17.24
       '@types/react':
         specifier: ^18
         version: 18.3.11
@@ -71,7 +71,7 @@ importers:
         version: 2.1.2
       '@vanilla-extract/next-plugin':
         specifier: ^2.4.6
-        version: 2.4.6(@types/node@20.16.13)(next@14.2.13(@babel/core@7.25.9)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(terser@5.39.0)(webpack@5.95.0)
+        version: 2.4.6(@types/node@20.17.24)(next@14.2.13(@babel/core@7.25.9)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(terser@5.39.0)(webpack@5.95.0)
       eslint:
         specifier: ^8
         version: 8.57.1
@@ -86,7 +86,7 @@ importers:
         version: 3.3.3
       ts-node:
         specifier: ^10.9.2
-        version: 10.9.2(@types/node@20.16.13)(typescript@5.6.3)
+        version: 10.9.2(@types/node@20.17.24)(typescript@5.6.3)
       typescript:
         specifier: ^5.6.3
         version: 5.6.3
@@ -925,9 +925,6 @@ packages:
   '@types/json5@0.0.29':
     resolution: {integrity: sha512-dRLjCWHYg4oaA77cxO64oO+7JwCwnIzkZPdrrC71jQmQtlhM556pwKo5bUzqvZndkVbeFLIIi+9TC40JNF5hNQ==}
 
-  '@types/node@20.16.13':
-    resolution: {integrity: sha512-GjQ7im10B0labo8ZGXDGROUl9k0BNyDgzfGpb4g/cl+4yYDWVKcozANF4FGr4/p0O/rAkQClM6Wiwkije++1Tg==}
-
   '@types/node@20.17.24':
     resolution: {integrity: sha512-d7fGCyB96w9BnWQrOsJtpyiSaBcAYYr75bnK6ZRjDbql2cGLj/3GsL5OYmLPNq76l7Gf2q4Rv9J2o6h5CrD9sA==}
 
@@ -1515,8 +1512,8 @@ packages:
   eastasianwidth@0.2.0:
     resolution: {integrity: sha512-I88TYZWc9XiYHRQ4/3c5rjjfgkjhLyW2luGIheGERbNQ6OY7yTybanSpDXZa8y7VUP9YmDcYa+eyq4ca7iLqWA==}
 
-  electron-to-chromium@1.5.114:
-    resolution: {integrity: sha512-DFptFef3iktoKlFQK/afbo274/XNWD00Am0xa7M8FZUepHlHT8PEuiNBoRfFHbH1okqN58AlhbJ4QTkcnXorjA==}
+  electron-to-chromium@1.5.115:
+    resolution: {integrity: sha512-MN1nahVHAQMOz6dz6bNZ7apgqc9InZy7Ja4DBEVCTdeiUcegbyOYE9bi/f2Z/z6ZxLi0RxLpyJ3EGe+4h3w73A==}
 
   electron-to-chromium@1.5.45:
     resolution: {integrity: sha512-vOzZS6uZwhhbkZbcRyiy99Wg+pYFV5hk+5YaECvx0+Z31NR3Tt5zS6dze2OepT6PCTzVzT0dIJItti+uAW5zmw==}
@@ -2259,8 +2256,8 @@ packages:
   ms@2.1.3:
     resolution: {integrity: sha512-6FlzubTLZG3J2a/NVCAleEhjzq5oxgHyaCU9yYXvcLsvoVaHJq/s5xXI6/XXP6tz7R9xAOtHnSO/tXtF3WRTlA==}
 
-  nanoid@3.3.7:
-    resolution: {integrity: sha512-eSRppjcPIatRIMC1U6UngP8XFcz8MQWGQdt1MTBQ7NaAmvXDfvNxbvWV3x2y6CdEUciCSsDHDQZbhYaB8QEo2g==}
+  nanoid@3.3.9:
+    resolution: {integrity: sha512-SppoicMGpZvbF1l3z4x7No3OlIjP7QJvC9XR7AhZr1kL133KHnKPztkKDc+Ir4aJ/1VhTySrtKhrsycmrMQfvg==}
     engines: {node: ^10 || ^12 || ^13.7 || ^14 || >=15.0.1}
     hasBin: true
 
@@ -3698,7 +3695,7 @@ snapshots:
 
   '@types/cors@2.8.17':
     dependencies:
-      '@types/node': 20.16.13
+      '@types/node': 20.17.24
 
   '@types/debounce@1.2.4': {}
 
@@ -3709,10 +3706,6 @@ snapshots:
   '@types/json-schema@7.0.15': {}
 
   '@types/json5@0.0.29': {}
-
-  '@types/node@20.16.13':
-    dependencies:
-      undici-types: 6.19.8
 
   '@types/node@20.17.24':
     dependencies:
@@ -3879,7 +3872,7 @@ snapshots:
     dependencies:
       '@vanilla-extract/private': 1.0.6
 
-  '@vanilla-extract/integration@7.1.10(@types/node@20.16.13)(terser@5.39.0)':
+  '@vanilla-extract/integration@7.1.10(@types/node@20.17.24)(terser@5.39.0)':
     dependencies:
       '@babel/core': 7.25.9
       '@babel/plugin-syntax-typescript': 7.25.9(@babel/core@7.25.9)
@@ -3891,8 +3884,8 @@ snapshots:
       find-up: 5.0.0
       javascript-stringify: 2.1.0
       mlly: 1.7.2
-      vite: 5.4.10(@types/node@20.16.13)(terser@5.39.0)
-      vite-node: 1.6.0(@types/node@20.16.13)(terser@5.39.0)
+      vite: 5.4.10(@types/node@20.17.24)(terser@5.39.0)
+      vite-node: 1.6.0(@types/node@20.17.24)(terser@5.39.0)
     transitivePeerDependencies:
       - '@types/node'
       - babel-plugin-macros
@@ -3905,9 +3898,9 @@ snapshots:
       - supports-color
       - terser
 
-  '@vanilla-extract/next-plugin@2.4.6(@types/node@20.16.13)(next@14.2.13(@babel/core@7.25.9)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(terser@5.39.0)(webpack@5.95.0)':
+  '@vanilla-extract/next-plugin@2.4.6(@types/node@20.17.24)(next@14.2.13(@babel/core@7.25.9)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(terser@5.39.0)(webpack@5.95.0)':
     dependencies:
-      '@vanilla-extract/webpack-plugin': 2.3.14(@types/node@20.16.13)(terser@5.39.0)(webpack@5.95.0)
+      '@vanilla-extract/webpack-plugin': 2.3.14(@types/node@20.17.24)(terser@5.39.0)(webpack@5.95.0)
       next: 14.2.13(@babel/core@7.25.9)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
     transitivePeerDependencies:
       - '@types/node'
@@ -3924,9 +3917,9 @@ snapshots:
 
   '@vanilla-extract/private@1.0.6': {}
 
-  '@vanilla-extract/webpack-plugin@2.3.14(@types/node@20.16.13)(terser@5.39.0)(webpack@5.95.0)':
+  '@vanilla-extract/webpack-plugin@2.3.14(@types/node@20.17.24)(terser@5.39.0)(webpack@5.95.0)':
     dependencies:
-      '@vanilla-extract/integration': 7.1.10(@types/node@20.16.13)(terser@5.39.0)
+      '@vanilla-extract/integration': 7.1.10(@types/node@20.17.24)(terser@5.39.0)
       debug: 4.3.7(supports-color@5.5.0)
       loader-utils: 2.0.4
       picocolors: 1.1.1
@@ -4034,9 +4027,9 @@ snapshots:
     dependencies:
       acorn: 8.14.1
 
-  acorn-jsx@5.3.2(acorn@8.13.0):
+  acorn-jsx@5.3.2(acorn@8.14.1):
     dependencies:
-      acorn: 8.13.0
+      acorn: 8.14.1
 
   acorn-walk@8.3.4:
     dependencies:
@@ -4222,7 +4215,7 @@ snapshots:
   browserslist@4.24.4:
     dependencies:
       caniuse-lite: 1.0.30001703
-      electron-to-chromium: 1.5.114
+      electron-to-chromium: 1.5.115
       node-releases: 2.0.19
       update-browserslist-db: 1.1.3(browserslist@4.24.4)
 
@@ -4451,7 +4444,7 @@ snapshots:
 
   eastasianwidth@0.2.0: {}
 
-  electron-to-chromium@1.5.114: {}
+  electron-to-chromium@1.5.115: {}
 
   electron-to-chromium@1.5.45: {}
 
@@ -4479,7 +4472,7 @@ snapshots:
     dependencies:
       '@types/cookie': 0.4.1
       '@types/cors': 2.8.17
-      '@types/node': 20.16.13
+      '@types/node': 20.17.24
       accepts: 1.3.8
       base64id: 2.0.0
       cookie: 0.7.2
@@ -4864,8 +4857,8 @@ snapshots:
 
   espree@9.6.1:
     dependencies:
-      acorn: 8.13.0
-      acorn-jsx: 5.3.2(acorn@8.13.0)
+      acorn: 8.14.1
+      acorn-jsx: 5.3.2(acorn@8.14.1)
       eslint-visitor-keys: 3.4.3
 
   esquery@1.6.0:
@@ -4884,7 +4877,7 @@ snapshots:
 
   eval@0.1.8:
     dependencies:
-      '@types/node': 20.16.13
+      '@types/node': 20.17.24
       require-like: 0.1.2
 
   events@3.3.0: {}
@@ -5374,7 +5367,7 @@ snapshots:
 
   mlly@1.7.2:
     dependencies:
-      acorn: 8.13.0
+      acorn: 8.14.1
       pathe: 1.1.2
       pkg-types: 1.2.1
       ufo: 1.5.4
@@ -5383,7 +5376,7 @@ snapshots:
 
   ms@2.1.3: {}
 
-  nanoid@3.3.7: {}
+  nanoid@3.3.9: {}
 
   natural-compare@1.4.0: {}
 
@@ -5532,13 +5525,13 @@ snapshots:
 
   postcss@8.4.31:
     dependencies:
-      nanoid: 3.3.7
+      nanoid: 3.3.9
       picocolors: 1.1.1
       source-map-js: 1.2.1
 
   postcss@8.4.47:
     dependencies:
-      nanoid: 3.3.7
+      nanoid: 3.3.9
       picocolors: 1.1.1
       source-map-js: 1.2.1
 
@@ -5994,14 +5987,14 @@ snapshots:
     dependencies:
       typescript: 5.6.3
 
-  ts-node@10.9.2(@types/node@20.16.13)(typescript@5.6.3):
+  ts-node@10.9.2(@types/node@20.17.24)(typescript@5.6.3):
     dependencies:
       '@cspotcode/source-map-support': 0.8.1
       '@tsconfig/node10': 1.0.11
       '@tsconfig/node12': 1.0.11
       '@tsconfig/node14': 1.0.3
       '@tsconfig/node16': 1.0.4
-      '@types/node': 20.16.13
+      '@types/node': 20.17.24
       acorn: 8.13.0
       acorn-walk: 8.3.4
       arg: 4.1.3
@@ -6112,13 +6105,13 @@ snapshots:
 
   vary@1.1.2: {}
 
-  vite-node@1.6.0(@types/node@20.16.13)(terser@5.39.0):
+  vite-node@1.6.0(@types/node@20.17.24)(terser@5.39.0):
     dependencies:
       cac: 6.7.14
       debug: 4.3.7(supports-color@5.5.0)
       pathe: 1.1.2
       picocolors: 1.1.1
-      vite: 5.4.10(@types/node@20.16.13)(terser@5.39.0)
+      vite: 5.4.10(@types/node@20.17.24)(terser@5.39.0)
     transitivePeerDependencies:
       - '@types/node'
       - less
@@ -6130,13 +6123,13 @@ snapshots:
       - supports-color
       - terser
 
-  vite@5.4.10(@types/node@20.16.13)(terser@5.39.0):
+  vite@5.4.10(@types/node@20.17.24)(terser@5.39.0):
     dependencies:
       esbuild: 0.21.5
       postcss: 8.4.47
       rollup: 4.24.0
     optionalDependencies:
-      '@types/node': 20.16.13
+      '@types/node': 20.17.24
       fsevents: 2.3.3
       terser: 5.39.0
 
