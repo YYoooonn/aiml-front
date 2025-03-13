@@ -7,7 +7,6 @@ import {
   deleteObject,
   fetchProject,
 } from "@/app/_actions/project";
-import { persist } from "zustand/middleware";
 
 export interface ProjectAction {
   reset: () => void;
@@ -77,6 +76,8 @@ export const useProjectInfo = create<ProjectState>()((set, get) => ({
     });
   },
   addtoObjects: (object) => {
-    set({ objects: [...get().objects, object] });
+    if (object) {
+      set({ objects: [...get().objects, object] });
+    }
   },
 }));
