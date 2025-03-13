@@ -9,7 +9,7 @@ export async function GET(
   return await userAuthRequest(`projects/${params.id}`, "GET", req);
 }
 
-// UPDATE user profile
+// UPDATE project
 export async function PUT(
   req: NextRequest,
   { params }: { params: { id: string } },
@@ -17,7 +17,7 @@ export async function PUT(
   return await userAuthRequest(`projects/${params.id}`, "PUT", req);
 }
 
-// DELETE user
+// DELETE project
 export async function DELETE(
   req: NextRequest,
   { params }: { params: { id: string } },

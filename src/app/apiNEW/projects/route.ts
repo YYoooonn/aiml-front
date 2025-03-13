@@ -1,7 +1,7 @@
 import { userApiRequest, userAuthRequest } from "@/utils/api";
 import { NextRequest } from "next/server";
 
-// GET project participants
+// GET projects
 export async function GET(req: NextRequest) {
   const searchParam = req.nextUrl.searchParams;
   const { k, n, s } = {
