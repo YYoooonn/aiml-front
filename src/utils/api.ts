@@ -1,5 +1,4 @@
 import { NextRequest, NextResponse } from "next/server";
-import { ApiResponseHeader } from "./headers";
 import { getCookie } from "@/app/_actions/cookie";
 
 export const DEFAULT_HEADERS = {
