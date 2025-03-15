@@ -1,15 +1,16 @@
 export interface BaseUserInfo {
-    username: string;
-    password: string;
-  }
+  username: string;
+  password: string;
+}
 
 export interface UserUpdateInfo {
-firstName: string;
-lastName: string;
-email?: string;
+  username?: string;
+  firstName: string;
+  lastName: string;
+  email?: string;
 }
-  
-export type RegisterInfo = BaseUserInfo & UserUpdateInfo
+
+export type RegisterInfo = BaseUserInfo & UserUpdateInfo;
 
 export interface BaseProjectProps {
   title: string;
@@ -38,10 +39,11 @@ interface ObjConstructor {
 interface ObjUpdateProps {
   material?: string;
   matrix?: number[];
+  geometry?: string;
 }
 
 interface ProjectSearchParams {
-  k?: string,
-  n?: number,
-  s?: number
+  k?: string;
+  n?: number;
+  s?: number;
 }
