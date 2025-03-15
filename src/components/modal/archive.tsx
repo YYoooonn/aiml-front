@@ -4,23 +4,30 @@ import { useModals } from "@/hook/useModals";
 import Archive from "../canvas/Archive";
 import * as styles from "./archive.css";
 import { useEffect, useState } from "react";
-import { fetchProject } from "@/app/_actions/project";
 import { useRouter } from "next/navigation";
+import { read } from "@/app/_actions/project";
 
 export function ArchiveModal({ id }: { id: string }) {
   const router = useRouter();
-  const [archInfo, setArchInfo] = useState({ owner: "", title: "", objts: [] });
+  const [archInfo, setArchInfo] = useState({ subtitle: "", title: "" });
+  const [objts, setObjts] = useState([]);
 
   const { close } = useModals();
   useEffect(() => {
-    fetchProject(id).then((r) => {
-      const owner = r.participants?.filter((p: any) => p.isOwner)[0]?.user
-        ?.username;
-      setArchInfo({
-        owner: owner,
-        title: r.title,
-        objts: r.objects,
-      });
+    read(id).then((r) => {
+      // const owner = r.participants?.filter((p: any) => p.isOwner)[0]?.user
+      //   ?.username;
+      if (!r.error) {
+        setArchInfo({
+          subtitle: r.subtitle,
+          title: r.title,
+        });
+      }
+    });
+    read(id, "objects").then((r) => {
+      if (!r.error) {
+        setObjts(r.objects);
+      }
     });
   }, []);
 
@@ -38,11 +45,11 @@ export function ArchiveModal({ id }: { id: string }) {
           {archInfo.title ? archInfo.title : "untitled"}
         </div>
         <div className={styles.archiveUser}>
-          {archInfo.owner ? archInfo.owner : "anonymous"}
+          {archInfo.subtitle ? archInfo.subtitle : "anonymous"}
         </div>
       </div>
       <div className={styles.archiveContentWrapper}>
-        <Archive objts={archInfo.objts} />
+        <Archive objts={objts} />
       </div>
     </>
   );

@@ -23,6 +23,8 @@ export function LeftAisleContent() {
     return <Archive />;
   } else if (pathname === "workspace") {
     return <Workspace id={id} />;
+  } else if (pathname === "test") {
+    return <Workspace id={id} />;
   }
   return <></>;
 }

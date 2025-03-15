@@ -37,7 +37,7 @@ export default function Page() {
         lastName: lastName,
         email: email,
       };
-      await updateUser(updateInfo);
+      await updateUser({ userInfos: updateInfo });
       console.debug("submission complete");
       redirectUser(userState.username);
     } catch (err) {

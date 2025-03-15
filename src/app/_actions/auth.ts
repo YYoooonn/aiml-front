@@ -1,29 +1,16 @@
-"use server";
+import { BaseUserInfo } from "./actions";
+import { AUTH_ROUTE, responseHandler } from "./utils";
+import { createCookie } from "./cookie";
 
-import { cookies } from "next/headers";
-
-export async function createCookie(data: string) {
-  // if(cookies().has("aimljwt")){
-  //   console.log("aimljwt cookie in place, removal process..")
-  //   deleteCookie()
-  // }
-  cookies().set({
-    name: "aimljwt",
-    value: data,
-    httpOnly: true,
+export async function login(props: BaseUserInfo) {
+  const response = await fetch(AUTH_ROUTE, {
+    method: "POST",
+    body: JSON.stringify(props),
   });
-  // console.log("Cookie from aimljwt", cookies().get("aimljwt"));
-}
+  const data = await responseHandler(response, "auth action");
+  if (data.token) {
+    await createCookie(data.token);
+  }
 
-export async function hasCookie() {
-  return cookies().has("aimljwt");
-}
-
-export async function getCookie() {
-  return cookies().get("aimljwt")?.value;
-}
-
-// TODO log-out
-export async function deleteCookie() {
-  cookies().delete("aimljwt");
+  return data;
 }

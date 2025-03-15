@@ -1,7 +1,7 @@
 "use client";
 
 import { ObjectInfo } from "@/@types/api";
-import { deleteObject, updateObject } from "@/app/_actions/project";
+import { remove, update } from "@/app/_actions/object";
 import { toMatrix, toMatrix4decompose } from "@/utils/calc";
 import { create } from "zustand";
 
@@ -13,6 +13,7 @@ export interface SelectedInfo {
   scale: XYZ | undefined;
   rotation: XYZ | undefined;
   material: string | undefined;
+  TEST?: boolean;
 }
 
 export interface ObjectActions {
@@ -25,6 +26,7 @@ export interface ObjectActions {
   removeSelected: (projectId: string) => Promise<void>;
   updateMatrix: (projectId: string) => Promise<any>;
   updateMaterial: (material: string) => Promise<void>;
+  toggleTest: () => void;
 }
 
 const DEFAULT: SelectedInfo = {
@@ -62,27 +64,28 @@ export const useObjectEditor = create<SelectedInfo & ObjectActions>()(
         get();
       if (selected && position && rotation && scale) {
         const matrix = toMatrix(position, rotation, scale);
-        const objectData = await updateObject(selected.objectId, id, {
+        const response = await update(id, selected.objectId, {
           matrix: matrix,
           material: material,
-        }).then((o) => (o.error ? null : o));
-        if (objectData) {
-          resetSelected();
-          return objectData;
+          geometry: selected.geometry,
+        });
+        if (response.error) {
+          alert(response.error);
         } else {
-          alert("error from object update");
+          resetSelected();
         }
       }
-      return null;
+      return undefined;
     },
 
     // fetch
     removeSelected: async (id) => {
       const { selected, resetSelected } = get();
       if (selected) {
-        await deleteObject(selected.objectId, id).then(() => resetSelected);
+        await remove(selected.objectId, id).then(() => resetSelected());
       }
     },
     updateMaterial: async (mat) => alert("NOT IMPLEMENTED YET"),
+    toggleTest: () => {},
   }),
 );

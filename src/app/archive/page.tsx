@@ -2,11 +2,11 @@
 
 import { Suspense, useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
-import { getArchives } from "../_actions/project";
 import { Archives } from "./_archives";
 import { useModals } from "@/hook/useModals";
 import { ArchiveModal } from "@/components/modal/archive";
 import { ModalType } from "@/hook/useModalStore";
+import { search } from "../_actions/project";
 
 export default function Archive() {
   const [pageNum, setPageNum] = useState(0);
@@ -19,10 +19,10 @@ export default function Archive() {
   }, [pageNum, keyword]);
 
   const fetchArchive = async () => {
-    const publicPrjt = await getArchives({
-      pageNumber: pageNum,
-      keyword: keyword,
-      pageSize: 21,
+    const publicPrjt = await search({
+      n: pageNum,
+      k: keyword,
+      s: 21,
     });
 
     setArchives(publicPrjt.content);
@@ -40,7 +40,7 @@ export default function Archive() {
 }
 
 // FIXME !!
-function ArchiveRouter(){
+function ArchiveRouter() {
   const { modals, open, close } = useModals();
   const searchParams = useSearchParams();
   useEffect(() => {
@@ -53,5 +53,5 @@ function ArchiveRouter(){
     }
   }, [searchParams]);
 
-  return(<></>)
+  return <></>;
 }
