@@ -44,4 +44,4 @@ jobs:
         build-args: |
           NEXT_PUBLIC_HOSTNAME: ${{env.NEXT_PUBLIC_HOSTNAME}}
           BACKEND_API_BASE: ${{env.BACKEND_API_BASE}}
-        tag: latest
+        tags: ${{secrets.DOCKER_REPO}}/aimlfront:latest
