@@ -1,7 +1,7 @@
 "use client";
 
 import { ObjectInfo } from "@/@types/api";
-import { deleteObject, updateObject } from "@/app/_actions/project";
+import { remove, update } from "@/app/_actions/object";
 import { toMatrix, toMatrix4decompose } from "@/utils/calc";
 import { create } from "zustand";
 
@@ -13,6 +13,7 @@ export interface SelectedInfo {
   scale: XYZ | undefined;
   rotation: XYZ | undefined;
   material: string | undefined;
+  TEST?: boolean;
 }
 
 export interface ObjectActions {
@@ -22,9 +23,10 @@ export interface ObjectActions {
   setPosition: (val: XYZ) => void;
   setRotation: (val: XYZ) => void;
   setMaterial: (val: string) => void;
-  removeSelected: (projectId: string) => Promise<void>;
+  removeSelected: (projectId: string) => Promise<any>;
   updateMatrix: (projectId: string) => Promise<any>;
   updateMaterial: (material: string) => Promise<void>;
+  toggleTest: () => void;
 }
 
 const DEFAULT: SelectedInfo = {
@@ -62,27 +64,27 @@ export const useObjectEditor = create<SelectedInfo & ObjectActions>()(
         get();
       if (selected && position && rotation && scale) {
         const matrix = toMatrix(position, rotation, scale);
-        const objectData = await updateObject(selected.objectId, id, {
+        const response = await update(id, selected.objectId, {
           matrix: matrix,
           material: material,
-        }).then((o) => (o.error ? null : o));
-        if (objectData) {
-          resetSelected();
-          return objectData;
-        } else {
-          alert("error from object update");
-        }
+          geometry: selected.geometry,
+        });
+        return response;
       }
-      return null;
+      return { error: "EMPTY PARAMETER" };
     },
 
     // fetch
     removeSelected: async (id) => {
       const { selected, resetSelected } = get();
       if (selected) {
-        await deleteObject(selected.objectId, id).then(() => resetSelected);
+        const res = await remove(selected.objectId, id);
+        return res;
+        // .then(() => resetSelected());
       }
+      return { error: "NO OBJECT SELECTED" };
     },
     updateMaterial: async (mat) => alert("NOT IMPLEMENTED YET"),
+    toggleTest: () => {},
   }),
 );

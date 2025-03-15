@@ -1,14 +1,15 @@
 "use client";
 
-import { Suspense, useEffect } from "react";
-// import { userStore } from "@/hook/useUserStore";
-// import { fetchUserInfo } from "@/app/_actions/user";
+import { useEffect } from "react";
 import { Projects } from "./_project";
-import * as styles from "./user.css";
 import { useUserInfo } from "@/hook/useUserInfo";
 
+import * as styles from "./user.css";
+
 export default function Page({ params }: { params: { username: string } }) {
-  const { fetch, projects, addProject } = useUserInfo();
+  const fetch = useUserInfo((s) => s.fetch);
+  const projects = useUserInfo((s) => s.projects);
+  const addProject = useUserInfo((s) => s.addProject);
 
   useEffect(() => {
     fetch(params.username);

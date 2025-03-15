@@ -53,17 +53,21 @@ function MatrixEditor({ pId }: { pId: string }) {
 
   const handleSubmit = async (e: React.MouseEvent) => {
     e.preventDefault();
-    await updateMatrix(pId).then((r) =>
-      r ? updateObject(r) : alert("error while updating object"),
-    );
+    const response = await updateMatrix(pId);
+    if (response.error) {
+      alert(response.error);
+    } else {
+      updateObject(response);
+    }
   };
 
-  const handleRemove = (e: React.MouseEvent) => {
+  const handleRemove = async (e: React.MouseEvent) => {
     e.preventDefault();
-    if (selected) {
-      alert("NOT IMPLEMENTED YET");
-      // filterObject(selected.objectId);
-      // removeSelected(pId);
+    const response = await removeSelected(pId);
+    if (response.error) {
+      alert(response.error);
+    } else {
+      updateObject(response);
     }
   };
 

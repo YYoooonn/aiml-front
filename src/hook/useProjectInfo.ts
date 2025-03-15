@@ -1,13 +1,9 @@
 "use client";
 
-import { create } from "zustand";
-import { ObjectInfo, ObjectConstructor, Project, UserInfo } from "@/@types/api";
-import {
-  createObject,
-  deleteObject,
-  fetchProject,
-} from "@/app/_actions/project";
-import { persist } from "zustand/middleware";
+import { ObjectInfo, ObjectConstructor, Project } from "@/@types/api";
+import { read } from "@/app/_actions/project";
+import { create } from "@/app/_actions/object";
+import * as z from "zustand";
 
 export interface ProjectAction {
   reset: () => void;
@@ -35,27 +31,28 @@ const DEFAULT: Omit<Project, "projects"> = {
   participants: [],
 };
 
-export const useProjectInfo = create<ProjectState>()((set, get) => ({
+export const useProjectInfo = z.create<ProjectState>()((set, get) => ({
   ...DEFAULT,
   reset: () => set({ ...DEFAULT }),
   // setUser: (user) => set({user}),
   fetch: async (projectId) => {
-    const response = await fetchProject(projectId);
-    if (!response["error"]) {
-      set(response);
-      return response;
-    } else {
+    const proInfo = await read(projectId);
+    const pObjts = await read(projectId, "objects");
+    if (proInfo.error || pObjts.error) {
       return DEFAULT;
+    } else {
+      set({ ...proInfo, objects: pObjts.objects });
+      return proInfo;
     }
   },
   createObject: async (objectInfo) => {
-    const response = await createObject(objectInfo, get().projectId);
+    const response = await create(get().projectId, objectInfo);
     if (!response["error"]) {
       set({ objects: [...get().objects, response] });
     }
   },
   getObjects: async () => {
-    const response = await fetchProject(get().projectId);
+    const response = await read(get().projectId, "objects");
     if (response.objects) {
       set({ objects: response.objects });
     }

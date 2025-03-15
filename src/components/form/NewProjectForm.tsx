@@ -4,9 +4,9 @@ import { useModals } from "@/hook/useModals";
 import { TextInput } from "../ui/input";
 import { useState } from "react";
 import { Project } from "@/@types/api";
-import { createProject } from "@/app/_actions/project";
 import * as styles from "./form.css";
 import { BoolButtons, ButtonSubmit } from "../ui/button";
+import { create } from "@/app/_actions/project";
 
 export default function NewProjectForm({
   addProject,
@@ -24,17 +24,16 @@ export default function NewProjectForm({
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    try {
-      await createProject({
-        title: title,
-        subtitle: subtitle,
-        isPublic: selected === selections[0],
-      }).then((d) => {
-        d.error ? alert(error) : close();
-        addProject(d);
-      });
-    } catch (err) {
-      console.log(err);
+    const response = await create({
+      title: title,
+      subtitle: subtitle,
+      isPublic: selected === selections[0],
+    });
+    if (response.error) {
+      alert(error);
+    } else {
+      close();
+      addProject(response);
     }
   };
 
