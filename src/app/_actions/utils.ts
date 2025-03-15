@@ -4,6 +4,7 @@ import { NextResponse } from "next/server";
 export const PROJECT_ROUTES = "/api/projects";
 export const USER_ROUTE = "/api/users";
 export const AUTH_ROUTE = "/api/auth";
+export const OBJ_ROUTE = "/api/objects";
 
 export const responseHandler = async (r: Response, from?: string) => {
   // console.debug("1. RESPONSE RECEIVED FROM", from)

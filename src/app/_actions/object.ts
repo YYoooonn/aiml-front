@@ -1,5 +1,5 @@
 import { ObjConstructor, ObjUpdateProps, ProjectUpdateProps } from "./actions";
-import { responseHandler, PROJECT_ROUTES } from "./utils";
+import { responseHandler, PROJECT_ROUTES, OBJ_ROUTE } from "./utils";
 
 const ERROR_FROM = "OBJ ACTION";
 
@@ -13,7 +13,7 @@ export async function create(proId: string, objProps: ObjConstructor) {
 }
 
 export async function read(proId: string, oId: string) {
-  const response = await fetch(`${PROJECT_ROUTES}/${proId}/objects/${oId}`, {
+  const response = await fetch(`${OBJ_ROUTE}/${oId}`, {
     method: "GET",
   });
   const res = await responseHandler(response, ERROR_FROM);
@@ -25,7 +25,7 @@ export async function update(
   oId: string,
   objProps: ObjUpdateProps,
 ) {
-  const response = await fetch(`${PROJECT_ROUTES}/${proId}/objects/${oId}`, {
+  const response = await fetch(`${OBJ_ROUTE}/${oId}`, {
     method: "PUT",
     body: JSON.stringify(objProps),
   });
@@ -34,7 +34,7 @@ export async function update(
 }
 
 export async function remove(proId: string, oId: string) {
-  const response = await fetch(`${PROJECT_ROUTES}/${proId}/objects/${oId}`, {
+  const response = await fetch(`${OBJ_ROUTE}/${oId}`, {
     method: "DELETE",
   });
   const res = await responseHandler(response, ERROR_FROM);
