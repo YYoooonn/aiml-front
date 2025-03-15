@@ -23,7 +23,7 @@ export interface ObjectActions {
   setPosition: (val: XYZ) => void;
   setRotation: (val: XYZ) => void;
   setMaterial: (val: string) => void;
-  removeSelected: (projectId: string) => Promise<void>;
+  removeSelected: (projectId: string) => Promise<any>;
   updateMatrix: (projectId: string) => Promise<any>;
   updateMaterial: (material: string) => Promise<void>;
   toggleTest: () => void;
@@ -69,21 +69,20 @@ export const useObjectEditor = create<SelectedInfo & ObjectActions>()(
           material: material,
           geometry: selected.geometry,
         });
-        if (response.error) {
-          alert(response.error);
-        } else {
-          resetSelected();
-        }
+        return response;
       }
-      return undefined;
+      return { error: "EMPTY PARAMETER" };
     },
 
     // fetch
     removeSelected: async (id) => {
       const { selected, resetSelected } = get();
       if (selected) {
-        await remove(selected.objectId, id).then(() => resetSelected());
+        const res = await remove(selected.objectId, id);
+        return res;
+        // .then(() => resetSelected());
       }
+      return { error: "NO OBJECT SELECTED" };
     },
     updateMaterial: async (mat) => alert("NOT IMPLEMENTED YET"),
     toggleTest: () => {},
