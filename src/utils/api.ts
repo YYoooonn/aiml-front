@@ -1,65 +1,79 @@
 import { NextRequest, NextResponse } from "next/server";
 import { ApiResponseHeader } from "./headers";
+import { getCookie } from "@/app/_actions/cookie";
 
-const HeaderInfo: any = (token?: string) => {
-  if (token) {
-    return {
-      "Content-Type": "application/json",
-      Authorization: "Bearer ".concat(token),
-    };
-  } else {
-    return {
-      "Content-Type": "application/json",
-    };
-  }
+export const DEFAULT_HEADERS = {
+  "Content-Type": "application/json",
 };
 
-const errorHandler = async (endpoint: string, r: Response) => {
-  console.debug("ERROR FROM ".concat(endpoint));
-  if (r.status === 400) {
-    const message = await r.text();
-    console.debug("ERROR MESSAGE ".concat(message));
-    return message;
+export const headers : any = (req : NextRequest) => {
+  const token = req.cookies.get("aimljwt")
+  if (token) {
+      return {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer ".concat(token.value),
+      };
+    } else {
+      return {
+        "Content-Type": "application/json",
+      };
+    }
+}
+
+export const responseHandler = async (res: Response) => {
+  if(res.ok){
+      const data = await res.json()
+      return data
   } else {
-    return "status :".concat(r.status.toString());
+      const message = await res.text()
+      return {error: message}
+  }
+}
+
+
+// DEPRECIATED BELOW
+
+// HANDLE ERROR MESSAGE
+const errorBuilder = async (endpoint: string, message: string, status?: number) => {
+  console.debug("ERROR FROM ".concat(endpoint));
+  if (status === 500) {
+    console.debug("--------------------------");
+    console.debug("error message from backend");
+    console.debug("ERROR MESSAGE ".concat(message));
+    return "SERVER ISSUE";
+  } else if (status === 400) {
+    console.debug("ERROR MESSAGE " + message);
+    return message.toString();
+  } else {
+    return "status :".concat(message);
   }
 };
 
 export async function userApiRequest(
   endpoint: string,
-  method: "GET" | "POST" | "DELETE" | "PATCH" = "GET",
-  req?: NextRequest,
+  method: "GET" | "POST" | "DELETE" | "PATCH" | "PUT" = "GET",
+  body?: object,
 ) {
-  console.debug(`REQUEST TO ${process.env.BACKEND_API_BASE + endpoint}`);
-  try {
-    const body = await req?.json();
-    const response = await fetch(`${process.env.BACKEND_API_BASE + endpoint}`, {
-      method: method,
-      headers: HeaderInfo(),
-      body: JSON.stringify(body),
-    })
-      .then((r) => {
-        if (r.ok) {
-          return r.json();
-        }
-        const error = errorHandler(endpoint, r).then((e) => {
-          throw new Error(e);
-        });
-      })
-      .then((data) => {
-        return NextResponse.json(JSON.stringify(data), {
-          status: 200,
-          headers: ApiResponseHeader,
-        });
-      });
-    return response;
-  } catch (e) {
-    console.debug("ERROR ON API REQUEST TO ".concat(endpoint), e);
+  console.debug(`API REQUEST TO ${process.env.BACKEND_API_BASE + endpoint}`);
+  const response = await fetch(`${process.env.BACKEND_API_BASE + endpoint}`, {
+    headers: DEFAULT_HEADERS,
+    method: method,
+    body: JSON.stringify(body),
+  });
+  if (response.ok) {
+    const data = await response.json()
+    return NextResponse.json(JSON.stringify(data), {
+      status: 200,
+      headers: response.headers,
+    });
+  } else {
+    const data = (await response.json()).toString()
+    const err = await errorBuilder(endpoint, data);
     return NextResponse.json(
-      { error: e ? e : "unknown error" },
+      JSON.stringify({ error: err }),
       {
         status: 200,
-        headers: ApiResponseHeader,
+        headers: DEFAULT_HEADERS,
       },
     );
   }
@@ -68,49 +82,47 @@ export async function userApiRequest(
 export async function userAuthRequest(
   endpoint: string,
   method: "GET" | "POST" | "DELETE" | "PATCH" | "PUT" = "GET",
-  req?: NextRequest,
+  body?: object,
 ) {
-  const token = req?.cookies.get("aimljwt")?.value;
+  console.debug(`AUTH REQUEST TO ${process.env.BACKEND_API_BASE + endpoint}`);
+  const token = await getCookie();
+  console.log("TOKEN", token)
   if (!token) {
-    return NextResponse.json(
-      { error: "EMPTY TOKEN" },
-      {
-        status: 200,
-        headers: ApiResponseHeader,
-      },
-    );
-  }
-  console.debug(`REQUEST TO ${process.env.BACKEND_API_BASE + endpoint}`);
-  try {
-    const body = await req?.json();
+    console.debug("REQUEST WITH CREDENTIALS FAILED, CONVERTS TO API REQUEST ");
+    const response = await userApiRequest(endpoint, method, body);
+    return response;
+  } else {
+    const headerWithToken = {
+      ...DEFAULT_HEADERS,
+      Authorization: "Bearer ".concat(token),
+    };
     const response = await fetch(`${process.env.BACKEND_API_BASE + endpoint}`, {
       method: method,
-      headers: HeaderInfo(token),
       body: JSON.stringify(body),
-    })
-      .then((r) => {
-        if (r.ok) {
-          return r.json();
-        }
-        const error = errorHandler(endpoint, r).then((e) => {
-          throw new Error(e);
-        });
-      })
-      .then((data) => {
-        return NextResponse.json(JSON.stringify(data), {
-          status: 200,
-          headers: ApiResponseHeader,
-        });
-      });
-    return response;
-  } catch (e) {
-    console.debug("ERROR ON USER AUTH REQUEST TO ".concat(endpoint), e);
-    return NextResponse.json(
-      { error: e ? e : "unknown error" },
-      {
+      headers: headerWithToken,
+    });
+    if (response.ok) {
+      const data = await response.json();
+      // if (Array.isArray(data)) {
+      //   return NextResponse.json(JSON.stringify(data), {
+      //     status: 200,
+      //     headers: DEFAULT_HEADERS,
+      //   });
+      // }
+      return NextResponse.json(JSON.stringify(data), {
         status: 200,
-        headers: ApiResponseHeader,
-      },
-    );
+        headers: DEFAULT_HEADERS,
+      });
+    } else {
+      const data= (await response.text()).toString()
+      const err = await errorBuilder(endpoint, data, response.status);
+      return NextResponse.json(
+        JSON.stringify({ error: err }),
+        {
+          status: 200,
+          headers: DEFAULT_HEADERS,
+        },
+      );
+    }
   }
 }
