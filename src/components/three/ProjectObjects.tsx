@@ -33,7 +33,7 @@ export function WorkspaceObjects({
     <group>
       {pObjects.map((obj, i) => {
         return (
-          <MeshObject
+          <SelectableMesh
             key={i}
             obj={obj}
             selected={selected}
@@ -60,9 +60,9 @@ export function ArchiveObjects({
   );
 }
 
-function MeshObject({ obj, selected, handleSelected }: MeshProps) {
+function SelectableMesh({ obj, selected, handleSelected }: MeshProps) {
   const { position, scale, rotation } = toMatrix4decompose(obj.matrix);
-  const [] = useState();
+
   // XXX temporary for error catch
   // projectId 53
   const newRotation = rotation.map((d) => (isNaN(d) ? 0 : d)) as any;
@@ -86,35 +86,25 @@ function MeshObject({ obj, selected, handleSelected }: MeshProps) {
   );
 }
 
-// interface MeshObjectProps {
-//   id: string;
-//   material: string;
-//   handleSelected: () => void;
-// }
+function MeshObject({ obj }: MeshProps){
+  const { position, scale, rotation } = toMatrix4decompose(obj.matrix);
 
-// function BoxObject({ id, material, handleSelected }: MeshObjectProps) {
-//   return (
-//     <mesh onClick={handleSelected}>
-//       <boxGeometry />
-//       <meshStandardMaterial color={material} />
-//     </mesh>
-//   );
-// }
+  // XXX temporary for error catch
+  // projectId 53
+  const newRotation = rotation.map((d) => (isNaN(d) ? 0 : d)) as any;
 
-// function SphereObject({ id, material, handleSelected }: MeshObjectProps) {
-//   return (
-//     <mesh onClick={handleSelected}>
-//       <sphereGeometry />
-//       <meshStandardMaterial color={material} />
-//     </mesh>
-//   );
-// }
-
-// function ConeObject({ id, material, handleSelected }: MeshObjectProps) {
-//   return (
-//     <mesh onClick={handleSelected}>
-//       <coneGeometry />
-//       <meshStandardMaterial color={material} />
-//     </mesh>
-//   );
-// }
+  return (
+    <group scale={scale} position={position} rotation={newRotation}>
+      <mesh>
+        {obj.geometry === "BoxGeometry" ? (
+          <boxGeometry />
+        ) : obj.geometry === "SphereGeometry" ? (
+          <sphereGeometry />
+        ) : (
+          <coneGeometry />
+        )}
+        <meshStandardMaterial color={obj.material} />
+      </mesh>
+    </group>
+  );
+}

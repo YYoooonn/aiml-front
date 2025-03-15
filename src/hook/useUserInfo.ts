@@ -1,11 +1,12 @@
 "use client";
 
 import { create } from "zustand";
-import { persist } from "zustand/middleware";
 import { UserInfo, Project } from "@/@types/api";
-import { fetchUserInfo, updateUserInfo, UpdateInfo } from "@/app/_actions/user";
-import { deleteCookie } from "@/app/_actions/auth";
-import { navigate } from "@/app/_actions/navigate";
+import { deleteCookie } from "@/app/_actions/cookie";
+import { UserUpdateInfo } from "@/app/_actions/actions";
+
+import * as user from "@/app/_actions/user";
+import * as project from "@/app/_actions/project";
 
 interface UserActions {
   // setUser: (user: UserStoreState) => void;
@@ -13,9 +14,16 @@ interface UserActions {
   addProject: (project: Project) => void;
   reset: () => void;
   logout: () => void;
-  fetch: (username: string) => Promise<void>;
-  update: (data: UpdateInfo) => Promise<void>;
-  getProjects: () => Project[];
+  fetch: (id?: string) => Promise<void>;
+  fetchUserInfo: (id?: string) => Promise<void>;
+  update: ({
+    id,
+    userInfos,
+  }: {
+    id?: string;
+    userInfos: UserUpdateInfo;
+  }) => Promise<void>;
+  fetchProjects: () => Promise<void>;
 }
 
 type UserState = UserInfo & UserActions;
@@ -35,27 +43,43 @@ export const useUserInfo = create<UserState>()((set, get) => ({
   ...DEFAULT,
   // setUser: (user) => set({user}),
   setAll: (data) => set(data),
-  getProjects: () => get().projects,
+
   addProject: (project) => set({ projects: [...get().projects, project] }),
   reset: () => set(DEFAULT),
   logout: () => {
     deleteCookie();
     set(DEFAULT);
   },
-  fetch: async (username) => {
+  fetchProjects: async () => {
+    await project.read(get().userId, "projects").then((r) => {
+      console.log(r);
+    });
+  },
+  fetchUserInfo: async (id) => {
     set(DEFAULT);
-    const response = await fetchUserInfo();
-    !response.error && response.username === username
-      ? set(response)
-      : deleteCookie().then(() => {
-          alert("Unauthorized, please login again");
-          navigate("/login");
-        });
+    const res = await user.read(id);
+    if (!res.error) set({ ...res });
+    // !response.error && response.username === username
+    //   ? set(response)
+    //   : deleteCookie().then(() => {
+    //       alert("Unauthorized, please login again");
+    //       navigate("/login");
+    //     });
+  },
+  fetch: async (id) => {
+    const res = await user.read(id);
+    if (!res.error) {
+      set({ ...res });
+    }
+    const entity = await user.readEntity({ id: id, entity: "projects" });
+    if (!entity.error) {
+      set({ projects: entity.projects });
+    }
   },
   update: async (data) => {
-    const response = await updateUserInfo(data);
+    const response = await user.update(data);
     console.log("UPDATE USER INFO", response);
-    if (!response["error"]) {
+    if (!response.error) {
       console.log("UPDATE COMPLETE");
     } else {
       alert("error alert");

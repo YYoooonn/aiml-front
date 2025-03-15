@@ -5,7 +5,6 @@ import { ArchiveObjects } from "../three/ProjectObjects";
 import { ObjectInfo } from "@/@types/api";
 
 import * as styles from "./canvas.css";
-import Camera from "./camera";
 import { CameraControls } from "@react-three/drei";
 
 // XXX WORKSPACE PROPS

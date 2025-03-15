@@ -1,13 +1,9 @@
 "use client";
 
 import { ObjectInfo } from "@/@types/api";
-import {
-  createObject,
-  deleteObject,
-  updateObject,
-} from "@/app/_actions/project";
+import { create } from "@/app/_actions/object";
 import { toMatrix, toMatrix4decompose } from "@/utils/calc";
-import { create } from "zustand";
+import * as z from "zustand";
 
 type XYZ = [x: number, y: number, z: number];
 
@@ -37,7 +33,7 @@ const DEFAULT: ObjectConstructor = {
   material: undefined,
 };
 
-export const useObjectCreator = create<ObjectConstructor & NewObjectAction>()(
+export const useObjectCreator = z.create<ObjectConstructor & NewObjectAction>()(
   (set, get) => ({
     ...DEFAULT,
     setNew: (type: string) => {
@@ -58,16 +54,18 @@ export const useObjectCreator = create<ObjectConstructor & NewObjectAction>()(
       const { type, position, scale, rotation, material } = get();
       if (type && position && scale && rotation && material) {
         const matrix = toMatrix(position, rotation, scale);
-        const response = await createObject(
-          { geometry: type, material: material, matrix: matrix },
-          id,
-        );
+        console.log(matrix)
+        const response = await create(id, {
+          geometry: type,
+          material: material,
+          matrix: matrix,
+        });
         if (!response.error) {
           return response;
         }
+        alert(response.error)
         // XXX error catch
       }
-      return null;
     },
   }),
 );
