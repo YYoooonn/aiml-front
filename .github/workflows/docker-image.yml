@@ -2,9 +2,9 @@ name: Docker Image CI
 
 on:
   push:
-    branches: [ "main" ]
+    branches: ["main"]
     paths-ignore:
-      - '.github/**'
+      - ".github/**"
 
 jobs:
   build:
@@ -14,23 +14,21 @@ jobs:
       BACKEND_API_BASE: ${{secrets.BACKEND_API_BASE}}
 
     steps:
-    - name: checkout
-      uses: actions/checkout@v4
+      - name: checkout
+        uses: actions/checkout@v4
 
-    - name: dockerlogin
-      uses: docker/login-action@v3
-      with: 
-        username: ${{ secrets.DOCKER_ID }}
-        password: ${{ secrets.DOCKER_PASSWORD }}
+      - name: dockerlogin
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKER_ID }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
 
-    - name: docker build & push
-      uses: docker/build-push-action@v5
-      with:
-        push: true
-        context: ./docker/next.Dockerfile
-        build-args: |
-          NEXT_PUBLIC_HOSTNAME: ${{env.NEXT_PUBLIC_HOSTNAME}}
-          BACKEND_API_BASE: ${{env.BACKEND_API_BASE}}
-        tag: ${{secrets.DOCKER_REPO}}/frontend:latest
-
-    
+      - name: docker build & push
+        uses: docker/build-push-action@v5
+        with:
+          push: true
+          context: ./docker/next.Dockerfile
+          build-args: |
+            NEXT_PUBLIC_HOSTNAME: ${{env.NEXT_PUBLIC_HOSTNAME}}
+            BACKEND_API_BASE: ${{env.BACKEND_API_BASE}}
+          tag: ${{secrets.DOCKER_REPO}}/frontend:latest
