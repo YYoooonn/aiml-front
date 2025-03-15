@@ -26,9 +26,10 @@ jobs:
     - name: docker build & push
       uses: docker/build-push-action@v5
       with:
+        context: .
         push: true
-        context: ./docker/next.Dockerfile
+        file: ./docker/next.Dockerfile
         build-args: |
           NEXT_PUBLIC_HOSTNAME: ${{env.NEXT_PUBLIC_HOSTNAME}}
           BACKEND_API_BASE: ${{env.BACKEND_API_BASE}}
-        tag: ${{secrets.DOCKER_REPO}}/frontend:latest
+        tag: latest
