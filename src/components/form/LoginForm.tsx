@@ -15,18 +15,20 @@ export default function LoginForm() {
 
   // remove error message detecting change
   useEffect(() => {
-    if(username && password && error){setError("")}
-  }, [username, password])
+    if (username && password && error) {
+      setError("");
+    }
+  }, [username, password]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     const loginData = { username: username, password: password };
     const data = await login(loginData);
-    if(data.error){
-      setError(data.error)
+    if (data.error) {
+      setError(data.error);
     } else {
-      await navigate("/user/me")
+      await navigate("/user/me");
     }
   };
 
@@ -39,7 +41,14 @@ export default function LoginForm() {
       <ButtonSubmit text={"SUBMIT"} handler={handleSubmit} />
       <p style={{ marginTop: "24px" }} />
       <ButtonSubmit text={"SIGN UP"} handler={handleSubmit} />
-      {error? (<><p style={{ marginTop: "12px" }} /><div style={{textAlign: "center", color: "red"}}>{error}</div></>): <></>}
+      {error ? (
+        <>
+          <p style={{ marginTop: "12px" }} />
+          <div style={{ textAlign: "center", color: "red" }}>{error}</div>
+        </>
+      ) : (
+        <></>
+      )}
     </div>
   );
 }

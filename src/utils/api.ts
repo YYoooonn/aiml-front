@@ -6,35 +6,38 @@ export const DEFAULT_HEADERS = {
   "Content-Type": "application/json",
 };
 
-export const headers : any = (req : NextRequest) => {
-  const token = req.cookies.get("aimljwt")
+export const headers: any = (req: NextRequest) => {
+  const token = req.cookies.get("aimljwt");
   if (token) {
-      return {
-        "Content-Type": "application/json",
-        "Authorization": "Bearer ".concat(token.value),
-      };
-    } else {
-      return {
-        "Content-Type": "application/json",
-      };
-    }
-}
+    return {
+      "Content-Type": "application/json",
+      Authorization: "Bearer ".concat(token.value),
+    };
+  } else {
+    return {
+      "Content-Type": "application/json",
+    };
+  }
+};
 
 export const responseHandler = async (res: Response) => {
-  if(res.ok){
-      const data = await res.json()
-      return data
+  if (res.ok) {
+    const data = await res.json();
+    return data;
   } else {
-      const message = await res.text()
-      return {error: message}
+    const message = await res.text();
+    return { error: message };
   }
-}
-
+};
 
 // DEPRECIATED BELOW
 
 // HANDLE ERROR MESSAGE
-const errorBuilder = async (endpoint: string, message: string, status?: number) => {
+const errorBuilder = async (
+  endpoint: string,
+  message: string,
+  status?: number,
+) => {
   console.debug("ERROR FROM ".concat(endpoint));
   if (status === 500) {
     console.debug("--------------------------");
@@ -61,21 +64,18 @@ export async function userApiRequest(
     body: JSON.stringify(body),
   });
   if (response.ok) {
-    const data = await response.json()
+    const data = await response.json();
     return NextResponse.json(JSON.stringify(data), {
       status: 200,
       headers: response.headers,
     });
   } else {
-    const data = (await response.json()).toString()
+    const data = (await response.json()).toString();
     const err = await errorBuilder(endpoint, data);
-    return NextResponse.json(
-      JSON.stringify({ error: err }),
-      {
-        status: 200,
-        headers: DEFAULT_HEADERS,
-      },
-    );
+    return NextResponse.json(JSON.stringify({ error: err }), {
+      status: 200,
+      headers: DEFAULT_HEADERS,
+    });
   }
 }
 
@@ -86,7 +86,7 @@ export async function userAuthRequest(
 ) {
   console.debug(`AUTH REQUEST TO ${process.env.BACKEND_API_BASE + endpoint}`);
   const token = await getCookie();
-  console.log("TOKEN", token)
+  console.log("TOKEN", token);
   if (!token) {
     console.debug("REQUEST WITH CREDENTIALS FAILED, CONVERTS TO API REQUEST ");
     const response = await userApiRequest(endpoint, method, body);
@@ -114,15 +114,12 @@ export async function userAuthRequest(
         headers: DEFAULT_HEADERS,
       });
     } else {
-      const data= (await response.text()).toString()
+      const data = (await response.text()).toString();
       const err = await errorBuilder(endpoint, data, response.status);
-      return NextResponse.json(
-        JSON.stringify({ error: err }),
-        {
-          status: 200,
-          headers: DEFAULT_HEADERS,
-        },
-      );
+      return NextResponse.json(JSON.stringify({ error: err }), {
+        status: 200,
+        headers: DEFAULT_HEADERS,
+      });
     }
   }
 }

@@ -86,7 +86,7 @@ function SelectableMesh({ obj, selected, handleSelected }: MeshProps) {
   );
 }
 
-function MeshObject({ obj }: MeshProps){
+function MeshObject({ obj }: MeshProps) {
   const { position, scale, rotation } = toMatrix4decompose(obj.matrix);
 
   // XXX temporary for error catch

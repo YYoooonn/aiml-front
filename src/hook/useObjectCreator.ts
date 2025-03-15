@@ -54,7 +54,7 @@ export const useObjectCreator = z.create<ObjectConstructor & NewObjectAction>()(
       const { type, position, scale, rotation, material } = get();
       if (type && position && scale && rotation && material) {
         const matrix = toMatrix(position, rotation, scale);
-        console.log(matrix)
+        console.log(matrix);
         const response = await create(id, {
           geometry: type,
           material: material,
@@ -63,7 +63,7 @@ export const useObjectCreator = z.create<ObjectConstructor & NewObjectAction>()(
         if (!response.error) {
           return response;
         }
-        alert(response.error)
+        alert(response.error);
         // XXX error catch
       }
     },

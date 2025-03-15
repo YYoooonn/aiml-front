@@ -11,7 +11,7 @@ export async function search({ k, n, s }: ProjectSearchParams) {
   const response = await fetch(
     `${PROJECT_ROUTES}/search?keyword=${k}&pageNum=${n}&pageSize=${s}`,
     { method: "GET" },
-  )
+  );
   const data = await responseHandler(response, ERROR_FROM);
   return data;
 }
@@ -20,7 +20,7 @@ export async function create(props: BaseProjectProps) {
   const response = await fetch(PROJECT_ROUTES, {
     method: "POST",
     body: JSON.stringify(props),
-  })
+  });
   const data = await responseHandler(response, ERROR_FROM);
   return data;
 }
@@ -31,7 +31,7 @@ export async function read(id: string, entity?: string) {
     : `${PROJECT_ROUTES}/${id}`;
   const response = await fetch(route, {
     method: "GET",
-  })
+  });
   const data = await responseHandler(response, ERROR_FROM);
   return data;
 }
@@ -46,7 +46,7 @@ export async function update({
   const response = await fetch(`${PROJECT_ROUTES}/${id}`, {
     method: "PUT",
     body: JSON.stringify(infos),
-  })
+  });
   const data = await responseHandler(response, ERROR_FROM);
   return data;
 }
@@ -54,7 +54,7 @@ export async function update({
 export async function remove({ id }: { id: string }) {
   const response = await fetch(`${PROJECT_ROUTES}/${id}`, {
     method: "DELETE",
-  })
+  });
   const data = await responseHandler(response, ERROR_FROM);
   return data;
 }

@@ -9,21 +9,24 @@ export async function POST(req: NextRequest) {
     body: JSON.stringify(body),
     method: "POST",
     headers: DEFAULT_HEADERS,
-  })
+  });
 
-  if(fetched.ok){
-    const res = await fetched.json()
+  if (fetched.ok) {
+    const res = await fetched.json();
     return NextResponse.json(JSON.stringify(res), {
       status: 200,
-      headers: DEFAULT_HEADERS
-    })
+      headers: DEFAULT_HEADERS,
+    });
   } else {
-    const text = await fetched.text()
-    return NextResponse.json(JSON.stringify({
-      error: text,
-    }), {
-      status: 200,
-      headers: DEFAULT_HEADERS
-    })
+    const text = await fetched.text();
+    return NextResponse.json(
+      JSON.stringify({
+        error: text,
+      }),
+      {
+        status: 200,
+        headers: DEFAULT_HEADERS,
+      },
+    );
   }
 }

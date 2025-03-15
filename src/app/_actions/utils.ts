@@ -12,16 +12,16 @@ export const responseHandler = async (r: Response, from?: string) => {
   // console.debug("2. DATA RECEIVED" , data)
 
   // PARSE DATA
-  const parsed = JSON.parse(data)
+  const parsed = JSON.parse(data);
   // console.debug("3. DATA PARSED", parsed)
 
-  return parsed
-}
+  return parsed;
+};
 
 export const errorHandler = async (r: Response, from?: string) => {
   if (r.ok) {
     const data = await r.json();
-    console.log("data from error Handler", data)
+    console.log("data from error Handler", data);
     // data type check
     return JSON.parse(data);
   } else {

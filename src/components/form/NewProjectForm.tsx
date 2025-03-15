@@ -28,11 +28,10 @@ export default function NewProjectForm({
       title: title,
       subtitle: subtitle,
       isPublic: selected === selections[0],
-    })
-    if (response.error){
-      alert(error)
-    }
-    else{
+    });
+    if (response.error) {
+      alert(error);
+    } else {
       close();
       addProject(response);
     }

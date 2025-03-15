@@ -67,8 +67,8 @@ export const useObjectEditor = create<SelectedInfo & ObjectActions>()(
         const response = await update(id, selected.objectId, {
           matrix: matrix,
           material: material,
-          geometry: selected.geometry
-        }) 
+          geometry: selected.geometry,
+        });
         if (response.error) {
           alert(response.error);
         } else {

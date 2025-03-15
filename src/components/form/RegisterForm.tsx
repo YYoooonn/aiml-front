@@ -37,9 +37,10 @@ export default function RegisterForm() {
       email: email,
     });
 
-    if(response.error){setError(response.error)}
-    else{
-      redirectUser("me")
+    if (response.error) {
+      setError(response.error);
+    } else {
+      redirectUser("me");
     }
 
     // await create({

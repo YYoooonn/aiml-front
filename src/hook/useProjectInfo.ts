@@ -41,8 +41,8 @@ export const useProjectInfo = z.create<ProjectState>()((set, get) => ({
     if (proInfo.error || pObjts.error) {
       return DEFAULT;
     } else {
-      set({...proInfo, objects: pObjts.objects});
-      return proInfo
+      set({ ...proInfo, objects: pObjts.objects });
+      return proInfo;
     }
   },
   createObject: async (objectInfo) => {

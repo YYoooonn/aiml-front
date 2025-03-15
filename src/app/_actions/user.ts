@@ -7,7 +7,7 @@ export async function create(props: RegisterInfo) {
   const response = await fetch(USER_ROUTE, {
     method: "POST",
     body: JSON.stringify(props),
-  })
+  });
 
   const data = await responseHandler(response, ERROR_FROM);
   return data;
@@ -15,7 +15,7 @@ export async function create(props: RegisterInfo) {
 
 export async function read(username?: string) {
   const id = username ? username : "me";
-  const response = await fetch(`${USER_ROUTE}/${id}`, { method: "GET" })
+  const response = await fetch(`${USER_ROUTE}/${id}`, { method: "GET" });
 
   const data = await responseHandler(response, ERROR_FROM);
   return data;
@@ -32,7 +32,7 @@ export async function update({
   const response = await fetch(`${USER_ROUTE}/${id}`, {
     method: "PUT",
     body: JSON.stringify(userInfos),
-  })
+  });
   const data = await responseHandler(response, ERROR_FROM);
   return data;
 }
@@ -41,7 +41,7 @@ export async function remove(username?: string) {
   const id = username ? username : "me";
   const response = await fetch(`${USER_ROUTE}/${id}`, {
     method: "DELETE",
-  })
+  });
   const data = await responseHandler(response, ERROR_FROM);
   return data;
 }
