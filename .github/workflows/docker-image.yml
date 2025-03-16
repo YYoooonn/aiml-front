@@ -4,19 +4,19 @@ on:
   workflow_dispatch:
     inputs:
       logLevel:
-        description: 'Log level'
+        description: "Log level"
         required: true
-        default: 'warning'
+        default: "warning"
         type: choice
         options:
-        - info
-        - warning
-        - debug
+          - info
+          - warning
+          - debug
 
   push:
-    branches: [ "main" ]
+    branches: ["main"]
     paths-ignore:
-      - '.github/**'
+      - ".github/**"
 
 jobs:
   build:
@@ -26,22 +26,22 @@ jobs:
       BACKEND_API_BASE: ${{secrets.BACKEND_API_BASE}}
 
     steps:
-    - name: checkout
-      uses: actions/checkout@v4
+      - name: checkout
+        uses: actions/checkout@v4
 
-    - name: dockerlogin
-      uses: docker/login-action@v3
-      with: 
-        username: ${{ secrets.DOCKER_ID }}
-        password: ${{ secrets.DOCKER_PASSWORD }}
+      - name: dockerlogin
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKER_ID }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
 
-    - name: docker build & push
-      uses: docker/build-push-action@v5
-      with:
-        context: .
-        push: true
-        file: ./docker/next.Dockerfile
-        build-args: |
-          NEXT_PUBLIC_HOSTNAME: ${{env.NEXT_PUBLIC_HOSTNAME}}
-          BACKEND_API_BASE: ${{env.BACKEND_API_BASE}}
-        tags: ${{secrets.DOCKER_REPO}}/aimlfront:latest
+      - name: docker build & push
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          push: true
+          file: ./docker/next.Dockerfile
+          build-args: |
+            NEXT_PUBLIC_HOSTNAME: ${{env.NEXT_PUBLIC_HOSTNAME}}
+            BACKEND_API_BASE: ${{env.BACKEND_API_BASE}}
+          tags: ${{secrets.DOCKER_REPO}}/aimlfront:latest

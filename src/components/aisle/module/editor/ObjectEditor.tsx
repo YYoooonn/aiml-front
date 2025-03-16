@@ -69,7 +69,7 @@ function MatrixEditor({ pId }: { pId: string }) {
       alert(response.error);
     } else {
       filterObject(response.objectId);
-      resetSelected()
+      resetSelected();
     }
   };
 

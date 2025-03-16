@@ -79,8 +79,8 @@ export const useObjectEditor = create<SelectedInfo & ObjectActions>()(
       const { selected } = get();
       if (selected) {
         const res = await remove(id, selected.objectId);
-        if(res.error) return res
-        return selected
+        if (res.error) return res;
+        return selected;
       }
     },
     updateMaterial: async (mat) => alert("NOT IMPLEMENTED YET"),

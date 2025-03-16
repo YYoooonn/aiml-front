@@ -1,13 +1,12 @@
 # aiml-front
 
->_git subtree for [aiml-mono](https://github.com/YYoooonn/aiml-mono)_ \
->*front repository **`WIP`***
+> _git subtree for [aiml-mono](https://github.com/YYoooonn/aiml-mono)_ \
+> \*front repository **`WIP`\***
 
 [**LABit : A Collaborative Lab in Space** - explore the cosmos of creativity](http://ec2-15-165-90-147.ap-northeast-2.compute.amazonaws.com/) \
 온라인으로 동료들과 함께 3D 작업하고, 작업물들을 아카이빙 해보세요!
 
 ![Screenshot 2025-03-16 at 2 43 07 AM](https://github.com/user-attachments/assets/f8bdd1c3-c507-404a-beb5-d8704dc444d0)
-
 
 ## _about_
 
@@ -30,7 +29,6 @@
 `back` 안준영
 `design` 박성원
 
-
 #### _flow_
 
 <center>
@@ -39,8 +37,7 @@
 
 </center>
 
-
-### *architecture*
+### _architecture_
 
 #### frontend system architecture
 
@@ -52,9 +49,9 @@
 
 ## _how?_
 
-**ENV `development`** 
+**ENV `development`**
 
-````bash
+```bash
 # at /aiml-front directory
 
 # 1. install required packages
@@ -73,7 +70,8 @@ pnpm dev
 [nodemon] watching extensions: json,js,ts
 [nodemon] starting `ts-node --project tsconfig.server.json server.ts`
 
-````
+```
+
 _and you will be able to access through `localhost:${port number}`_
 
 #### ENV `production`
@@ -84,15 +82,19 @@ _and you will be able to access through `localhost:${port number}`_
 
 ```markdown
 # /.env
+
 # HOSTNAME -> ex) localhost
+
 NEXT_PUBLIC_HOSTNAME: XXXXXXXXXX
+
 # API endpoint url
+
 BACKEND_API_BASE: XXXXXXXXXX
 ```
+
 현재는 `FRONTEND` 의 hostname 과 `BACKEND`의 api endpoint 두개 설정
 
-
-````bash
+```bash
 # 1. build with docker-compose
 docker-compose build
 
@@ -100,7 +102,8 @@ docker-compose build
 docker-compose up
 # or run as detached
 docker-compose up -d
-````
+```
+
 _and you will be able to access through `localhost`_
 
 `docker-compose.yml`내에 nginx가 포트 포워딩을 해주기에 포트번호 없이 접근 가능
@@ -112,7 +115,7 @@ _and you will be able to access through `localhost`_
 free-tier의 성능 한계로 인해 빌드 과정에서 너무 오래 걸리고 빌드 도중에 멈추는 일이 빈번하게 발생하여\
 직접 image를 빌드하고, 서버에서 `docker-hub`를 통하여 pull 받는 방식으로 변경
 
-````bash
+```bash
 # manual deployment process
 
 # on your computer
@@ -131,11 +134,11 @@ docker pull {repo name}/aimlfrontnginx
 
 # 4. run docker images with detached
 docker-compose up -d
-````
+```
 
 현재 github action를 사용하여 `main` 브랜치에 push를 트리거로 받으면 자동으로 docker file 들이 build, push 자동화 설정
 
-*ec2 서버 작업인 3,4번 작업만 진행*
+_ec2 서버 작업인 3,4번 작업만 진행_
 
 <center>
 
@@ -145,11 +148,9 @@ docker-compose up -d
 
 _추후 CD 까지 구현 예정_
 
-## *features*
+## _features_
 
-
-
-### *3d*
+### _3d_
 
 웹 상에서 3차원 공간을 렌더링 해주는 `threejs`, `react-three/fiber` 라이브러리 사용
 
@@ -177,7 +178,8 @@ export function DefaultCanvas(){
 ```
 
 ---
-### *edit on web*
+
+### _edit on web_
 
 `canvas` 상에서 3d 물체들을 생성하여 렌더링 해주는 것이기에 일반적인 element 들이 존재할 수 없다.
 
@@ -263,8 +265,6 @@ function BackgroundEditor() {
 
 ![Screenshot 2025-03-16 at 2 05 39 AM](https://github.com/user-attachments/assets/9f122839-226e-4f70-a53e-eadbea1a7f58)
 
-
-
 ---
 
 ### real-time
@@ -275,14 +275,14 @@ real-time을 구현하기 위해 `websocket` 통신 사용, `front server`상에
 
 ### implementation
 
-````typescript
+```typescript
 // ./server.ts
 
 import { Server } from "socket.io";
 import { ChatSocket } from "./server/chat";
 
 app.prepare().then(() => {
-  
+
   ...
   // socket.io 활용한 websocket server 생성
   const io = new Server(httpServer, {
@@ -301,11 +301,11 @@ app.prepare().then(() => {
 
   ...
 
-````
+```
+
 #### `node`에서 `socket server` 생성
 
-
-````typescript
+```typescript
 // ./server/chat.ts
 
 export const ChatSocket = (io: Server, name: string) => {
@@ -325,13 +325,13 @@ export const ChatSocket = (io: Server, name: string) => {
 
     ...
 
-````
+```
+
 #### `namespace` 생성
 
 각 namespace는 각기 다른 용도 : 채팅, 접속자 정보, 프로젝트 정보 등등
 
 ![Screenshot 2025-03-16 at 2 03 57 AM](https://github.com/user-attachments/assets/3a7a73bd-187c-40c8-a838-50d8ac4387ba)
-
 
 ### _folder structure_
 
@@ -339,10 +339,10 @@ export const ChatSocket = (io: Server, name: string) => {
 aiml-front
 ├── docker : dockerfile
 │   ├── next.Dockerfile
-│   ├── nginx.Dockerfile 
+│   ├── nginx.Dockerfile
 │   └── conf.d : configuration for nginx
 │       └── default.conf
-├── server : websocket server 
+├── server : websocket server
 │   ├── chat.ts
 │   ├── project.ts
 │   └── ...
@@ -388,7 +388,7 @@ aiml-front
 │   │   │   └── [id] : user profile
 │   │   ├── workspace : workspace - editing
 │   │   ├── layout.tsx
-│   │   └── page.tsx 
+│   │   └── page.tsx
 │   ├── assets
 │   ├── components : 웹 뷰 구성 요소
 │   │   ├── header
@@ -403,7 +403,7 @@ aiml-front
 │   ├── sockets
 │   │   ├── chat.ts : 채팅 관련 웹소켓
 │   │   ├── project.ts : 프로젝트 관련 웹소켓
-│   │   └── ... 
+│   │   └── ...
 │   ├── store : 전역 상태 관리 zustand
 │   │   ├── useObjectStore.ts : 3차원 오브젝트 전역 상태
 │   │   └── useModalStore.ts : modal 전역 상태

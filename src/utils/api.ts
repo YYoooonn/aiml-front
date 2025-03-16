@@ -19,14 +19,17 @@ export const headers: any = (req: NextRequest) => {
   }
 };
 
-export const responseHandler = async (res: Response, emptyResponse? : boolean) => {
+export const responseHandler = async (
+  res: Response,
+  emptyResponse?: boolean,
+) => {
   if (res.ok) {
-    if(emptyResponse) return {success : true}
+    if (emptyResponse) return { success: true };
     const data = await res.json();
     return data;
   } else {
     const message = await res.text();
-    return { error: message? message: `code ${res.status}` };
+    return { error: message ? message : `code ${res.status}` };
   }
 };
 
