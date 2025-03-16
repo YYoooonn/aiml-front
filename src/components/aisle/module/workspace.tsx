@@ -57,7 +57,7 @@ function WorkspaceInfos({ user, title }: { user?: string; title?: string }) {
         <div
           className={styles.returnIcon}
           onClick={() => {
-            user ? redirectUser(user) : navigate("/");
+            user ? redirectUser("me") : navigate("/");
           }}
         />
         <div className={styles.projectTitle}>

@@ -76,13 +76,12 @@ export const useObjectEditor = create<SelectedInfo & ObjectActions>()(
 
     // fetch
     removeSelected: async (id) => {
-      const { selected, resetSelected } = get();
+      const { selected } = get();
       if (selected) {
-        const res = await remove(selected.objectId, id);
-        return res;
-        // .then(() => resetSelected());
+        const res = await remove(id, selected.objectId);
+        if(res.error) return res
+        return selected
       }
-      return { error: "NO OBJECT SELECTED" };
     },
     updateMaterial: async (mat) => alert("NOT IMPLEMENTED YET"),
     toggleTest: () => {},
