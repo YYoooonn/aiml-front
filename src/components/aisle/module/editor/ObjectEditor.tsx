@@ -33,6 +33,7 @@ function MatrixEditor({ pId }: { pId: string }) {
     scale,
     material,
     setScale,
+    resetSelected,
     setPosition,
     setRotation,
     updateMatrix,
@@ -67,7 +68,8 @@ function MatrixEditor({ pId }: { pId: string }) {
     if (response.error) {
       alert(response.error);
     } else {
-      updateObject(response);
+      filterObject(response.objectId);
+      resetSelected()
     }
   };
 
