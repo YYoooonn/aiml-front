@@ -87,7 +87,7 @@ export async function DELETE(
   );
 
   //
-  const data = await responseHandler(res);
+  const data = await responseHandler(res, true);
   return NextResponse.json(JSON.stringify(data), {
     status: 200,
     headers: DEFAULT_HEADERS,
