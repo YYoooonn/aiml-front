@@ -24,7 +24,7 @@
 
 </p>
 
-#### [**ideation**](https://velog.io/@yyoooonn/PRJT-LABit-%EA%B8%B0%ED%9A%8D)
+#### [**PRJT) LABit 기획**](https://velog.io/@yyoooonn/PRJT-LABit-%EA%B8%B0%ED%9A%8D)
 
 `front` 윤종욱
 `back` 안준영
@@ -75,7 +75,6 @@ pnpm dev
 
 ````
 _and you will be able to access through `localhost:${port number}`_
-
 
 #### ENV `production`
 
