@@ -3,7 +3,7 @@
 >_git subtree for [aiml-mono](https://github.com/YYoooonn/aiml-mono)_ \
 >*front repository **`WIP`***
 
-[**LABit : A Collaborative Lab in Space** - exploe the cosmos of creativity](http://ec2-15-165-90-147.ap-northeast-2.compute.amazonaws.com/) \
+[**LABit : A Collaborative Lab in Space** - explore the cosmos of creativity](http://ec2-15-165-90-147.ap-northeast-2.compute.amazonaws.com/) \
 온라인으로 동료들과 함께 3D 작업하고, 작업물들을 아카이빙 해보세요!
 
 ![Screenshot 2025-03-16 at 2 43 07 AM](https://github.com/user-attachments/assets/f8bdd1c3-c507-404a-beb5-d8704dc444d0)
