@@ -23,6 +23,12 @@
 
 </p>
 
+### _preview_
+
+| landing | archive | workspace |
+| -------- | ------- | ------- |
+| ![land](https://github.com/user-attachments/assets/e80f4308-de9d-4af7-be8a-a6305b8f3fb0) | ![archive](https://github.com/user-attachments/assets/38c8cc99-70bb-4933-8058-a8a499e87306) | ![wspace](https://github.com/user-attachments/assets/848ebd1e-8440-492d-8a41-e6e9bd64ce94) |
+
 #### [**PRJT) LABit 기획**](https://velog.io/@yyoooonn/PRJT-LABit-%EA%B8%B0%ED%9A%8D)
 
 `front` 윤종욱
