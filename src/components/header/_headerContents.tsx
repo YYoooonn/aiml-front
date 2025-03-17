@@ -34,7 +34,7 @@ export function Profile() {
 
   const handleNavigate = () => {
     setIsComponentVisible(false);
-    redirectUser(username);
+    redirectUser("me");
   };
 
   return (
