@@ -26,16 +26,16 @@ export default function RootLayout({
           <div className={styles.pageContentContainer}>
             <div className={styles.mainContentContainer}>{children}</div>
           </div>
-          <Footer />
+          {/* <Footer /> */}
         </main>
-        <div className={styles.backgroundContainer}>
+        {/* <div className={styles.backgroundContainer}>
           <Image
             className={styles.backgroundImage}
             src={"/image/background.png"}
             alt="img"
             fill
           />
-        </div>
+        </div> */}
       </body>
     </html>
   );

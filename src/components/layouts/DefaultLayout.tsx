@@ -1,3 +1,4 @@
+import { Footer } from "../components";
 import * as styles from "./layout.css";
 
 export default function DefaultLayout({
@@ -5,5 +6,5 @@ export default function DefaultLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  return <div className={styles.defaultLayoutContainer}>{children}</div>;
+  return <div className={styles.defaultLayoutContainer}>{children}<Footer /></div>;
 }

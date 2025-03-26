@@ -11,13 +11,20 @@ export const layoutContainer = style({
   pointerEvents: "auto",
   overflowY: "auto",
   color: theme.color.ivory,
+  backgroundColor: theme.color.black,
+  selectors: {
+    "&::-webkit-scrollbar": {
+      display: "none",
+    },
+  },
 });
 
 export const pageContentContainer = style({
   minWidth: "100%",
   marginTop: constants.HEADERHEIGHT,
+  height: `calc(100vh - ${constants.HEADERHEIGHT})`
   // TODO: SUBTRACT ONLY HEADER?
-  minHeight: `calc(100vh - ${constants.HEADERHEIGHT} - ${constants.FOOTERHEIGHT})`,
+  // height: `calc(100vh - ${constants.HEADERHEIGHT} - ${constants.FOOTERHEIGHT})`,
 });
 
 export const mainContentContainer = style({
