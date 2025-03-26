@@ -93,5 +93,5 @@ function generateRandomGeometry(){
 }
 
 function generateRandomHexcolor(){
-    return Array.from({length: 6}, () => Math.floor(Math.random() * 16 - 0.001).toString(16)).join("")
+    return "#".concat(Array.from({length: 6}, () => Math.floor(Math.random() * 16 - 0.001).toString(16)).join(""))
 }

@@ -1,7 +1,7 @@
 "use server"
 
 import { NextRequest, NextResponse } from "next/server";
-import { generateRandomObjects, generateRandomProject, generateRandomProjects, TProject } from "./_utils";
+import { generateRandomObjects, generateRandomObject, generateRandomProject, generateRandomProjects, TProject } from "./_utils";
 
 const ROOT = "PROJECT"
 
@@ -43,13 +43,14 @@ export async function postProjects(request: NextRequest,{ params }: { params: st
     console.log(`TEST POST ${ROOT} auth : `, token)
     if(params[1]){
         // projectId
-        // if(params[2]){
-        //     //entity
-        //     return NextResponse.json(JSON.stringify({error : `TEST : INVALID POST ${ROOT} ENTITY REQUEST`}), {
-        //         status: 200,
-        //         headers: {"Content-Type": "application/json"}})
-        //     }
-        return NextResponse.json(JSON.stringify({error : `TEST : INVALID POST ${ROOT} REQUEST`}), {
+        // FIXME : objects 쪽으로 빠져야 하나
+        if(params[2] === "objects"){
+            //entity
+            return NextResponse.json(JSON.stringify({...generateRandomObject(), ...body}), {
+                status: 200,
+                headers: {"Content-Type": "application/json"}})
+            }
+        return NextResponse.json(JSON.stringify({error : `TEST : INVALID POST ${ROOT} ENTITY REQUEST`}), {
             status: 200,
             headers: {"Content-Type": "application/json"}})
     }
