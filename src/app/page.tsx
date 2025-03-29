@@ -1,11 +1,10 @@
 import Link from "next/link";
 import * as styles from "./page.css";
-import { FullPageScroll } from "@/components/fullpagescroll/FullPageScroll";
+import { SnapPageScroll } from "@/components/snapscroll/SnapPageScroll";
 
 export default function Home() {
-
   return (
-    <FullPageScroll >
+    <SnapPageScroll>
       <section className={styles.landingSectionContainer}>
         <p>pg1: Landing</p>
       </section>
@@ -27,6 +26,6 @@ export default function Home() {
           <Link href={"/archive"}>Go to Archive</Link>
         </div>
       </section>
-    </FullPageScroll>
+    </SnapPageScroll>
   );
 }

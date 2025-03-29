@@ -20,9 +20,10 @@ export const layoutContainer = style({
 });
 
 export const pageContentContainer = style({
+  position: "absolute",
   minWidth: "100%",
-  marginTop: constants.HEADERHEIGHT,
-  height: `calc(100vh - ${constants.HEADERHEIGHT})`
+  height: "100vh",
+  paddingTop: `${constants.HEADERHEIGHT}`,
   // TODO: SUBTRACT ONLY HEADER?
   // height: `calc(100vh - ${constants.HEADERHEIGHT} - ${constants.FOOTERHEIGHT})`,
 });
