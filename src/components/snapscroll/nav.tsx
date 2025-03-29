@@ -10,6 +10,8 @@ type TNav = {
   phandler?: ({ p, progress }: { p: number; progress: number }) => void;
 };
 
+const SCALE_SCROLL = 2
+
 export function Nav({ length, titles, phandler }: TNav) {
   const containerRef = useRef<HTMLDivElement>(null!);
   const navRef = useRef<HTMLDivElement>(null!);
@@ -77,7 +79,7 @@ export function Nav({ length, titles, phandler }: TNav) {
 
   const handleClick = (i: number) => {
     containerRef.current.scrollTo({
-      top: Math.ceil(((l - 1) / l) * containerRef.current.clientHeight * i),
+      top: Math.ceil((( SCALE_SCROLL * l - 1) / (SCALE_SCROLL * l) ) * containerRef.current.clientHeight * i * SCALE_SCROLL),
       behavior: "smooth",
     });
   };
@@ -118,7 +120,7 @@ export function Nav({ length, titles, phandler }: TNav) {
           );
         })}
       </div>
-      {new Array(l).fill(null).map((_, i) => (
+      {new Array(l * SCALE_SCROLL).fill(null).map((_, i) => (
         <div key={i} style={{ height: "100%" }} />
       ))}
     </div>
