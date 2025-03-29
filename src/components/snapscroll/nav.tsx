@@ -118,7 +118,9 @@ export function Nav({ length, titles, phandler }: TNav) {
           );
         })}
       </div>
-      <div style={{ height: `${l * 100}vh` }} />
+      {new Array(l).fill(null).map((_, i) => (
+        <div key={i} style={{ height: "100%" }} />
+      ))}
     </div>
   );
 }
