@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import { PropsWithChildren, useEffect, useRef, useState } from "react";
 import { Dots } from "./Dots";
@@ -23,13 +23,13 @@ export const FullPageScroll: React.FC<PFullPageScroll> = ({
   const canScroll = useRef<boolean>(true);
   const oldTouchY = useRef<number>(0);
   const [_, refresh] = useState<number>(0);
-  const [hide, setHide] = useState(true)
+  const [hide, setHide] = useState(true);
   const onChange = (current: number) => {
-    if(outerDivRef.current){
-      setHide(current+1 !== outerDivRef.current.childElementCount)
+    if (outerDivRef.current) {
+      setHide(current + 1 !== outerDivRef.current.childElementCount);
     }
-    console.log()
-  }
+    console.log();
+  };
 
   const scrollDown = () => {
     const pageHeight = outerDivRef.current?.children.item(0)?.clientHeight; // 화면 세로 길이 100vh
@@ -48,7 +48,7 @@ export const FullPageScroll: React.FC<PFullPageScroll> = ({
     }
     // console.log(currentPage.current);
     onPageChange(currentPage.current);
-    onChange(currentPage.current)
+    onChange(currentPage.current);
     refresh((v) => v + 1);
   };
 
@@ -68,7 +68,7 @@ export const FullPageScroll: React.FC<PFullPageScroll> = ({
     }
     // console.log(currentPage.current);
     onPageChange(currentPage.current);
-    onChange(currentPage.current)
+    onChange(currentPage.current);
     refresh((v) => v + 1);
   };
 
@@ -133,7 +133,7 @@ export const FullPageScroll: React.FC<PFullPageScroll> = ({
       <div ref={outerDivRef} className={styles.outerContainer}>
         {children}
       </div>
-      <Footer hide={hide}/>
+      <Footer hide={hide} />
       <Dots
         limit={outerDivRef.current?.childElementCount || 0}
         currentIndex={currentPage.current}

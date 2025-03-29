@@ -1,6 +1,7 @@
 import unescapeSlashes from "@/utils/parse";
 
-const BASE_ROUTE = process.env.NODE_ENV === "development"? "/api/test" : "/api"
+const BASE_ROUTE =
+  process.env.NODE_ENV === "development" ? "/api/test" : "/api";
 
 export const PROJECT_ROUTES = `${BASE_ROUTE}/projects`;
 export const USER_ROUTE = `${BASE_ROUTE}/users`;

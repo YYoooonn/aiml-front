@@ -69,7 +69,7 @@ export const useObjectEditor = create<SelectedInfo & ObjectActions>()(
           material: material,
           geometry: selected.geometry,
         });
-        resetSelected()
+        resetSelected();
         return response;
       }
       return { error: "EMPTY PARAMETER" };
