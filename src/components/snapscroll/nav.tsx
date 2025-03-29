@@ -12,9 +12,25 @@ type TNav = {
 
 export function Nav({ length, titles, phandler }: TNav) {
   const containerRef = useRef<HTMLDivElement>(null!);
+  const navRef = useRef<HTMLDivElement>(null!);
+  const [navHeight, setNavHeight] = useState<string | number>("100%");
   const [current, setCurrent] = useState(0);
   const [progress, setProgress] = useState(0);
   const l = length ? length : 1;
+
+  useEffect(() => {
+    const outer = containerRef.current;
+    const handleSize = () => {
+      if (navRef.current && outer) {
+        setNavHeight(outer.offsetHeight - navRef.current.offsetHeight);
+      }
+    };
+    handleSize();
+    outer.addEventListener("resize", handleSize);
+    return () => {
+      outer.removeEventListener("resize", handleSize);
+    };
+  }, []);
 
   useEffect(() => {
     if (phandler) phandler({ p: current, progress: progress });
@@ -50,7 +66,7 @@ export function Nav({ length, titles, phandler }: TNav) {
     container: containerRef,
     onChange: ({ value: { scrollYProgress } }) => {
       // FIXME : last page issue -> quick fix with tolerance
-      const t = scrollYProgress * l - 0.001;
+      const t = Math.min(scrollYProgress * l, l - 0.01);
       setCurrent(t - (t % 1));
       setProgress(t % 1);
     },
@@ -68,49 +84,41 @@ export function Nav({ length, titles, phandler }: TNav) {
 
   return (
     <div ref={containerRef} className={styles.scrollContainer}>
-      <div className={styles.navContainer}>
-        <div style={{ display: "flex", width: "100%", alignItems: "bottom" }}>
-          <animated.h3
-            className={styles.scrollNav}
-            style={{
-              top: x.to((val) => `${(val * 100) / l}%`),
-            }}
-          >
-            {titles ? titles[Number(current)] : `${current}`}
-          </animated.h3>
-          <animated.h4
-            className={styles.scrollNav}
-            style={{
-              marginLeft: "0.5rem",
-              top: y.to((val) => `${(val / l) * 100}%`),
-            }}
-          >
-            {(Math.trunc(progress * 10) / 10).toFixed(1).substring(1)}
-          </animated.h4>
-        </div>
+      <div className={styles.navContainer} style={{ height: navHeight }}>
+        <animated.h3
+          className={styles.scrollNav}
+          style={{
+            top: x.to((val) => `${(val * 100) / l}%`),
+          }}
+        >
+          {titles ? titles[Number(current)] : `${current}`}
+        </animated.h3>
+        <animated.h4
+          className={styles.scrollNav}
+          ref={navRef}
+          style={{
+            marginLeft: "0.5rem",
+            top: y.to((val) => `${(val / l) * 100}%`),
+          }}
+        >
+          {(Math.trunc(progress * 10) / 10).toFixed(1).substring(1)}
+        </animated.h4>
       </div>
-      <div className={styles.navContainer}>
+      <div className={styles.navContainer} style={{ height: navHeight }}>
         {Array.from({ length: l }, () => null).map((_, i) => {
           return (
-            <div
+            <h3
+              className={styles.scrollNavSelector}
+              onClick={() => handleClick(i)}
               key={i}
-              style={{ display: "flex", width: "100%", alignItems: "bottom" }}
+              style={{ top: `${(100 * i) / l}%` }}
             >
-              <h3
-                className={styles.scrollNavSelector}
-                onClick={() => handleClick(i)}
-                key={i}
-                style={{ top: `${(100 * i) / l}%` }}
-              >
-                {titles ? titles[i] : i}
-              </h3>
-            </div>
+              {titles ? titles[i] : i}
+            </h3>
           );
         })}
       </div>
-      {new Array(l).fill(null).map((_, i) => (
-        <div key={i} style={{ height: "100%" }} />
-      ))}
+      <div style={{ height: `${l * 100}vh` }} />
     </div>
   );
 }

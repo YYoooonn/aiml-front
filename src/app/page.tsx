@@ -1,3 +1,5 @@
+"use client";
+
 import Link from "next/link";
 import * as styles from "./page.css";
 import { SnapPageScroll } from "@/components/snapscroll/SnapPageScroll";
@@ -10,21 +12,21 @@ export default function Home() {
       </section>
       <section className={styles.landingSectionContainer}>
         pg2:
-        <div className={styles.button}>
-          <Link href={"/login"}>Click to login</Link>
-        </div>
+        <Link href={"/login"} className={styles.button}>
+          Click to login
+        </Link>
       </section>
       <section className={styles.landingSectionContainer}>
         pg3:
-        <div className={styles.button}>
-          <Link href={"/register"}>Click to register</Link>
-        </div>
+        <Link href={"/register"} className={styles.button}>
+          Click to register
+        </Link>
       </section>
       <section className={styles.landingSectionContainer}>
         pg4:
-        <div className={styles.button}>
-          <Link href={"/archive"}>Go to Archive</Link>
-        </div>
+        <Link href={"/archive"} className={styles.button}>
+          Go to Archive
+        </Link>
       </section>
     </SnapPageScroll>
   );

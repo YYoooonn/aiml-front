@@ -24,11 +24,10 @@ export const outerContainer = style({
 });
 
 export const scrollContainer = style({
-  position: "absolute",
+  position: "fixed",
   width: "100%",
-  height: "100%",
-  zIndex: 99,
-  overflowY: "auto",
+  height: `calc(100% - ${constants.HEADERHEIGHT})`,
+  overflowY: "scroll",
   scrollBehavior: "smooth",
   selectors: {
     "&::-webkit-scrollbar": {
@@ -63,7 +62,7 @@ export const scrollNavSelector = style({
   ":hover": {
     cursor: "pointer",
     opacity: 1,
-    color: theme.color.green,
+    color: theme.color.theme1,
   },
 });
 
@@ -75,12 +74,14 @@ export const scrollDetail = style({
 });
 
 export const sectionContainer = style({
-  position: "fixed",
   color: theme.color.ivory,
+  position: "fixed",
   overflow: "hidden",
   width: "100%",
   height: "100%",
+  // FIXME : 단순히 포인터 이벤트 안받는 방식으로 변경
+  zIndex: 99,
+  pointerEvents: "none",
   // scrollPaddingBottom: "100px",
-
   ...theme.textStyle.logo,
 });

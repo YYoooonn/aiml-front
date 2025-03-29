@@ -21,6 +21,7 @@ export const landingInnerContainer = style({
 });
 
 export const button = style({
+  pointerEvents: "auto",
   ":hover": {
     color: theme.color.red,
   },
@@ -32,7 +33,6 @@ export const landingSectionContainer = style({
   width: "100%",
   height: "100%",
   padding: "8px",
-  display: "flex",
   paddingLeft: "40px",
   ...theme.textStyle.logo,
 });
