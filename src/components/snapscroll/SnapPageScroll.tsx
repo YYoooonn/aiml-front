@@ -15,12 +15,27 @@ type TPHandler = {
   progress: number;
 };
 
-export const SnapPageScroll: FC<PSnapPageScroll> = ({ titles, children }) => {
-  const totalLength = children ? children.length : 1;
-  const [page, setPage] = useState(0);
+const SCALE_SCROLL = 2
 
-  // TODO progress to be used for animation
-  const [progress, setProgress] = useState(0);
+export const SnapPageScroll: FC<PSnapPageScroll> = ({ titles, children }) => {
+
+  const l = children ? children.length : 1;
+  const containerRef = useRef<HTMLDivElement>(null!);
+  const [page, setPage] = useState(0);
+  const [progress, setProgress] = useState(0); // TODO progress to be used for animation
+
+  useScroll({
+    container: containerRef,
+    onChange: ({ value: { scrollYProgress } }) => {
+      // FIXME : last page issue -> quick fix with tolerance
+      const t = Math.min(scrollYProgress * l, l - 0.01);
+      setPage(t - (t % 1));
+      setProgress(t % 1);
+    },
+    default: {
+      immediate: true,
+    },
+  });
 
   const [{ current }] = useSpring(
     {
@@ -35,51 +50,51 @@ export const SnapPageScroll: FC<PSnapPageScroll> = ({ titles, children }) => {
     [page],
   );
 
-  const handlePage = ({ p, progress }: { p: number; progress: number }) => {
-    setPage(p);
-    setProgress(progress);
+  const phandler = (i:number) => {
+    containerRef.current.scrollTo({
+      top: Math.ceil((( SCALE_SCROLL * l - 1) / (SCALE_SCROLL * l) ) * containerRef.current.clientHeight * i * SCALE_SCROLL),
+      behavior: "smooth",
+    });
   };
 
   return (
-    <div className={styles.outerContainer}>
-      <ALayer children={children} current={current} />
-      <Nav length={totalLength} titles={titles} phandler={handlePage} />
+    <div ref={containerRef} className={styles.snapContainer}>
+      <Nav length={l} titles={titles} current={page} progress={progress} phandler={phandler} />
+      <ALayer children={children} current={current} l={l}/>
+      {
+      // empty array of scroll
+      new Array(l*SCALE_SCROLL).fill(null).map((_, i) => (
+        <div key={i} style={{ height: "100%" }} />
+      ))}
     </div>
   );
 };
 
+type TAnimatedLayer = {
+  current: SpringValue;
+  l:number
+  children?: ReactNode[];
+}
+
 const ALayer = ({
   children,
   current,
-}: {
-  current: SpringValue;
-  children?: ReactNode[];
-}) => {
+  l
+}: TAnimatedLayer) => {
   return (
-    <>
-      {children?.map((child, i) => {
-        return (
-          <animated.section
-            key={i}
-            onWheel={(e) => {
-              e.stopPropagation();
-            }}
-            className={styles.sectionContainer}
-            style={{
-              y: current.to([i - 1, i], ["100%", "0"]),
-            }}
-          >
-            {child}
-          </animated.section>
-        );
+    <div className={styles.snapAnimateContainer} style={{height: `${SCALE_SCROLL * l * 100}%`}}>
+    <div className={styles.snapAnimateSectionContainer}>
+      {children?.map((child,i) => {
+        return(
+        <animated.div
+        key={i}
+        className={styles.snapSection} 
+        style={{y: current.to([i-1, i], ["100%", "0"])}}>
+          {child}
+        </animated.div>)
       })}
-    </>
+    </div>
+  </div>
   );
 };
 
-// const [{y}] = useSpring({
-//   y: progress,
-//   config: {
-//       mass: 1, tension: 1000, friction: 100, precision: 0.0001
-//   }
-// }, [progress])

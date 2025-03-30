@@ -2,38 +2,45 @@ import { createVar, keyframes, style } from "@vanilla-extract/css";
 import { theme } from "@/styles/theme.css";
 import * as constants from "@/styles/constants";
 
-export const emptyFull = style({
-  width: "100%",
-  height: "100%",
-});
-
-export const outerContainer = style({
+export const snapContainer = style({
   position: "relative",
+  width: "100%",
   height: "100%",
-  width: "100%",
-  overflowY: "hidden",
-  // scrollSnapType: "y mandatory",
-  // selectors: {
-  //   "&::-webkit": {
-  //     WebkitOverflowScrolling: "touch",
-  //   },
-  //   "&::-webkit-scrollbar": {
-  //     display: "none",
-  //   },
-  // },
-});
-
-export const scrollContainer = style({
-  position: "fixed",
-  width: "100%",
-  height: `calc(100% - ${constants.HEADERHEIGHT})`,
-  overflowY: "scroll",
-  scrollBehavior: "smooth",
+  overflowY: "auto",
   selectors: {
     "&::-webkit-scrollbar": {
       display: "none",
     },
   },
+})
+
+export const snapAnimateContainer = style({
+  position: "absolute",
+  width: "100%",
+  // height: "100%", height should be parallel to behind
+})
+
+export const snapAnimateSectionContainer = style({
+  position: "sticky",
+  height: `calc(100vh - ${constants.HEADERHEIGHT})`,
+  overflow: "hidden",
+  top: 0,
+  // scrollPaddingBottom: "100px",
+  color: theme.color.ivory,
+  ...theme.textStyle.logo,
+})
+
+export const snapSection = style({
+  position: "absolute",
+  height: "100%",
+  width: "100%",
+})
+
+export const scrollContainer = style({
+  position: "fixed",
+  height: `calc(100% - ${constants.HEADERHEIGHT})`,
+  right: "24px",
+  zIndex: 10
 });
 
 export const navContainer = style({
@@ -71,17 +78,4 @@ export const scrollDetail = style({
   top: 0,
   right: 0,
   textAlign: "right",
-});
-
-export const sectionContainer = style({
-  color: theme.color.ivory,
-  position: "fixed",
-  overflow: "hidden",
-  width: "100%",
-  height: "100%",
-  // FIXME : 단순히 포인터 이벤트 안받는 방식으로 변경
-  zIndex: 99,
-  pointerEvents: "none",
-  // scrollPaddingBottom: "100px",
-  ...theme.textStyle.logo,
 });

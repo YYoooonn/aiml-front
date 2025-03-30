@@ -7,37 +7,31 @@ import * as styles from "./snap.css";
 type TNav = {
   titles?: string[];
   length?: number;
-  phandler?: ({ p, progress }: { p: number; progress: number }) => void;
+  current: number,
+  progress: number,
+  phandler?: (i:number) => void;
 };
 
-const SCALE_SCROLL = 2
-
-export function Nav({ length, titles, phandler }: TNav) {
+export function Nav({ current, progress, length, titles, phandler }: TNav) {
   const containerRef = useRef<HTMLDivElement>(null!);
   const navRef = useRef<HTMLDivElement>(null!);
   const [navHeight, setNavHeight] = useState<string | number>("100%");
-  const [current, setCurrent] = useState(0);
-  const [progress, setProgress] = useState(0);
   const l = length ? length : 1;
 
   useEffect(() => {
-    const outer = containerRef.current;
     const handleSize = () => {
-      if (navRef.current && outer) {
-        setNavHeight(outer.offsetHeight - navRef.current.offsetHeight);
+      if (navRef.current && containerRef.current) {
+        setNavHeight(containerRef.current.offsetHeight - navRef.current.offsetHeight);
       }
     };
     handleSize();
-    outer.addEventListener("resize", handleSize);
+    window.addEventListener("resize", handleSize);
     return () => {
-      outer.removeEventListener("resize", handleSize);
+      window.removeEventListener("resize", handleSize);
     };
   }, []);
 
-  useEffect(() => {
-    if (phandler) phandler({ p: current, progress: progress });
-  }, [current, progress]);
-
+  // page index
   const [{ x }] = useSpring(
     {
       x: current,
@@ -51,6 +45,7 @@ export function Nav({ length, titles, phandler }: TNav) {
     [current],
   );
 
+  // process index
   const [{ y }] = useSpring(
     {
       y: current + progress,
@@ -64,24 +59,8 @@ export function Nav({ length, titles, phandler }: TNav) {
     [progress],
   );
 
-  useScroll({
-    container: containerRef,
-    onChange: ({ value: { scrollYProgress } }) => {
-      // FIXME : last page issue -> quick fix with tolerance
-      const t = Math.min(scrollYProgress * l, l - 0.01);
-      setCurrent(t - (t % 1));
-      setProgress(t % 1);
-    },
-    default: {
-      immediate: true,
-    },
-  });
-
   const handleClick = (i: number) => {
-    containerRef.current.scrollTo({
-      top: Math.ceil((( SCALE_SCROLL * l - 1) / (SCALE_SCROLL * l) ) * containerRef.current.clientHeight * i * SCALE_SCROLL),
-      behavior: "smooth",
-    });
+    if(phandler) phandler(i)
   };
 
   return (
@@ -120,9 +99,6 @@ export function Nav({ length, titles, phandler }: TNav) {
           );
         })}
       </div>
-      {new Array(l * SCALE_SCROLL).fill(null).map((_, i) => (
-        <div key={i} style={{ height: "100%" }} />
-      ))}
     </div>
   );
 }
