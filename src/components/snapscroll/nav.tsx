@@ -7,9 +7,9 @@ import * as styles from "./snap.css";
 type TNav = {
   titles?: string[];
   length?: number;
-  current: number,
-  progress: number,
-  phandler?: (i:number) => void;
+  current: number;
+  progress: number;
+  phandler?: (i: number) => void;
 };
 
 export function Nav({ current, progress, length, titles, phandler }: TNav) {
@@ -21,7 +21,9 @@ export function Nav({ current, progress, length, titles, phandler }: TNav) {
   useEffect(() => {
     const handleSize = () => {
       if (navRef.current && containerRef.current) {
-        setNavHeight(containerRef.current.offsetHeight - navRef.current.offsetHeight);
+        setNavHeight(
+          containerRef.current.offsetHeight - navRef.current.offsetHeight,
+        );
       }
     };
     handleSize();
@@ -60,7 +62,7 @@ export function Nav({ current, progress, length, titles, phandler }: TNav) {
   );
 
   const handleClick = (i: number) => {
-    if(phandler) phandler(i)
+    if (phandler) phandler(i);
   };
 
   return (

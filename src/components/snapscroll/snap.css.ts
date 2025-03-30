@@ -12,13 +12,13 @@ export const snapContainer = style({
       display: "none",
     },
   },
-})
+});
 
 export const snapAnimateContainer = style({
   position: "absolute",
   width: "100%",
   // height: "100%", height should be parallel to behind
-})
+});
 
 export const snapAnimateSectionContainer = style({
   position: "sticky",
@@ -28,19 +28,19 @@ export const snapAnimateSectionContainer = style({
   // scrollPaddingBottom: "100px",
   color: theme.color.ivory,
   ...theme.textStyle.logo,
-})
+});
 
 export const snapSection = style({
   position: "absolute",
   height: "100%",
   width: "100%",
-})
+});
 
 export const scrollContainer = style({
   position: "fixed",
   height: `calc(100% - ${constants.HEADERHEIGHT})`,
   right: "24px",
-  zIndex: 10
+  zIndex: 10,
 });
 
 export const navContainer = style({

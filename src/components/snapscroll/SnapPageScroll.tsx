@@ -15,10 +15,9 @@ type TPHandler = {
   progress: number;
 };
 
-const SCALE_SCROLL = 2
+const SCALE_SCROLL = 2;
 
 export const SnapPageScroll: FC<PSnapPageScroll> = ({ titles, children }) => {
-
   const l = children ? children.length : 1;
   const containerRef = useRef<HTMLDivElement>(null!);
   const [page, setPage] = useState(0);
@@ -50,51 +49,63 @@ export const SnapPageScroll: FC<PSnapPageScroll> = ({ titles, children }) => {
     [page],
   );
 
-  const phandler = (i:number) => {
+  const phandler = (i: number) => {
     containerRef.current.scrollTo({
-      top: Math.ceil((( SCALE_SCROLL * l - 1) / (SCALE_SCROLL * l) ) * containerRef.current.clientHeight * i * SCALE_SCROLL),
+      top: Math.ceil(
+        ((SCALE_SCROLL * l - 1) / (SCALE_SCROLL * l)) *
+          containerRef.current.clientHeight *
+          i *
+          SCALE_SCROLL,
+      ),
       behavior: "smooth",
     });
   };
 
   return (
     <div ref={containerRef} className={styles.snapContainer}>
-      <Nav length={l} titles={titles} current={page} progress={progress} phandler={phandler} />
-      <ALayer children={children} current={current} l={l}/>
+      <Nav
+        length={l}
+        titles={titles}
+        current={page}
+        progress={progress}
+        phandler={phandler}
+      />
+      <ALayer children={children} current={current} l={l} />
       {
-      // empty array of scroll
-      new Array(l*SCALE_SCROLL).fill(null).map((_, i) => (
-        <div key={i} style={{ height: "100%" }} />
-      ))}
+        // empty array of scroll
+        new Array(l * SCALE_SCROLL).fill(null).map((_, i) => (
+          <div key={i} style={{ height: "100%" }} />
+        ))
+      }
     </div>
   );
 };
 
 type TAnimatedLayer = {
   current: SpringValue;
-  l:number
+  l: number;
   children?: ReactNode[];
-}
-
-const ALayer = ({
-  children,
-  current,
-  l
-}: TAnimatedLayer) => {
-  return (
-    <div className={styles.snapAnimateContainer} style={{height: `${SCALE_SCROLL * l * 100}%`}}>
-    <div className={styles.snapAnimateSectionContainer}>
-      {children?.map((child,i) => {
-        return(
-        <animated.div
-        key={i}
-        className={styles.snapSection} 
-        style={{y: current.to([i-1, i], ["100%", "0"])}}>
-          {child}
-        </animated.div>)
-      })}
-    </div>
-  </div>
-  );
 };
 
+const ALayer = ({ children, current, l }: TAnimatedLayer) => {
+  return (
+    <div
+      className={styles.snapAnimateContainer}
+      style={{ height: `${SCALE_SCROLL * l * 100}%` }}
+    >
+      <div className={styles.snapAnimateSectionContainer}>
+        {children?.map((child, i) => {
+          return (
+            <animated.div
+              key={i}
+              className={styles.snapSection}
+              style={{ y: current.to([i - 1, i], ["100%", "0"]) }}
+            >
+              {child}
+            </animated.div>
+          );
+        })}
+      </div>
+    </div>
+  );
+};
