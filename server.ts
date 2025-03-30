@@ -1,12 +1,16 @@
-import { createServer } from "node:http";
 import next from "next";
-import { Server } from "socket.io";
 import dotenv from "dotenv";
+import { Server } from "socket.io";
+import { createServer } from "node:http";
 import { ChatSocket } from "./server/chat";
 import { ProjectSocket } from "./server/project";
 
 const dev = process.env.NODE_ENV !== "production";
 
+if (!dev) {
+  // eslint-disable-next-line @typescript-eslint/no-require-imports
+  const { config } = require("./.next/required-server-files.json");
+}
 dotenv.config(dev ? { path: ".env.local" } : { path: ".env.production.local" });
 
 const hostname = dev ? "localhost" : process.env.NEXT_PUBLIC_HOSTNAME;
