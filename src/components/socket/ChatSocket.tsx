@@ -64,7 +64,7 @@ export function ChatSocket(props: SocketProps) {
     socket.on("chatMessage", onSetLog);
 
     function onUsers(inputUsers: { username: string }[]) {
-      console.debug(inputUsers);
+      // console.debug(inputUsers);
       setUsers(inputUsers.map((inputUser) => inputUser.username));
     }
     socket.on("users", onUsers);
@@ -112,7 +112,7 @@ export function ChatSocket(props: SocketProps) {
           <div className={styles.chatMessageHeader}>messages</div>
           <div className={styles.chatLogContainer}>
             {logs &&
-              logs.toReversed().map((log) => (
+              logs.map((log) => (
                 <div className={styles.textStyle} key={uuidv4()}>
                   {log}
                 </div>

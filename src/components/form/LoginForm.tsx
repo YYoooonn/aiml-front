@@ -33,7 +33,7 @@ export default function LoginForm() {
   };
 
   return (
-    <div className={styles.baseFormContainer}>
+    <form className={styles.baseFormContainer}>
       <TextInput title={"USERNAME"} dispatch={setUsername} />
       <p style={{ marginTop: "24px" }} />
       <PasswordInput title={"PASSWORD"} dispatch={setPassword} />
@@ -49,6 +49,6 @@ export default function LoginForm() {
       ) : (
         <></>
       )}
-    </div>
+    </form>
   );
 }

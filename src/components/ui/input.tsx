@@ -25,6 +25,7 @@ export function PasswordInput({ title, dispatch }: TextInputProps) {
       <input
         className={styles.textInput}
         type="password"
+        autoComplete="on"
         onChange={(e) => dispatch(e.target.value)}
       ></input>
     </div>
