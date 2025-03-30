@@ -1,10 +1,12 @@
 import unescapeSlashes from "@/utils/parse";
-import { NextResponse } from "next/server";
 
-export const PROJECT_ROUTES = "/api/projects";
-export const USER_ROUTE = "/api/users";
-export const AUTH_ROUTE = "/api/auth";
-export const OBJ_ROUTE = "/api/objects";
+const BASE_ROUTE =
+  process.env.NODE_ENV === "development" ? "/api/test" : "/api";
+
+export const PROJECT_ROUTES = `${BASE_ROUTE}/projects`;
+export const USER_ROUTE = `${BASE_ROUTE}/users`;
+export const AUTH_ROUTE = `${BASE_ROUTE}/auth`;
+export const OBJ_ROUTE = `${BASE_ROUTE}/objects`;
 
 export const responseHandler = async (r: Response, from?: string) => {
   // console.debug("1. RESPONSE RECEIVED FROM", from)

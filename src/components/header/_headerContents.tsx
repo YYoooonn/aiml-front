@@ -16,7 +16,7 @@ export function Logo() {
   };
   return (
     <div onClick={onClick} className={styles.logo}>
-      LABBIT
+      LABit
     </div>
   );
 }

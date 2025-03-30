@@ -31,7 +31,7 @@ export const chatContainer = style({
   display: "block",
   flexDirection: "column",
   pointerEvents: "auto",
-  overflowY: "auto",
+  overflowY: "hidden",
   color: theme.color.ivory,
   width: "100%",
   zIndex: 100,

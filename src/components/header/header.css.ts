@@ -88,6 +88,8 @@ export const profileInnerWrapper = style({
   width: "100%",
   height: "100%",
   padding: "8px 20px 8px 20px",
+  lineHeight: "24px",
+  justifyContent: "center",
 });
 
 const baseDropdwonList = {

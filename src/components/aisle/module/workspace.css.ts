@@ -152,7 +152,11 @@ export const bottomContentContainer = style({
   padding: "6px",
 });
 
-export const layerContainer = style({});
+export const layerContainer = style({
+  overflowY: "scroll",
+  display: "flex",
+  flexDirection: "column",
+});
 
 const layerText = {
   ...theme.textStyle.subtitle2,

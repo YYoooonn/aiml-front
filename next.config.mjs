@@ -9,7 +9,8 @@ const withVanillaExtract = createVanillaExtractPlugin();
 
 const nextConfig = {
   /* config options here */
-  reactStrictMode: true,
+  // https://github.com/pmndrs/react-spring/issues/2146
+  reactStrictMode: false,
   swcMinify: true,
   // output: "standalone", // 여기서 standalone 폴더를 사용한다고 해준다.
 };
