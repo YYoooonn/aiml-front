@@ -3,7 +3,6 @@
 import { useModals } from "@/hook/useModals";
 import { TextInput } from "../ui/input";
 import { useState } from "react";
-import { Project } from "@/@types/api";
 import * as styles from "./form.css";
 import { BoolButtons, ButtonSubmit } from "../ui/button";
 import { create } from "@/app/_actions/project";
@@ -11,7 +10,7 @@ import { create } from "@/app/_actions/project";
 export default function NewProjectForm({
   addProject,
 }: {
-  addProject: (project: Project) => void;
+  addProject: (project: ProjectData) => void;
 }) {
   const selections = ["Public", "Private"];
 
@@ -29,12 +28,12 @@ export default function NewProjectForm({
       subtitle: subtitle,
       isPublic: selected === selections[0],
     });
-    if (response.error) {
-      setError(error);
+    if (response.success) {
+      addProject(response.data);
+      close();
       // alert(error);
     } else {
-      addProject(response);
-      close();
+      setError(error);
     }
   };
 
@@ -51,6 +50,14 @@ export default function NewProjectForm({
       />
       <p style={{ marginTop: "24px" }} />
       <ButtonSubmit text={"CREATE"} handler={handleSubmit} />
+      {error ? (
+        <>
+          <p style={{ marginTop: "12px" }} />
+          <div style={{ textAlign: "center", color: "red" }}>{error}</div>
+        </>
+      ) : (
+        <></>
+      )}
     </form>
   );
 }

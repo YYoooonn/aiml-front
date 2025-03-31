@@ -1,7 +1,6 @@
 "use client";
 
 import { WorkspaceCard, NewCardModule } from "@/components/card/CardModule";
-import { Project } from "@/@types/api";
 
 import * as styles from "./user.css";
 
@@ -9,8 +8,8 @@ export function Projects({
   projects,
   addProject,
 }: {
-  projects: Project[];
-  addProject: (project: Project) => void;
+  projects: ProjectData[];
+  addProject: (project: ProjectData) => void;
 }) {
   const props = projects.map((p) => {
     return {
@@ -28,7 +27,8 @@ export function Projects({
       {props?.map((p, i) => {
         return <WorkspaceCard key={i} props={p} />;
       })}
-      <NewCardModule addProject={addProject} valid={projects?.length < 5} />
+      {/* <NewCardModule addProject={addProject} valid={projects?.length < 5} /> */}
+      <NewCardModule addProject={addProject} valid={true} />
     </div>
   );
 }

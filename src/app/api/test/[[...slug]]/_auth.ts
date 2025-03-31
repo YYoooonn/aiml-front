@@ -13,7 +13,7 @@ export async function getAuth(
   const token = request.headers.get("Authorization");
   console.log(`TEST GET ${ROOT} auth : `, token);
   return NextResponse.json(
-    JSON.stringify({ error: `TEST : INVALID GET ${ROOT} REQUEST` }),
+    { error: `TEST : INVALID GET ${ROOT} REQUEST` },
     {
       status: 200,
       headers: { "Content-Type": "application/json" },
@@ -30,10 +30,13 @@ export async function postAuth(
   const token = request.headers.get("Authorization");
   console.log(`TEST POST ${ROOT} body : `, body);
   console.log(`TEST POST ${ROOT} auth : `, token);
-  return NextResponse.json(JSON.stringify({ token: generateRandomToken() }), {
-    status: 200,
-    headers: { "Content-Type": "application/json" },
-  });
+  return NextResponse.json(
+    { token: generateRandomToken() },
+    {
+      status: 200,
+      headers: { "Content-Type": "application/json" },
+    },
+  );
 }
 
 export async function putAuth(
@@ -46,7 +49,7 @@ export async function putAuth(
   console.log(`TEST PUT ${ROOT} body : `, body);
   console.log(`TEST PUT ${ROOT} auth : `, token);
   return NextResponse.json(
-    JSON.stringify({ error: `TEST : INVALID PUT ${ROOT} REQUEST` }),
+    { error: `TEST : INVALID PUT ${ROOT} REQUEST` },
     {
       status: 200,
       headers: { "Content-Type": "application/json" },
@@ -62,7 +65,7 @@ export async function deleteAuth(
   const token = request.headers.get("Authorization");
   console.log(`TEST DELETE ${ROOT} auth : `, token);
   return NextResponse.json(
-    JSON.stringify({ error: `TEST : INVALID DELETE ${ROOT} REQUEST` }),
+    { error: `TEST : INVALID DELETE ${ROOT} REQUEST` },
     {
       status: 200,
       headers: { "Content-Type": "application/json" },

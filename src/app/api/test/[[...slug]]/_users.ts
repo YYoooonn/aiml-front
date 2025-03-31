@@ -19,7 +19,7 @@ export async function getUsers(
       //entity
       if (params[2] === "projects") {
         return NextResponse.json(
-          JSON.stringify({ projects: generateRandomProjects(10) }),
+          { projects: generateRandomProjects(10) },
           {
             status: 200,
             headers: { "Content-Type": "application/json" },
@@ -27,20 +27,23 @@ export async function getUsers(
         );
       }
       return NextResponse.json(
-        JSON.stringify({ error: "TEST : INVALID GET USER ENTITY REQUEST" }),
+        { error: "TEST : INVALID GET USER ENTITY REQUEST" },
         {
           status: 200,
           headers: { "Content-Type": "application/json" },
         },
       );
     }
-    return NextResponse.json(JSON.stringify({ ...generateRandomUser() }), {
-      status: 200,
-      headers: { "Content-Type": "application/json" },
-    });
+    return NextResponse.json(
+      { ...generateRandomUser() },
+      {
+        status: 200,
+        headers: { "Content-Type": "application/json" },
+      },
+    );
   }
   return NextResponse.json(
-    JSON.stringify({ error: "TEST : INVALID GET USER REQUEST" }),
+    { error: "TEST : INVALID GET USER REQUEST" },
     {
       status: 200,
       headers: { "Content-Type": "application/json" },
@@ -61,7 +64,7 @@ export async function postUsers(
     if (params[2]) {
       //entity
       return NextResponse.json(
-        JSON.stringify({ error: "TEST : INVALID POST USER ENTITY REQUEST" }),
+        { error: "TEST : INVALID POST USER ENTITY REQUEST" },
         {
           status: 200,
           headers: { "Content-Type": "application/json" },
@@ -69,17 +72,20 @@ export async function postUsers(
       );
     }
     return NextResponse.json(
-      JSON.stringify({ error: "TEST : INVALID POST USER REQUEST" }),
+      { error: "TEST : INVALID POST USER REQUEST" },
       {
         status: 200,
         headers: { "Content-Type": "application/json" },
       },
     );
   }
-  return NextResponse.json(JSON.stringify({ token: generateRandomToken() }), {
-    status: 200,
-    headers: { "Content-Type": "application/json" },
-  });
+  return NextResponse.json(
+    { token: generateRandomToken() },
+    {
+      status: 200,
+      headers: { "Content-Type": "application/json" },
+    },
+  );
 }
 
 export async function putUsers(
@@ -95,7 +101,7 @@ export async function putUsers(
     if (params[2]) {
       //entity
       return NextResponse.json(
-        JSON.stringify({ error: "TEST : INVALID PUT USER ENTITY REQUEST" }),
+        { error: "TEST : INVALID PUT USER ENTITY REQUEST" },
         {
           status: 200,
           headers: { "Content-Type": "application/json" },
@@ -103,7 +109,7 @@ export async function putUsers(
       );
     }
     return NextResponse.json(
-      JSON.stringify({ ...generateRandomUser(), ...body }),
+      { ...generateRandomUser(), ...body },
       {
         status: 200,
         headers: { "Content-Type": "application/json" },
@@ -111,7 +117,7 @@ export async function putUsers(
     );
   }
   return NextResponse.json(
-    JSON.stringify({ error: "TEST : INVALID PUT USER REQUEST" }),
+    { error: "TEST : INVALID PUT USER REQUEST" },
     {
       status: 200,
       headers: { "Content-Type": "application/json" },
@@ -130,20 +136,23 @@ export async function deleteUsers(
     if (params[2]) {
       //entity
       return NextResponse.json(
-        JSON.stringify({ error: "TEST : INVALID DELETE USER ENTITY REQUEST" }),
+        { error: "TEST : INVALID DELETE USER ENTITY REQUEST" },
         {
           status: 200,
           headers: { "Content-Type": "application/json" },
         },
       );
     }
-    return NextResponse.json(JSON.stringify({}), {
-      status: 200,
-      headers: { "Content-Type": "application/json" },
-    });
+    return NextResponse.json(
+      {},
+      {
+        status: 200,
+        headers: { "Content-Type": "application/json" },
+      },
+    );
   }
   return NextResponse.json(
-    JSON.stringify({ error: "TEST : INVALID DELETE USER REQUEST" }),
+    { error: "TEST : INVALID DELETE USER REQUEST" },
     {
       status: 200,
       headers: { "Content-Type": "application/json" },

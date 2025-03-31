@@ -8,25 +8,26 @@ import { read } from "@/app/_actions/project";
 import * as styles from "./archive.css";
 
 export function ArchiveModal({ id }: { id: string }) {
+  const pId = Number(id);
   const router = useRouter();
   const [archInfo, setArchInfo] = useState({ subtitle: "", title: "" });
-  const [objts, setObjts] = useState([]);
+  const [objts, setObjts] = useState<TObjectData[]>([]);
 
   const { close } = useModals();
   useEffect(() => {
-    read(id).then((r) => {
+    read(pId).then((r) => {
       // const owner = r.participants?.filter((p: any) => p.isOwner)[0]?.user
       //   ?.username;
-      if (!r.error) {
+      if (r.success) {
         setArchInfo({
-          subtitle: r.subtitle,
-          title: r.title,
+          subtitle: r.data.subtitle,
+          title: r.data.title,
         });
       }
     });
-    read(id, "objects").then((r) => {
-      if (!r.error) {
-        setObjts(r.objects);
+    read(pId, "objects").then((r) => {
+      if (r.success) {
+        setObjts(r.data.objects);
       }
     });
   }, [id]);

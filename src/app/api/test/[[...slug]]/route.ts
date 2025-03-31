@@ -8,80 +8,76 @@ import {
   putProjects,
 } from "./_projects";
 import { deleteAuth, getAuth, postAuth, putAuth } from "./_auth";
+import { responseHandler } from "@/utils/api";
+
+const handlers: Record<
+  string,
+  Record<
+    string,
+    (request: NextRequest, options: { params: string[] }) => Promise<Response>
+  >
+> = {
+  users: { GET: getUsers, POST: postUsers, PUT: putUsers, DELETE: deleteUsers },
+  objects: {
+    GET: getObjects,
+    POST: postObjects,
+    PUT: putObjects,
+    DELETE: deleteObjects,
+  },
+  projects: {
+    GET: getProjects,
+    POST: postProjects,
+    PUT: putProjects,
+    DELETE: deleteProjects,
+  },
+  auth: { GET: getAuth, POST: postAuth, PUT: putAuth, DELETE: deleteAuth },
+};
+
+async function handleRequest(
+  method: string,
+  request: NextRequest,
+  slug?: string[],
+) {
+  console.log(`TEST: ${method} REQUEST FOR`, slug);
+
+  if (slug && handlers[slug[0]]) {
+    const handler = handlers[slug[0]][method];
+    if (handler) {
+      const response = await handler(request, { params: slug });
+      const data = await responseHandler(response);
+      return NextResponse.json(JSON.stringify(data), {
+        status: 200,
+        headers: { "Content-Type": "application/json" },
+      });
+    }
+  }
+  return NextResponse.json(
+    JSON.stringify({
+      result: slug
+        ? `INVALID TEST INPUT ${slug}`
+        : `TEST REQUEST FOR ${method}`,
+    }),
+    {
+      status: 200,
+      headers: { "Content-Type": "application/json" },
+    },
+  );
+}
 
 export async function GET(
   request: NextRequest,
   { params }: { params: Promise<{ slug?: string[] }> },
 ) {
   const { slug } = await params;
-  console.log("TEST: GET REQUEST ON - ", slug);
-
-  if (slug) {
-    // users
-    if (slug[0] === "users") {
-      return getUsers(request, { params: slug });
-    }
-    //objects
-    else if (slug[0] === "objects") {
-      return getObjects(request, { params: slug });
-    }
-    // projects
-    else if (slug[0] === "projects") {
-      return getProjects(request, { params: slug });
-    }
-    // auth
-    else if (slug[0] === "auth") {
-      return getAuth(request, { params: slug });
-    }
-    // else if (slug[0] === "auth") {}
-  } else {
-    return NextResponse.json(
-      JSON.stringify({ result: "TEST REQUEST FOR GET" }),
-      {
-        status: 200,
-        headers: {
-          "Content-Type": "application/json",
-        },
-      },
-    );
-  }
+  return handleRequest("GET", request, slug);
 }
 
-// login
 export async function POST(
   request: NextRequest,
   { params }: { params: Promise<{ slug?: string[] }> },
 ) {
   const { slug } = await params;
-  console.log("TEST: POST REQUEST FOR ", slug);
-  if (slug) {
-    // users
-    if (slug[0] === "users") {
-      return postUsers(request, { params: slug });
-    }
-    //objects
-    else if (slug[0] === "objects") {
-      return postObjects(request, { params: slug });
-    }
-    // projects
-    else if (slug[0] === "projects") {
-      return postProjects(request, { params: slug });
-    }
-    // auth
-    else if (slug[0] === "auth") {
-      return postAuth(request, { params: slug });
-    }
-    // else if (slug[0] === "auth") {}
-  }
-  return NextResponse.json(
-    JSON.stringify({ result: "TEST REQUEST FOR POST" }),
-    {
-      status: 200,
-      headers: {
-        "Content-Type": "application/json",
-      },
-    },
-  );
+  return handleRequest("POST", request, slug);
 }
 
 export async function PUT(
@@ -89,36 +85,7 @@ export async function PUT(
   { params }: { params: Promise<{ slug?: string[] }> },
 ) {
   const { slug } = await params;
-  console.log("TEST: PUT REQUEST FOR ", slug);
-  if (slug) {
-    // users
-    if (slug[0] === "users") {
-      return putUsers(request, { params: slug });
-    }
-    //objects
-    else if (slug[0] === "objects") {
-      return putObjects(request, { params: slug });
-    }
-    // projects
-    else if (slug[0] === "projects") {
-      return putProjects(request, { params: slug });
-    }
-    // auth
-    else if (slug[0] === "auth") {
-      return putAuth(request, { params: slug });
-    }
-    // else if (slug[0] === "auth") {}
-  }
-
-  return NextResponse.json(
-    JSON.stringify({ result: "TEST REQUEST FOR POST" }),
-    {
-      status: 200,
-      headers: {
-        "Content-Type": "application/json",
-      },
-    },
-  );
+  return handleRequest("PUT", request, slug);
 }
 
 export async function DELETE(
@@ -126,34 +93,5 @@ export async function DELETE(
   { params }: { params: Promise<{ slug?: string[] }> },
 ) {
   const { slug } = await params;
-  console.log("TEST: PUT REQUEST FOR ", slug);
-  if (slug) {
-    // users
-    if (slug[0] === "users") {
-      return deleteUsers(request, { params: slug });
-    }
-    //objects
-    else if (slug[0] === "objects") {
-      return deleteObjects(request, { params: slug });
-    }
-    // projects
-    else if (slug[0] === "projects") {
-      return deleteProjects(request, { params: slug });
-    }
-    // auth
-    else if (slug[0] === "auth") {
-      return deleteAuth(request, { params: slug });
-    }
-    // else if (slug[0] === "auth") {}
-  }
-
-  return NextResponse.json(
-    JSON.stringify({ result: "TEST REQUEST FOR POST" }),
-    {
-      status: 200,
-      headers: {
-        "Content-Type": "application/json",
-      },
-    },
-  );
+  return handleRequest("DELETE", request, slug);
 }

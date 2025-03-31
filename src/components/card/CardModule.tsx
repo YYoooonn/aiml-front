@@ -2,15 +2,13 @@
 
 import { navigateWorkspace } from "@/app/_actions/navigate";
 import { useModals } from "@/hook/useModals";
-import { Project } from "@/@types/api";
 import NewProjectForm from "../form/NewProjectForm";
 import { ModalType } from "@/hook/useModalStore";
 
 import * as styles from "./card.css";
 import { useRouter } from "next/navigation";
-import { useProjectInfo } from "@/hook/useProjectInfo";
 
-export function ArchiveCard({ props }: { props: ProjectProps }) {
+export function ArchiveCard({ props }: { props: ProjectData }) {
   // const { fetch } = useProjectInfo();
   // const { open, close } = useModals();
   const router = useRouter();
@@ -23,7 +21,7 @@ export function ArchiveCard({ props }: { props: ProjectProps }) {
   return <CardModule props={props} handler={handleClick} />;
 }
 
-export function WorkspaceCard({ props }: { props: ProjectProps }) {
+export function WorkspaceCard({ props }: { props: ProjectData }) {
   const handleClick = (e: React.MouseEvent) => {
     e.preventDefault();
     navigateWorkspace(props.projectId);
@@ -35,7 +33,7 @@ function CardModule({
   props,
   handler,
 }: {
-  props: ProjectProps;
+  props: ProjectData;
   handler: (e: React.MouseEvent) => void;
 }) {
   return (
@@ -53,7 +51,7 @@ export function NewCardModule({
   addProject,
   valid,
 }: {
-  addProject: (project: Project) => void;
+  addProject: (project: ProjectData) => void;
   valid: boolean;
 }) {
   const { open } = useModals();
@@ -69,11 +67,11 @@ export function NewCardModule({
 
   return (
     <div className={styles.cardContainer} onClick={handleClick}>
-      <button disabled={!valid} className={styles.cardImage}></button>
-      <button disabled={!valid} className={styles.cardText}>
+      <div className={styles.cardImage}></div>
+      <div className={styles.cardText}>
         CREATE NEW PROJECT
         <div className={styles.cardSubtitle}></div>
-      </button>
+      </div>
     </div>
   );
 }

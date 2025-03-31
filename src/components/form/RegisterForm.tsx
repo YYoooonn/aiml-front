@@ -25,10 +25,6 @@ export default function RegisterForm() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    console.log({
-      username: username,
-      password: password,
-    });
     const response = await create({
       username: username,
       password: password,
@@ -37,10 +33,10 @@ export default function RegisterForm() {
       email: email,
     });
 
-    if (response.error) {
-      setError(response.error);
-    } else {
+    if (response.success) {
       redirectUser("me");
+    } else {
+      setError(response.error);
     }
 
     // await create({

@@ -18,7 +18,7 @@ import { useProjectInfo } from "@/hook/useProjectInfo";
 
 import * as styles from "./editor.css";
 
-export default function ObjectConstructor({ pId }: { pId: string }) {
+export default function ObjectConstructor({ pId }: { pId: number }) {
   return (
     <>
       <div className={styles.aisleHeader}>
@@ -33,7 +33,7 @@ export default function ObjectConstructor({ pId }: { pId: string }) {
 // const TYPE = "BoxGeometry";
 // const MATRIX = [1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1];
 
-function ObjectBuilder({ pId }: { pId: string }) {
+function ObjectBuilder({ pId }: { pId: number }) {
   const [selected, setSelected] = useState("");
 
   return (
@@ -80,7 +80,7 @@ function MatrixBuilder({
   type,
   setSelect,
 }: {
-  pId: string;
+  pId: number;
   type: string;
   setSelect: Dispatch<SetStateAction<string>>;
 }) {

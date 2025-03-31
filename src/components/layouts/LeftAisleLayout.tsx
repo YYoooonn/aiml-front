@@ -1,4 +1,4 @@
-import { LeftAisle } from "@/components/components";
+import { Footer, LeftAisle } from "@/components/components";
 import * as styles from "./layout.css";
 
 export default function LeftAisleLayout({
@@ -10,6 +10,7 @@ export default function LeftAisleLayout({
     <div className={styles.aisleLayoutContainer}>
       <LeftAisle />
       <div className={styles.leftAislePageContainer}>{children}</div>
+      <Footer />
     </div>
   );
 }

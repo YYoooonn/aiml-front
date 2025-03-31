@@ -2,10 +2,8 @@
 
 import { Canvas } from "@react-three/fiber";
 import { ArchiveObjects } from "../three/ProjectObjects";
-import { ObjectInfo } from "@/@types/api";
-
-import * as styles from "./canvas.css";
 import { CameraControls } from "@react-three/drei";
+import * as styles from "./canvas.css";
 
 // XXX WORKSPACE PROPS
 const DEFAULT = {
@@ -24,7 +22,7 @@ const DEFAULT = {
   },
 };
 
-export default function Archive({ objts }: { objts?: ObjectInfo[] }) {
+export default function Archive({ objts }: { objts?: TObjectData[] }) {
   return (
     <div className={styles.canvasWrapper}>
       <Canvas frameloop="demand" shadows>

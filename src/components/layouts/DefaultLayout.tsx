@@ -6,10 +6,5 @@ export default function DefaultLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  return (
-    <div className={styles.defaultLayoutContainer}>
-      {children}
-      <Footer />
-    </div>
-  );
+  return <div className={styles.defaultLayoutContainer}>{children}</div>;
 }

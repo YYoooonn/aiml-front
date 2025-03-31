@@ -10,13 +10,15 @@ import * as styles from "./editor.css";
 
 export default function Editor() {
   const [_, id] = usePathname().split("/").slice(1, 3);
+  const pId = Number(id);
+
   return (
     <div className={styles.editorInnerWrapper}>
       <ViewportEditor />
       <p style={{ marginBottom: "16px" }} />
-      <ObjectConstructor pId={id} />
+      <ObjectConstructor pId={pId} />
       <p style={{ marginBottom: "16px" }} />
-      <ObjectEditor pId={id} />
+      <ObjectEditor pId={pId} />
     </div>
   );
 }

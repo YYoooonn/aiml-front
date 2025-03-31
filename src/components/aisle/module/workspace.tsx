@@ -3,7 +3,6 @@
 import { useEffect, useState } from "react";
 import * as styles from "./workspace.css";
 import { useProjectInfo } from "@/hook/useProjectInfo";
-import { ObjectInfo } from "@/@types/api";
 import { useChat } from "@/hook/useChat";
 import { useUserInfo } from "@/hook/useUserInfo";
 import { ChatSocket } from "@/components/socket/ChatSocket";
@@ -85,7 +84,7 @@ function ProfileImages() {
   );
 }
 
-function WorkspaceUtils({ objts }: { objts?: ObjectInfo[] }) {
+function WorkspaceUtils({ objts }: { objts?: TObjectData[] }) {
   // true == layer
   const [isSelected, setIsSelected] = useState(true);
   return (
@@ -119,7 +118,7 @@ function WorkspaceUtils({ objts }: { objts?: ObjectInfo[] }) {
   );
 }
 
-function Layers({ objts }: { objts?: ObjectInfo[] }) {
+function Layers({ objts }: { objts?: TObjectData[] }) {
   return (
     <div className={styles.layerContainer}>
       {objts?.map((o, i) => {
@@ -129,7 +128,7 @@ function Layers({ objts }: { objts?: ObjectInfo[] }) {
   );
 }
 
-function Layer({ obj }: { obj: ObjectInfo }) {
+function Layer({ obj }: { obj: TObjectData }) {
   const { selected, setSelected } = useObjectEditor();
   return (
     <div

@@ -1,4 +1,4 @@
-import { LeftAisleLayout } from "./layout";
+import { LeftAisleContainer } from "./layout";
 import { User, Archive, Editor, Workspace } from "./module/exports";
 import LeftAisle from "./leftAisle";
 import RightAisle from "./rightAisle";
@@ -7,32 +7,32 @@ export { LeftAisle, RightAisle };
 
 export function LeftUserAisle() {
   return (
-    <LeftAisleLayout>
+    <LeftAisleContainer>
       <User />
-    </LeftAisleLayout>
+    </LeftAisleContainer>
   );
 }
 
 export function LeftArchiveAisle() {
   return (
-    <LeftAisleLayout>
+    <LeftAisleContainer>
       <Archive />
-    </LeftAisleLayout>
+    </LeftAisleContainer>
   );
 }
 
 export function LeftWorkspaceAisle() {
   return (
-    <LeftAisleLayout>
+    <LeftAisleContainer>
       <Workspace />
-    </LeftAisleLayout>
+    </LeftAisleContainer>
   );
 }
 
 export function RightEditorAisle() {
   return (
-    <LeftAisleLayout>
+    <LeftAisleContainer>
       <Editor />
-    </LeftAisleLayout>
+    </LeftAisleContainer>
   );
 }

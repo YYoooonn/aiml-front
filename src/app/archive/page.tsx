@@ -16,7 +16,7 @@ export default function Archive() {
   const keyword = "";
 
   // XXX type
-  const [archives, setArchives] = useState<Array<ProjectProps>>([]);
+  const [archives, setArchives] = useState<Array<ProjectData>>([]);
 
   useEffect(() => {
     // FIXME
@@ -29,8 +29,9 @@ export default function Archive() {
       k: keyword,
       s: 21,
     });
-
-    setArchives(publicPrjt.content);
+    if (publicPrjt.success) {
+      setArchives(publicPrjt.data.content);
+    }
   };
 
   return (

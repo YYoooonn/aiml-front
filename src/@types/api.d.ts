@@ -1,51 +1,104 @@
-import { NextResponse } from "next/server";
+import { NextResponse, NextRequest } from "next/server";
 
-interface RegisterResponse extends NextResponse {
-  // encoded password response
-  body: { password: string };
+/* API REQUEST */
+interface LoginRequest extends NextRequest {
+  body: {
+    username: string;
+    password: string;
+  };
 }
 
-interface LoginResponse {
-  // jwt token
-  body: { token: string };
+interface AuthRequest extends NextRequest {
+  header: { Authorization: string } & Record<string, unknown>;
 }
 
-interface ObjectConstructor {
-  geometry: string;
-  material: string;
-  matrix: number[];
+interface RegisterRequest extends NextRequest {
+  body: User;
 }
 
-interface ObjectInfo extends ObjectConstructor {
-  objectId: string;
-  // to be fixed
-  createdAt?: string;
-  lastModifiedAt?: string;
+interface UserRequest extends NextRequest {
+  body: Omit<User, "username">;
 }
 
-interface Project {
-  projectId: string;
-  title: string;
-  subtitle: string?;
-  objects: ObjectInfo[];
-  isPublic: boolean;
-
-  // TODO: not implemented yet
-  participants: []; // FIXME
-  lastModifiedAt: string;
-  createdAt: string;
-  createdBy: string;
-  objects: ObjectInfo[];
+interface ProjectRequest extends NextRequest {
+  body: Project;
 }
 
-// GET user/profile
-interface UserInfo {
-  userId: string;
-  username: string;
-  firstName: string;
-  lastName: string;
-  createdAt: string;
-  lastModifiedAt: string; // 안보내도 됨
-  email?: string | undefined; // <==== 없어도 되지 않나?
-  projects: Project[];
+interface TObjectRequest extends NextRequest {
+  body: TObject;
+}
+
+interface InvitationRequest extends NextRequest {
+  body: {
+    projectId: number;
+    userId: number;
+    readOnly: boolean;
+  };
+}
+
+interface ImageRequest extends NextRequest {
+  body: {
+    imageExtension: string; // "jpeg" "png"
+    contentLength: number;
+  };
+}
+
+interface ImgUploadRequest extends NextRequest {
+  body: {
+    imageExtension: string;
+    contentLength: number;
+  };
+}
+
+/* API RESPONSE */
+interface SuccessResponse extends Response {
+  body?: { success: boolean };
+}
+
+interface ErrorResponse extends Response {
+  body?: { error: string };
+}
+
+interface IResponse<T extends UserData | ProjectData | TObjectData>
+  extends NextResponse {
+  body: T;
+}
+
+// TODO 나중에 백엔드 이렇게 구성하도록 요청하자
+// interface IMultiResponse<T extends UserData | ProjectData | TObjectData> extends NextResponse {
+//   body : {data : T[]}
+// }
+
+interface ProjectsResponse extends NextResponse {
+  body: {
+    projects: ProjectData[];
+  };
+}
+
+interface ProjectsSearchResponse extends NextResponse {
+  body: {
+    content: ProjectData[];
+  };
+}
+
+interface ParticipantsResponse extends NextResponse {
+  body: {
+    participants: Participant[];
+  };
+}
+
+interface TObjectsResponse extends NextResponse {
+  body: {
+    objects: TObjectData[];
+  };
+}
+
+interface LoginResponse extends NextResponse {
+  body: {
+    token: string;
+  };
+}
+
+interface ImgResponse extends NextResponse {
+  body: { preSignedUrl: string };
 }

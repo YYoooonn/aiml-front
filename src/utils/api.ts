@@ -31,10 +31,11 @@ export const responseHandler = async (
   if (res.ok) {
     if (emptyResponse) return { success: true };
     const data = await res.json();
-    return data;
+    // const parsed = JSON.parse(data);
+    return { success: true, data: data };
   } else {
     const message = await res.text();
-    return { error: message ? message : `code ${res.status}` };
+    return { success: false, error: message ? message : `code ${res.status}` };
   }
 };
 
@@ -94,7 +95,6 @@ export async function userAuthRequest(
 ) {
   console.debug(`AUTH REQUEST TO ${process.env.BACKEND_API_BASE + endpoint}`);
   const token = await getCookie();
-  console.log("TOKEN", token);
   if (!token) {
     console.debug("REQUEST WITH CREDENTIALS FAILED, CONVERTS TO API REQUEST ");
     const response = await userApiRequest(endpoint, method, body);

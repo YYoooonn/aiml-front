@@ -9,7 +9,7 @@ export const AUTH_ROUTE = `${BASE_ROUTE}/auth`;
 export const OBJ_ROUTE = `${BASE_ROUTE}/objects`;
 
 export const responseHandler = async (r: Response, from?: string) => {
-  console.debug("RESPONSE RECEIVED FROM", from);
+  // console.debug("RESPONSE RECEIVED FROM", from);
   // TO JSON
   const data = await r.json();
   // console.debug("2. DATA RECEIVED" , data)

@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { PasswordInput, TextInput } from "../ui/input";
 import { ButtonSubmit } from "../ui/button";
 
@@ -29,10 +29,14 @@ export default function LoginForm() {
     } else {
       const loginData = { username: username, password: password };
       const data = await login(loginData);
-      if (data.error) {
-        setError(data.error);
-      } else {
+      if (data.success) {
         await navigate("/user/me");
+      } else {
+        if (data.error) {
+          setError(data.error);
+        } else {
+          alert("unknown error please try again");
+        }
       }
     }
   };

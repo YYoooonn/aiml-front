@@ -1,6 +1,6 @@
 import * as styles from "./aisle.css";
 
-export function LeftAisleLayout({ children }: React.PropsWithChildren) {
+export function LeftAisleContainer({ children }: React.PropsWithChildren) {
   return <div className={styles.leftAisleContainer}>{children}</div>;
 }
 

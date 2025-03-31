@@ -129,7 +129,7 @@ export function ProjectSocket(props: SocketProps) {
     // UPDATE call
     function onUpdateCall(data: string) {
       console.debug("UPDATE CALL");
-      console.log(data);
+      // console.log(data);
       getObjects();
     }
     socket.on("updatePRJT", onUpdateCall);

@@ -15,29 +15,39 @@ const baseContainer = {
 export const cardContainer = style({
   ...baseContainer,
   position: "relative",
-  ":hover": {
-    cursor: "pointer",
-    opacity: "100%",
+  selectors: {
+    "&:hover": {
+      cursor: "pointer",
+      opacity: "100%",
+    },
+    "&:disabled:hover": {
+      cursor: "none",
+      opacity: "70%",
+    },
   },
 });
 
-const baseCardImage = {
+const baseCardImage = style({
   width: "100%",
   height: "85%",
   border: "solid 1px white",
   backgroundColor: theme.color.white,
   opacity: "50%",
-};
-
-export const cardImage = style({
-  ...baseCardImage,
-  backgroundColor: theme.color.white,
 });
 
-export const newCardImage = style({
-  ...baseCardImage,
-  backgroundColor: theme.color.red,
-});
+export const cardImage = style([
+  baseCardImage,
+  {
+    backgroundColor: theme.color.white,
+  },
+]);
+
+export const newCardImage = style([
+  baseCardImage,
+  {
+    backgroundColor: theme.color.red,
+  },
+]);
 
 export const cardText = style({
   ...theme.textStyle.subtitle1,

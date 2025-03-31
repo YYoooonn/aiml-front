@@ -23,7 +23,7 @@ export async function getProjects(
       //entity
       if (params[2] === "objects") {
         return NextResponse.json(
-          JSON.stringify({ objects: generateRandomObjects(40) }),
+          { objects: generateRandomObjects(40) },
           {
             status: 200,
             headers: { "Content-Type": "application/json" },
@@ -32,7 +32,7 @@ export async function getProjects(
       }
       const entity = params[2] as keyof TProject;
       return NextResponse.json(
-        JSON.stringify({ [entity]: generateRandomProject()[entity] }),
+        { [entity]: generateRandomProject()[entity] },
         {
           status: 200,
           headers: { "Content-Type": "application/json" },
@@ -41,7 +41,7 @@ export async function getProjects(
     }
     if (params[1] === "search") {
       return NextResponse.json(
-        JSON.stringify({ content: generateRandomProjects(100) }),
+        { content: generateRandomProjects(100) },
         {
           status: 200,
           headers: { "Content-Type": "application/json" },
@@ -49,10 +49,10 @@ export async function getProjects(
       );
     }
     return NextResponse.json(
-      JSON.stringify({
+      {
         ...generateRandomProject(),
         ...{ projectId: params[1] },
-      }),
+      },
       {
         status: 200,
         headers: { "Content-Type": "application/json" },
@@ -60,7 +60,7 @@ export async function getProjects(
     );
   }
   return NextResponse.json(
-    JSON.stringify({ error: `TEST : INVALID GET ${ROOT} REQUEST` }),
+    { error: `TEST : INVALID GET ${ROOT} REQUEST` },
     {
       status: 200,
       headers: { "Content-Type": "application/json" },
@@ -82,7 +82,7 @@ export async function postProjects(
     if (params[2] === "objects") {
       //entity
       return NextResponse.json(
-        JSON.stringify({ ...generateRandomObject(), ...body }),
+        { ...generateRandomObject(), ...body },
         {
           status: 200,
           headers: { "Content-Type": "application/json" },
@@ -90,7 +90,7 @@ export async function postProjects(
       );
     }
     return NextResponse.json(
-      JSON.stringify({ error: `TEST : INVALID POST ${ROOT} ENTITY REQUEST` }),
+      { error: `TEST : INVALID POST ${ROOT} ENTITY REQUEST` },
       {
         status: 200,
         headers: { "Content-Type": "application/json" },
@@ -98,7 +98,7 @@ export async function postProjects(
     );
   }
   return NextResponse.json(
-    JSON.stringify({ ...generateRandomProject(), ...body }),
+    { ...generateRandomProject(), ...body },
     {
       status: 200,
       headers: { "Content-Type": "application/json" },
@@ -119,7 +119,7 @@ export async function putProjects(
     if (params[2]) {
       //entity
       return NextResponse.json(
-        JSON.stringify({ error: `TEST : INVALID PUT ${ROOT} ENTITY REQUEST` }),
+        { error: `TEST : INVALID PUT ${ROOT} ENTITY REQUEST` },
         {
           status: 200,
           headers: { "Content-Type": "application/json" },
@@ -127,7 +127,7 @@ export async function putProjects(
       );
     }
     return NextResponse.json(
-      JSON.stringify({ ...generateRandomProject(), ...body }),
+      { ...generateRandomProject(), ...body },
       {
         status: 200,
         headers: { "Content-Type": "application/json" },
@@ -135,7 +135,7 @@ export async function putProjects(
     );
   }
   return NextResponse.json(
-    JSON.stringify({ error: `TEST : INVALID PUT ${ROOT} REQUEST` }),
+    { error: `TEST : INVALID PUT ${ROOT} REQUEST` },
     {
       status: 200,
       headers: { "Content-Type": "application/json" },
@@ -154,22 +154,25 @@ export async function deleteProjects(
     if (params[2]) {
       //entity
       return NextResponse.json(
-        JSON.stringify({
+        {
           error: `TEST : INVALID DELETE ${ROOT} ENTITY REQUEST`,
-        }),
+        },
         {
           status: 200,
           headers: { "Content-Type": "application/json" },
         },
       );
     }
-    return NextResponse.json(JSON.stringify({}), {
-      status: 200,
-      headers: { "Content-Type": "application/json" },
-    });
+    return NextResponse.json(
+      {},
+      {
+        status: 200,
+        headers: { "Content-Type": "application/json" },
+      },
+    );
   }
   return NextResponse.json(
-    JSON.stringify({ error: `TEST : INVALID DELETE ${ROOT} REQUEST` }),
+    { error: `TEST : INVALID DELETE ${ROOT} REQUEST` },
     {
       status: 200,
       headers: { "Content-Type": "application/json" },

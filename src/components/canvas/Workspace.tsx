@@ -2,7 +2,6 @@
 
 import { Canvas } from "@react-three/fiber";
 import { WorkspaceObjects } from "../three/ProjectObjects";
-import { ObjectInfo } from "@/@types/api";
 import { UserCams } from "../three/UserCams";
 import { useEditor } from "@/hook/useEditor";
 import Camera from "./camera";
@@ -11,7 +10,7 @@ import EditorObjects from "./EditorObjects";
 
 import * as styles from "./canvas.css";
 
-export default function Workspace({ objts }: { objts?: ObjectInfo[] }) {
+export default function Workspace({ objts }: { objts?: TObjectData[] }) {
   const {
     cam,
     setCameraPosition,

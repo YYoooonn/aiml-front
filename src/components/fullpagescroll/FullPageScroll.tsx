@@ -34,7 +34,6 @@ export const FullPageScroll: React.FC<PFullPageScroll> = ({
     if (outerDivRef.current) {
       setHide(current + 1 !== outerDivRef.current.childElementCount);
     }
-    console.log();
   };
 
   const scrollDown = () => {

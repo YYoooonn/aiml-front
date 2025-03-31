@@ -3,15 +3,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { generateRandomObject } from "./_utils";
 
-// const TEST = {
-//   objectId: 1,
-//   createdAt: "2025-03-17T09:49:16.332093",
-//   lastModifiedAt: "2025-03-17T09:49:06.985782",
-//   matrix: [1, 0, 0, 0, 0, 4, 0, 0, 0, 0, 1, 0, 0, -1, 0.5, 1],
-//   geometry: "ConeGeometry",
-//   material: "#575757",
-// } as any;
-
 const ROOT = "OBJECTS";
 
 export async function getObjects(
@@ -25,7 +16,7 @@ export async function getObjects(
     if (params[2]) {
       //entity
       return NextResponse.json(
-        JSON.stringify({ error: `TEST : INVALID GET ${ROOT} ENTITY REQUEST` }),
+        { error: `TEST : INVALID GET ${ROOT} ENTITY REQUEST` },
         {
           status: 200,
           headers: { "Content-Type": "application/json" },
@@ -33,7 +24,7 @@ export async function getObjects(
       );
     }
     return NextResponse.json(
-      JSON.stringify({ ...generateRandomObject(), ...{ objectId: params[1] } }),
+      { ...generateRandomObject(), ...{ objectId: params[1] } },
       {
         status: 200,
         headers: { "Content-Type": "application/json" },
@@ -41,7 +32,7 @@ export async function getObjects(
     );
   }
   return NextResponse.json(
-    JSON.stringify({ error: `TEST : INVALID GET ${ROOT} REQUEST` }),
+    { error: `TEST : INVALID GET ${ROOT} REQUEST` },
     {
       status: 200,
       headers: { "Content-Type": "application/json" },
@@ -59,14 +50,8 @@ export async function postObjects(
   console.log(`TEST POST ${ROOT} auth : `, token);
   if (params[1]) {
     // projectId
-    // if(params[2]){
-    //     //entity
-    //     return NextResponse.json(JSON.stringify({error : `TEST : INVALID POST ${ROOT} ENTITY REQUEST`}), {
-    //         status: 200,
-    //         headers: {"Content-Type": "application/json"}})
-    //     }
     return NextResponse.json(
-      JSON.stringify({ error: `TEST : INVALID POST ${ROOT} REQUEST` }),
+      { error: `TEST : INVALID POST ${ROOT} REQUEST` },
       {
         status: 200,
         headers: { "Content-Type": "application/json" },
@@ -74,7 +59,7 @@ export async function postObjects(
     );
   }
   return NextResponse.json(
-    JSON.stringify({ ...generateRandomObject(), ...body }),
+    { ...generateRandomObject(), ...body },
     {
       status: 200,
       headers: { "Content-Type": "application/json" },
@@ -95,7 +80,7 @@ export async function putObjects(
     if (params[2]) {
       //entity
       return NextResponse.json(
-        JSON.stringify({ error: `TEST : INVALID PUT ${ROOT} ENTITY REQUEST` }),
+        { error: `TEST : INVALID PUT ${ROOT} ENTITY REQUEST` },
         {
           status: 200,
           headers: { "Content-Type": "application/json" },
@@ -103,7 +88,7 @@ export async function putObjects(
       );
     }
     return NextResponse.json(
-      JSON.stringify({ ...generateRandomObject(), ...body }),
+      { ...generateRandomObject(), ...body },
       {
         status: 200,
         headers: { "Content-Type": "application/json" },
@@ -111,7 +96,7 @@ export async function putObjects(
     );
   }
   return NextResponse.json(
-    JSON.stringify({ error: `TEST : INVALID PUT ${ROOT} REQUEST` }),
+    { error: `TEST : INVALID PUT ${ROOT} REQUEST` },
     {
       status: 200,
       headers: { "Content-Type": "application/json" },
@@ -130,22 +115,23 @@ export async function deleteObjects(
     if (params[2]) {
       //entity
       return NextResponse.json(
-        JSON.stringify({
-          error: `TEST : INVALID DELETE ${ROOT} ENTITY REQUEST`,
-        }),
+        { error: `TEST : INVALID DELETE ${ROOT} ENTITY REQUEST` },
         {
           status: 200,
           headers: { "Content-Type": "application/json" },
         },
       );
     }
-    return NextResponse.json(JSON.stringify({}), {
-      status: 200,
-      headers: { "Content-Type": "application/json" },
-    });
+    return NextResponse.json(
+      {},
+      {
+        status: 200,
+        headers: { "Content-Type": "application/json" },
+      },
+    );
   }
   return NextResponse.json(
-    JSON.stringify({ error: `TEST : INVALID DELETE ${ROOT} REQUEST` }),
+    { error: `TEST : INVALID DELETE ${ROOT} REQUEST` },
     {
       status: 200,
       headers: { "Content-Type": "application/json" },
