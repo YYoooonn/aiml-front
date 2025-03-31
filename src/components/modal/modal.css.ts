@@ -2,7 +2,7 @@ import { style } from "@vanilla-extract/css";
 import { breakpoints } from "@/styles/breakpoints";
 import { theme } from "@/styles/theme.css";
 
-const modalBackground = {
+const modalBackground = style({
   position: "fixed",
   display: "flex",
   overflowY: "auto",
@@ -12,17 +12,21 @@ const modalBackground = {
   bottom: 0,
   zIndex: 999,
   color: theme.color.ivory,
-} as any;
-
-export const modalBackgroundWrapper = style({
-  ...modalBackground,
-  backgroundColor: theme.color.black50,
 });
 
-export const modalBackgroundWrapperArchive = style({
-  ...modalBackground,
-  backgroundColor: theme.color.black80,
-});
+export const modalBackgroundWrapper = style([
+  modalBackground,
+  {
+    backgroundColor: theme.color.black50,
+  },
+]);
+
+export const modalBackgroundWrapperArchive = style([
+  modalBackground,
+  {
+    backgroundColor: theme.color.black80,
+  },
+]);
 
 export const archiveModalWrapper = style({
   position: "absolute",

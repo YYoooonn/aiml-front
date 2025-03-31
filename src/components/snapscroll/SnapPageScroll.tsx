@@ -10,12 +10,7 @@ type PSnapPageScroll = {
   children?: ReactNode[];
 } & PropsWithChildren;
 
-type TPHandler = {
-  p: number;
-  progress: number;
-};
-
-const SCALE_SCROLL = 2;
+const DAMP = 2;
 
 export const SnapPageScroll: FC<PSnapPageScroll> = ({ titles, children }) => {
   const l = children ? children.length : 1;
@@ -52,10 +47,10 @@ export const SnapPageScroll: FC<PSnapPageScroll> = ({ titles, children }) => {
   const phandler = (i: number) => {
     containerRef.current.scrollTo({
       top: Math.ceil(
-        ((SCALE_SCROLL * l - 1) / (SCALE_SCROLL * l)) *
+        ((DAMP * l - 1) / (DAMP * l)) *
           containerRef.current.clientHeight *
           i *
-          SCALE_SCROLL,
+          DAMP,
       ),
       behavior: "smooth",
     });
@@ -70,10 +65,12 @@ export const SnapPageScroll: FC<PSnapPageScroll> = ({ titles, children }) => {
         progress={progress}
         phandler={phandler}
       />
-      <ALayer children={children} current={current} l={l} />
+      <ALayer current={current} l={l}>
+        {children}
+      </ALayer>
       {
         // empty array of scroll
-        new Array(l * SCALE_SCROLL).fill(null).map((_, i) => (
+        new Array(l * DAMP).fill(null).map((_, i) => (
           <div key={i} style={{ height: "100%" }} />
         ))
       }
@@ -91,7 +88,7 @@ const ALayer = ({ children, current, l }: TAnimatedLayer) => {
   return (
     <div
       className={styles.snapAnimateContainer}
-      style={{ height: `${SCALE_SCROLL * l * 100}%` }}
+      style={{ height: `${DAMP * l * 100}%` }}
     >
       <div className={styles.snapAnimateSectionContainer}>
         {children?.map((child, i) => {

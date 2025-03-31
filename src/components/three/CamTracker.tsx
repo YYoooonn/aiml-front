@@ -37,7 +37,7 @@ function CamTracker(props: CamTrackerProps) {
   }, [camera, isDragging]);
 
   useEffect(() => {
-    props.pos ? setPosition(props.pos) : null;
+    if (props.pos) setPosition(props.pos);
   }, [props.pos]);
 
   return null; // No visual output

@@ -1,6 +1,6 @@
-const EULER_ORDER = ["XYZ", "XZY", "YXZ", "YZX", "ZXY", "ZYX"];
+// const EULER_ORDER = ["XYZ", "XZY", "YXZ", "YZX", "ZXY", "ZYX"];
 
-import { BoxGeometry, Euler, EulerOrder, MeshNormalMaterial } from "three";
+import { BoxGeometry, MeshNormalMaterial } from "three";
 import { mergeVertices } from "three/examples/jsm/utils/BufferGeometryUtils";
 import { seededRandom } from "three/src/math/MathUtils";
 

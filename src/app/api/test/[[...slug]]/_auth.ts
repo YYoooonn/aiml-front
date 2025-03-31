@@ -9,6 +9,7 @@ export async function getAuth(
   request: Request,
   { params }: { params: string[] },
 ) {
+  console.log(`TEST GET ${ROOT} params : `, params);
   const token = request.headers.get("Authorization");
   console.log(`TEST GET ${ROOT} auth : `, token);
   return NextResponse.json(
@@ -24,6 +25,7 @@ export async function postAuth(
   request: NextRequest,
   { params }: { params: string[] },
 ) {
+  console.log(`TEST POST ${ROOT} params : `, params);
   const body = await request.json();
   const token = request.headers.get("Authorization");
   console.log(`TEST POST ${ROOT} body : `, body);
@@ -38,6 +40,7 @@ export async function putAuth(
   request: NextRequest,
   { params }: { params: string[] },
 ) {
+  console.log(`TEST PUT ${ROOT} params : `, params);
   const body = await request.json();
   const token = request.headers.get("Authorization");
   console.log(`TEST PUT ${ROOT} body : `, body);
@@ -55,6 +58,7 @@ export async function deleteAuth(
   request: NextRequest,
   { params }: { params: string[] },
 ) {
+  console.log(`TEST DELETE ${ROOT} params : `, params);
   const token = request.headers.get("Authorization");
   console.log(`TEST DELETE ${ROOT} auth : `, token);
   return NextResponse.json(

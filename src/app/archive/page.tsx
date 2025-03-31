@@ -9,14 +9,19 @@ import { ModalType } from "@/hook/useModalStore";
 import { search } from "../_actions/project";
 
 export default function Archive() {
-  const [pageNum, setPageNum] = useState(0);
-  const [keyword, setKeyword] = useState("");
+  // const [pageNum, setPageNum] = useState(0);
+  // const [keyword, setKeyword] = useState<string>("");
+  // FIXME : need to be implemented
+  const pageNum = 0;
+  const keyword = "";
+
   // XXX type
-  const [archives, setArchives] = useState<Array<any>>([]);
+  const [archives, setArchives] = useState<Array<ProjectProps>>([]);
 
   useEffect(() => {
+    // FIXME
     fetchArchive();
-  }, [pageNum, keyword]);
+  }, []);
 
   const fetchArchive = async () => {
     const publicPrjt = await search({

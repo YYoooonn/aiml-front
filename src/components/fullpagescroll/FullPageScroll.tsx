@@ -1,6 +1,12 @@
 "use client";
 
-import { PropsWithChildren, useEffect, useRef, useState } from "react";
+import {
+  PropsWithChildren,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import { Dots } from "./Dots";
 import * as styles from "./fps.css";
 import { Footer } from "../components";
@@ -72,7 +78,7 @@ export const FullPageScroll: React.FC<PFullPageScroll> = ({
     refresh((v) => v + 1);
   };
 
-  const wheelHandler = (e: WheelEvent) => {
+  const wheelHandler = useCallback((e: WheelEvent) => {
     e.preventDefault();
     if (!canScroll.current) return;
     const { deltaY } = e; // +is down -is up
@@ -82,17 +88,17 @@ export const FullPageScroll: React.FC<PFullPageScroll> = ({
     } else if (deltaY < 0 && outerDivRef.current) {
       scrollUp();
     }
-  }; // wheel Handler
+  }, []); // wheel Handler
 
-  const scrollHandler = (e: Event) => {
+  const scrollHandler = useCallback((e: Event) => {
     e.preventDefault();
-  };
+  }, []);
 
-  const onTouchDown = (e: TouchEvent) => {
+  const onTouchDown = useCallback((e: TouchEvent) => {
     oldTouchY.current = e.changedTouches.item(0)?.clientY || 0;
-  };
+  }, []);
 
-  const onTouchUp = (e: TouchEvent) => {
+  const onTouchUp = useCallback((e: TouchEvent) => {
     const currentTouchY = e.changedTouches.item(0)?.clientY || 0;
     const isScrollDown: boolean =
       oldTouchY.current - currentTouchY > 0 ? true : false;
@@ -102,26 +108,33 @@ export const FullPageScroll: React.FC<PFullPageScroll> = ({
     } else {
       scrollUp();
     }
-  };
+  }, []);
 
   useEffect(() => {
     const outer = outerDivRef.current;
     if (!outer) return;
-    onLoad(outerDivRef.current.childElementCount);
+    onLoad(outer.childElementCount);
     refresh((v) => v + 1);
-    outer.addEventListener("wheel", wheelHandler);
-    outer.addEventListener("scroll", scrollHandler);
-    outer.addEventListener("touchmove", scrollHandler);
-    outer.addEventListener("touchstart", onTouchDown);
-    outer.addEventListener("touchend", onTouchUp);
+
+    // 이벤트 핸들러 리스트
+    const eventListeners: [keyof HTMLElementEventMap, EventListener][] = [
+      ["wheel", wheelHandler as EventListener],
+      ["scroll", scrollHandler as EventListener],
+      ["touchmove", scrollHandler as EventListener],
+      ["touchstart", onTouchDown as EventListener],
+      ["touchend", onTouchUp as EventListener],
+    ];
+
+    eventListeners.forEach(([event, handler]) =>
+      outer.addEventListener(event, handler),
+    );
     return () => {
-      outer.removeEventListener("wheel", wheelHandler);
-      outer.removeEventListener("scroll", scrollHandler);
-      outer.removeEventListener("touchmove", scrollHandler);
-      outer.removeEventListener("touchstart", onTouchDown);
-      outer.removeEventListener("touchend", onTouchUp);
+      eventListeners.forEach(([event, handler]) =>
+        outer.removeEventListener(event, handler),
+      );
     };
-  }, []);
+  }, [onLoad]);
+
   const movePageTo = (index: number) => {
     const num = currentPage.current;
     if (index > num) for (let i = 0; i < index - num; i++) scrollDown();

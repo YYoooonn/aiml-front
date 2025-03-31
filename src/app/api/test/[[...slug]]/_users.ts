@@ -5,7 +5,6 @@ import {
   generateRandomProjects,
   generateRandomToken,
   generateRandomUser,
-  TUser,
 } from "./_utils";
 
 export async function getUsers(

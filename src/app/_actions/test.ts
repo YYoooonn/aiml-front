@@ -1,10 +1,7 @@
-import { NextResponse } from "next/server";
-
-export async function testAction(props: any) {
-  console.log("ACTION TEST PROPS", props);
+export async function testAction() {
+  console.log("ACTION TEST CALLED");
   const response = await fetch("/api/test", {
-    method: "POST",
-    body: JSON.stringify(props),
+    method: "GET",
   });
   console.log("ACTION RESPONSE", response);
   const r = await response.json();
@@ -12,14 +9,4 @@ export async function testAction(props: any) {
   const parsed = JSON.parse(r);
   console.log("ACTION RESPONSE PARSE", parsed);
   return parsed;
-  console.log("ACTION RESPONSE TO JSON", r);
-  const st = JSON.stringify(r);
-  console.log("ACTION RESPONSE TO STR", st);
-
-  return NextResponse.json(st, {
-    status: 200,
-    headers: {
-      "Content-Type": "application/json",
-    },
-  });
 }

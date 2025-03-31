@@ -1,4 +1,4 @@
-import { DEFAULT_HEADERS, headers, responseHandler } from "@/utils/api";
+import { DEFAULT_HEADERS } from "@/utils/api";
 import { NextRequest, NextResponse } from "next/server";
 
 // user registration

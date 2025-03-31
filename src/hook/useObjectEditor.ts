@@ -83,8 +83,12 @@ export const useObjectEditor = create<SelectedInfo & ObjectActions>()(
         if (res.error) return res;
         return selected;
       }
+      return;
     },
-    updateMaterial: async (mat) => alert("NOT IMPLEMENTED YET"),
+    updateMaterial: async (mat) => {
+      console.log(mat);
+      alert("NOT IMPLEMENTED YET");
+    },
     toggleTest: () => {},
   }),
 );

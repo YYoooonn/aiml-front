@@ -1,5 +1,5 @@
 import { RegisterInfo, UserUpdateInfo } from "./actions";
-import { errorHandler, responseHandler, USER_ROUTE } from "./utils";
+import { responseHandler, USER_ROUTE } from "./utils";
 
 const ERROR_FROM = "USER ACTION";
 

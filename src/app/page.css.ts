@@ -1,6 +1,5 @@
 import { style } from "@vanilla-extract/css";
-import { bordertest } from "@/components/test.css";
-import * as constants from "@/styles/constants";
+// import * as constants from "@/styles/constants";
 import { theme } from "@/styles/theme.css";
 
 export const landingContainer = style({

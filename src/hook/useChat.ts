@@ -1,4 +1,3 @@
-import { usePathname } from "next/navigation";
 import { create } from "zustand";
 
 interface ChatState {

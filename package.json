@@ -8,6 +8,7 @@
     "build:server": "tsc --project tsconfig.server.json",
     "start": "NODE_ENV=production node dist/server.js",
     "lint": "next lint",
+    "lint:fix": "eslint --fix --ext .ts,.tsx .",
     "format": "prettier -w ."
   },
   "dependencies": {
@@ -37,6 +38,7 @@
     "@vanilla-extract/next-plugin": "^2.4.10",
     "eslint": "^8.57.1",
     "eslint-config-next": "14.2.13",
+    "eslint-config-prettier": "^10.1.1",
     "nodemon": "^3.1.7",
     "prettier": "^3.3.3",
     "ts-node": "^10.9.2",

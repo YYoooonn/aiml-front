@@ -1,14 +1,13 @@
 "use client";
 
-import { CAMERAMATERIAL } from "@/assets/material";
-import { urlCam } from "@/assets/models";
+// import { CAMERAMATERIAL } from "@/assets/material";
+// import { urlCam } from "@/assets/models";
 import { useParticipants } from "@/hook/useParticipants";
 import { getRandomHexColor } from "@/utils/radom";
-import { Instance, Instances, useGLTF } from "@react-three/drei";
-import { useEffect, useState } from "react";
+// import { Instance, Instances, useGLTF } from "@react-three/drei";
 
 export function UserCams() {
-  const { nodes } = useGLTF(urlCam);
+  // const { nodes } = useGLTF(urlCam);
   const cameras = useParticipants((state) => state.cameras);
 
   return (
@@ -16,7 +15,7 @@ export function UserCams() {
       {cameras.map((cam, i) => {
         const randColor = getRandomHexColor();
         return (
-          <group position={cam.position}>
+          <group key={i} position={cam.position}>
             <pointLight intensity={20} color={randColor}>
               <mesh scale={0.2}>
                 <sphereGeometry />

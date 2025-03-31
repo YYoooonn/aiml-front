@@ -1,4 +1,4 @@
-import { ObjConstructor, ObjUpdateProps, ProjectUpdateProps } from "./actions";
+import { ObjConstructor, ObjUpdateProps } from "./actions";
 import { responseHandler, PROJECT_ROUTES, OBJ_ROUTE } from "./utils";
 
 const ERROR_FROM = "OBJ ACTION";

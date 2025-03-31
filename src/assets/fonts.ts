@@ -1,4 +1,4 @@
-import { IBM_Plex_Sans, Rajdhani } from "next/font/google";
+import { Rajdhani } from "next/font/google";
 import localFont from "next/font/local";
 
 // export const interPlexSans = IBM_Plex_Sans({

@@ -7,7 +7,7 @@ import { useProjectInfo } from "@/hook/useProjectInfo";
 import { useUserInfo } from "@/hook/useUserInfo";
 
 export default function Page({ params }: { params: { id: string } }) {
-  const { title, objects, fetch, reset } = useProjectInfo();
+  const { objects, fetch, reset } = useProjectInfo();
   const fetchUser = useUserInfo((s) => s.fetchUserInfo);
 
   useEffect(() => {

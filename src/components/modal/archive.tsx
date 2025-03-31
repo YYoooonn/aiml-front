@@ -2,10 +2,10 @@
 
 import { useModals } from "@/hook/useModals";
 import Archive from "../canvas/Archive";
-import * as styles from "./archive.css";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { read } from "@/app/_actions/project";
+import * as styles from "./archive.css";
 
 export function ArchiveModal({ id }: { id: string }) {
   const router = useRouter();
@@ -29,7 +29,7 @@ export function ArchiveModal({ id }: { id: string }) {
         setObjts(r.objects);
       }
     });
-  }, []);
+  }, [id]);
 
   return (
     <>

@@ -7,28 +7,9 @@ import { UserCams } from "../three/UserCams";
 import { useEditor } from "@/hook/useEditor";
 import Camera from "./camera";
 import Lights from "./lights";
-
-import * as styles from "./canvas.css";
 import EditorObjects from "./EditorObjects";
 
-type Position = [x: number, y: number, z: number];
-
-// XXX WORKSPACE PROPS
-const DEFAULT = {
-  ambientLight: {
-    intensity: 1,
-  },
-  directionalLight: {
-    intensity: 5,
-    position: [5, 10, 10] as Position,
-  },
-  background: {
-    color: "#000000",
-  },
-  orbit: {
-    enableZoom: true,
-  },
-};
+import * as styles from "./canvas.css";
 
 export default function Workspace({ objts }: { objts?: ObjectInfo[] }) {
   const {

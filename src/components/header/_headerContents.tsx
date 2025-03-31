@@ -1,12 +1,11 @@
 "use client";
 
 import { navigate } from "@/app/_actions/navigate";
-import * as styles from "./header.css";
 import { useUserInfo } from "@/hook/useUserInfo";
 import useComponentVisible from "@/hook/useComponentVisible";
 import Link from "next/link";
 import redirectUser from "@/hook/redirectUser";
-import { useEffect } from "react";
+import * as styles from "./header.css";
 
 export function Logo() {
   const onClick = (e: React.MouseEvent) => {
@@ -76,7 +75,6 @@ function ProfileDropdown({
   handleLogout,
   handleNavigate,
   username,
-  email,
 }: {
   handleLogout: () => void;
   handleNavigate: () => void;

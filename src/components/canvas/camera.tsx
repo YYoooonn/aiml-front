@@ -1,6 +1,6 @@
 "use client";
 
-import { EditorAction, EditorProps, useEditor } from "@/hook/useEditor";
+import { EditorProps } from "@/hook/useEditor";
 import { CameraControls } from "@react-three/drei";
 import { useEffect, useRef } from "react";
 import CamTracker from "../three/CamTracker";

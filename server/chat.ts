@@ -1,7 +1,7 @@
 import { Server } from "socket.io";
 
 // Users in a room
-let usersRoom: {
+const usersRoom: {
   [key: string]: Array<{ socketId: string; username: string }>;
 } = { default: [] };
 
