@@ -84,6 +84,14 @@ export default function RegisterForm() {
       <TextInput title={"EMAIL"} dispatch={setEmail} />
       <p style={{ marginTop: "24px" }} />
       <ButtonSubmit text={"SUBMIT"} handler={handleSubmit} />
+      {error ? (
+        <>
+          <p style={{ marginTop: "12px" }} />
+          <div style={{ textAlign: "center", color: "red" }}>{error}</div>
+        </>
+      ) : (
+        <></>
+      )}
     </div>
   );
 }

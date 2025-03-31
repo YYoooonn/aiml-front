@@ -3,7 +3,7 @@ import {
   ProjectSearchParams,
   ProjectUpdateProps,
 } from "./actions";
-import { errorHandler, PROJECT_ROUTES, responseHandler } from "./utils";
+import { PROJECT_ROUTES, responseHandler } from "./utils";
 
 const ERROR_FROM = "PROJECT ACTION";
 

@@ -12,7 +12,7 @@ import redirectUser from "@/hook/redirectUser";
 import { navigate } from "@/app/_actions/navigate";
 import { useObjectEditor } from "@/hook/useObjectEditor";
 
-export default function Workspace({ id }: { id?: string }) {
+export default function Workspace({}: { id?: string }) {
   const { title, objects } = useProjectInfo();
   const { username } = useUserInfo();
 
@@ -29,7 +29,6 @@ export default function Workspace({ id }: { id?: string }) {
 }
 
 export function WorkspaceTopModule({
-  user,
   children,
 }: { user?: string } & React.PropsWithChildren) {
   return (
@@ -56,9 +55,7 @@ function WorkspaceInfos({ user, title }: { user?: string; title?: string }) {
       <div className={styles.aisleHeader}>
         <div
           className={styles.returnIcon}
-          onClick={() => {
-            user ? redirectUser("me") : navigate("/");
-          }}
+          onClick={() => (user ? redirectUser("me") : navigate("/"))}
         />
         <div className={styles.projectTitle}>
           {title ? title : "PROJECT NAME"}
@@ -152,19 +149,16 @@ function Layer({ obj }: { obj: ObjectInfo }) {
 
 function Chat() {
   const username = useUserInfo((state) => state.username);
-  useEffect(() => {
-    setChatOn();
-  }, []);
+  const { setChatOn, setChatOff } = useChat();
 
   useEffect(() => {
+    setChatOn();
     return () => setChatOff();
   }, []);
 
-  const { setChatOn, setChatOff } = useChat();
-
   return (
     <div className={styles.chatWrapper}>
-      <ChatSocket {...{ username: username }} />
+      <ChatSocket username={username} />
     </div>
   );
 }

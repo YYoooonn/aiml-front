@@ -3,14 +3,14 @@
 import { NextRequest, NextResponse } from "next/server";
 import { generateRandomObject } from "./_utils";
 
-const TEST = {
-  objectId: 1,
-  createdAt: "2025-03-17T09:49:16.332093",
-  lastModifiedAt: "2025-03-17T09:49:06.985782",
-  matrix: [1, 0, 0, 0, 0, 4, 0, 0, 0, 0, 1, 0, 0, -1, 0.5, 1],
-  geometry: "ConeGeometry",
-  material: "#575757",
-} as any;
+// const TEST = {
+//   objectId: 1,
+//   createdAt: "2025-03-17T09:49:16.332093",
+//   lastModifiedAt: "2025-03-17T09:49:06.985782",
+//   matrix: [1, 0, 0, 0, 0, 4, 0, 0, 0, 0, 1, 0, 0, -1, 0.5, 1],
+//   geometry: "ConeGeometry",
+//   material: "#575757",
+// } as any;
 
 const ROOT = "OBJECTS";
 

@@ -3,7 +3,7 @@ import { Server } from "socket.io";
 type Position = Array<number>;
 
 // socket with username
-let usersRoom: {
+const usersRoom: {
   [key: string]: Array<{
     socketId: string;
     username: string;
@@ -12,9 +12,9 @@ let usersRoom: {
 } = { default: [] };
 
 // camera position
-let userCamPosition: {
-  [key: string]: Array<{ socketId: string; position: Position }>;
-} = { default: [] };
+// const userCamPosition: {
+//   [key: string]: Array<{ socketId: string; position: Position }>;
+// } = { default: [] };
 
 function getUsernames(roomId: string) {
   // XXX: if roomId doesn't exist
@@ -26,15 +26,15 @@ function getUsernames(roomId: string) {
   }));
 }
 
-function getCamPosition(roomId: string) {
-  // XXX: if roomId doesn't exist
-  if (!userCamPosition[roomId]) {
-    return [];
-  }
-  return userCamPosition[roomId].map((id) => ({
-    position: id.position,
-  }));
-}
+// function getCamPosition(roomId: string) {
+//   // XXX: if roomId doesn't exist
+//   if (!userCamPosition[roomId]) {
+//     return [];
+//   }
+//   return userCamPosition[roomId].map((id) => ({
+//     position: id.position,
+//   }));
+// }
 
 export const UserSocket = (io: Server, name: string) => {
   const namespace = io.of(`/${name}`);

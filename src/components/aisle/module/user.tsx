@@ -7,17 +7,24 @@ import redirectUser from "@/hook/redirectUser";
 import { BaseNavLayout, AisleButton } from "./base";
 
 export default function User() {
-  const { username, projects } = useUserInfo();
+  const { projects } = useUserInfo();
   const [showList, setShowList] = useState(true);
 
-  const handleClick = (e: MouseEvent) => {
-    e.preventDefault;
-    redirectUser(username.concat("/edit"));
-  };
+  // // FIXME -  implement on user
+  // const handleClick = (e: MouseEvent) => {
+  //   e.preventDefault();
+  //   redirectUser(username.concat("/edit"));
+  // };
+
   return (
     <BaseNavLayout>
       <AisleButton text={"Project List"}>
-        <div className={styles.userAisleIcon} />
+        <div
+          className={styles.userAisleIcon}
+          onClick={() => {
+            setShowList(!showList);
+          }}
+        />
       </AisleButton>
       <div className={styles.projectListContainer}>
         {showList &&

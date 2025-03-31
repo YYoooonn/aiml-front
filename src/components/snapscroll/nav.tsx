@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { animated, SpringValue, useScroll, useSpring } from "@react-spring/web";
+import { animated, useSpring } from "@react-spring/web";
 import * as styles from "./snap.css";
 
 type TNav = {

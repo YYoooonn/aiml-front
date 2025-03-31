@@ -4,7 +4,6 @@ import { WorkspaceCard, NewCardModule } from "@/components/card/CardModule";
 import { Project } from "@/@types/api";
 
 import * as styles from "./user.css";
-import { useEffect } from "react";
 
 export function Projects({
   projects,

@@ -1,10 +1,11 @@
 import type { Metadata } from "next";
+// import Image from "next/image";
 import { geistSans, rajdhani } from "@/assets/fonts";
-import { Header, Footer } from "@/components/components";
 import "@/styles/global.css";
-import * as styles from "./layout.css";
-import Image from "next/image";
+import { Header } from "@/components/components";
 import ModalContainer from "@/components/modal/Modal";
+
+import * as styles from "./layout.css";
 
 export const metadata: Metadata = {
   title: "AIML Project",

@@ -1,4 +1,4 @@
-import { createVar, keyframes, style } from "@vanilla-extract/css";
+import { style } from "@vanilla-extract/css";
 import { theme } from "@/styles/theme.css";
 import * as constants from "@/styles/constants";
 
@@ -54,8 +54,8 @@ export const navContainer = style({
 });
 
 const baseNav = {
-  position: "absolute" as "absolute",
-  textAlign: "center" as "center",
+  position: "absolute" as const,
+  textAlign: "center" as const,
   verticalAlign: "bottom",
 };
 

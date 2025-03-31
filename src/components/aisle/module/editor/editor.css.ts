@@ -1,7 +1,7 @@
 import { style } from "@vanilla-extract/css";
 import { theme } from "@/styles/theme.css";
 
-import { baseAisleBlock, aisleInnerWrapper } from "../base.css";
+import { aisleInnerWrapper } from "../base.css";
 
 export const editorInnerWrapper = aisleInnerWrapper;
 
@@ -60,9 +60,9 @@ export const editorProp = style({
 const editorBlock = {
   padding: "4px",
   width: "100%",
-  userSelect: "none",
+  userSelect: "none" as const,
   border: "1px solid",
-} as any;
+};
 
 export const editorButtonContainer = style({
   ...editorBlock,

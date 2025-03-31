@@ -5,11 +5,9 @@ import {
   EditorBlock,
   DimSelector,
   SubmitButton,
-  TextSelector,
   MaterialSelector,
 } from "./editor";
 import { useObjectEditor } from "@/hook/useObjectEditor";
-import { useState } from "react";
 
 import * as styles from "./editor.css";
 

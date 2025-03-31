@@ -1,7 +1,6 @@
 "use client";
 
 // import { MainLayout } from '@/layout/MainLayout';
-import { v4 as uuidv4 } from "uuid";
 // import { faker } from '@faker-js/faker';
 import * as styles from "./socket.css";
 import { useEffect, useState } from "react";
@@ -13,9 +12,9 @@ import { useProjectInfo } from "@/hook/useProjectInfo";
 type Position = [x: number, y: number, z: number];
 type Rotation = Array<number | string | undefined>;
 
-interface UserCamera {
-  [username: string]: { position: Position };
-}
+// interface UserCamera {
+//   [username: string]: { position: Position };
+// }
 
 interface SocketProps {
   roomId?: string;
@@ -23,9 +22,8 @@ interface SocketProps {
 }
 
 export function ProjectSocket(props: SocketProps) {
-  const [username, setUsername] = useState(
-    props.username ? props.username : "anonymous",
-  );
+  const username = props.username ? props.username : "anonymous";
+
   //   const [userId, setUserId] = useState("");
   const [isConnected, setIsConnected] = useState(false);
   const [transport, setTransport] = useState("N/A");
@@ -129,7 +127,7 @@ export function ProjectSocket(props: SocketProps) {
     socket.on("users", onUsers);
 
     // UPDATE call
-    function onUpdateCall(data: any) {
+    function onUpdateCall(data: string) {
       console.debug("UPDATE CALL");
       console.log(data);
       getObjects();

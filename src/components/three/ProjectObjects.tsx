@@ -1,13 +1,13 @@
 "use client";
 
 import { ObjectInfo } from "@/@types/api";
-import { SelectedInfo, useObjectEditor } from "@/hook/useObjectEditor";
+import { useObjectEditor } from "@/hook/useObjectEditor";
 
-import { toMatrix4, toMatrix4decompose } from "@/utils/calc";
+import { toMatrix4decompose } from "@/utils/calc";
 import { Center } from "@react-three/drei";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 
-const SELECTEDCOLOR = "#FFEA00";
+// const SELECTEDCOLOR = "#FFEA00";
 
 interface MeshProps {
   obj: ObjectInfo;
@@ -65,7 +65,7 @@ function SelectableMesh({ obj, selected, handleSelected }: MeshProps) {
 
   // XXX temporary for error catch
   // projectId 53
-  const newRotation = rotation.map((d) => (isNaN(d) ? 0 : d)) as any;
+  const newRotation = rotation.map((d) => (isNaN(d) ? 0 : d)) as Position;
 
   return (
     <group scale={scale} position={position} rotation={newRotation}>
@@ -91,7 +91,7 @@ function MeshObject({ obj }: MeshProps) {
 
   // XXX temporary for error catch
   // projectId 53
-  const newRotation = rotation.map((d) => (isNaN(d) ? 0 : d)) as any;
+  const newRotation = rotation.map((d) => (isNaN(d) ? 0 : d)) as Position;
 
   return (
     <group scale={scale} position={position} rotation={newRotation}>

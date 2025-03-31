@@ -30,15 +30,16 @@ export default function NewProjectForm({
       isPublic: selected === selections[0],
     });
     if (response.error) {
-      alert(error);
+      setError(error);
+      // alert(error);
     } else {
-      close();
       addProject(response);
+      close();
     }
   };
 
   return (
-    <div className={styles.newProjectFormContainer}>
+    <form className={styles.newProjectFormContainer}>
       <TextInput title={"TITLE"} dispatch={setTitle} />
       <p style={{ marginTop: "24px" }} />
       <TextInput title={"SUBTITLE"} dispatch={setSubtitle} />
@@ -50,6 +51,6 @@ export default function NewProjectForm({
       />
       <p style={{ marginTop: "24px" }} />
       <ButtonSubmit text={"CREATE"} handler={handleSubmit} />
-    </div>
+    </form>
   );
 }

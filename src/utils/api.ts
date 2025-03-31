@@ -5,7 +5,12 @@ export const DEFAULT_HEADERS = {
   "Content-Type": "application/json",
 };
 
-export const headers: any = (req: NextRequest) => {
+type THeader = (req: NextRequest) => {
+  "Content-Type": string;
+  Authorization?: string;
+};
+
+export const headers: THeader = (req) => {
   const token = req.cookies.get("aimljwt");
   if (token) {
     return {

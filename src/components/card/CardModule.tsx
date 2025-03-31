@@ -11,8 +11,8 @@ import { useRouter } from "next/navigation";
 import { useProjectInfo } from "@/hook/useProjectInfo";
 
 export function ArchiveCard({ props }: { props: ProjectProps }) {
-  const { fetch } = useProjectInfo();
-  const { open, close } = useModals();
+  // const { fetch } = useProjectInfo();
+  // const { open, close } = useModals();
   const router = useRouter();
 
   const handleClick = (e: React.MouseEvent) => {
@@ -56,7 +56,7 @@ export function NewCardModule({
   addProject: (project: Project) => void;
   valid: boolean;
 }) {
-  const { open, close } = useModals();
+  const { open } = useModals();
 
   const handleClick = () => {
     if (valid) {
@@ -69,11 +69,11 @@ export function NewCardModule({
 
   return (
     <div className={styles.cardContainer} onClick={handleClick}>
-      <div className={styles.cardImage}></div>
-      <div className={styles.cardText}>
+      <button disabled={!valid} className={styles.cardImage}></button>
+      <button disabled={!valid} className={styles.cardText}>
         CREATE NEW PROJECT
         <div className={styles.cardSubtitle}></div>
-      </div>
+      </button>
     </div>
   );
 }

@@ -1,5 +1,5 @@
 import { useGLTF } from "@react-three/drei";
-import type { Group, Mesh } from "three";
+import type { Mesh } from "three";
 
 export const urlCam = "/models/cam.gltf";
 
