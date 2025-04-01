@@ -1,32 +1,16 @@
-import unescapeSlashes from "@/utils/parse";
-import { NextResponse } from "next/server";
+const BASE_ROUTE =
+  process.env.NODE_ENV === "development" ? "/api/test" : "/api";
 
-export const PROJECT_ROUTES = "/api/projects";
-export const USER_ROUTE = "/api/users";
-export const AUTH_ROUTE = "/api/auth";
-export const OBJ_ROUTE = "/api/objects";
-
-export const responseHandler = async (r: Response, from?: string) => {
-  // console.debug("1. RESPONSE RECEIVED FROM", from)
-  // TO JSON
-  const data = await r.json();
-  // console.debug("2. DATA RECEIVED" , data)
-
-  // PARSE DATA
-  const parsed = JSON.parse(data);
-  // console.debug("3. DATA PARSED", parsed)
-
-  return parsed;
+export const ENDPOINT: Record<string, string> = {
+  P: `${BASE_ROUTE}/projects`,
+  U: `${BASE_ROUTE}/users`,
+  A: `${BASE_ROUTE}/auth`,
+  O: `${BASE_ROUTE}/objects`,
 };
 
-export const errorHandler = async (r: Response, from?: string) => {
-  if (r.ok) {
-    const data = await r.json();
-    console.log("data from error Handler", data);
-    // data type check
-    return JSON.parse(data);
-  } else {
-    const message = (await r.text()).toString();
-    return { error: message };
-  }
+export const responseHandler = async (r: Response, from?: string) => {
+  // console.debug("RESPONSE RECEIVED FROM", from);
+  // TO JSON
+  const data = await r.json();
+  return data;
 };

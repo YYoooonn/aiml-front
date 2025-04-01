@@ -1,35 +1,37 @@
 "use client";
 
 import { create } from "zustand";
-import { UserInfo, Project } from "@/@types/api";
 import { deleteCookie } from "@/app/_actions/cookie";
-import { UserUpdateInfo } from "@/app/_actions/actions";
 
 import * as user from "@/app/_actions/user";
-import * as project from "@/app/_actions/project";
 
 interface UserActions {
   // setUser: (user: UserStoreState) => void;
-  setAll: (data: UserInfo) => void;
-  addProject: (project: Project) => void;
+  setAll: (data: UserData) => void;
+  addProject: (project: ProjectData) => void;
   reset: () => void;
   logout: () => void;
-  fetch: (id?: string) => Promise<void>;
-  fetchUserInfo: (id?: string) => Promise<void>;
+  fetch: (uId?: number) => Promise<void>;
+  fetchUserInfo: (id?: number) => Promise<void>;
   update: ({
     id,
     userInfos,
   }: {
     id?: string;
-    userInfos: UserUpdateInfo;
+    userInfos: User;
   }) => Promise<void>;
-  fetchProjects: () => Promise<void>;
+  fetchProjects?: () => Promise<void>;
 }
 
-type UserState = UserInfo & UserActions;
+interface U extends Omit<UserData, "id"> {
+  id?: number;
+  projects: ProjectData[];
+}
 
-const DEFAULT: UserInfo = {
-  userId: "",
+type UserState = U & UserActions;
+
+const DEFAULT: U = {
+  id: undefined,
   username: "",
   firstName: "",
   lastName: "",
@@ -42,7 +44,7 @@ const DEFAULT: UserInfo = {
 export const useUserInfo = create<UserState>()((set, get) => ({
   ...DEFAULT,
   // setUser: (user) => set({user}),
-  setAll: (data) => set(data),
+  setAll: (data) => set({ ...data }),
 
   addProject: (project) => set({ projects: [...get().projects, project] }),
   reset: () => set(DEFAULT),
@@ -50,15 +52,10 @@ export const useUserInfo = create<UserState>()((set, get) => ({
     deleteCookie();
     set(DEFAULT);
   },
-  fetchProjects: async () => {
-    await project.read(get().userId, "projects").then((r) => {
-      console.log(r);
-    });
-  },
   fetchUserInfo: async (id) => {
     set(DEFAULT);
-    const res = await user.read(id);
-    if (!res.error) set({ ...res });
+    const res = id ? await user.read(id) : await user.read();
+    if (res.success) set({ ...res.data });
     // !response.error && response.username === username
     //   ? set(response)
     //   : deleteCookie().then(() => {
@@ -66,23 +63,21 @@ export const useUserInfo = create<UserState>()((set, get) => ({
     //       navigate("/login");
     //     });
   },
-  fetch: async (id) => {
-    const res = await user.read(id);
-    if (!res.error) {
-      set({ ...res });
-    }
-    const entity = await user.readEntity({ id: id, entity: "projects" });
-    if (!entity.error) {
-      set({ projects: entity.projects });
+  fetch: async (uId) => {
+    const res = uId ? await user.read(uId) : await user.read();
+    if (res.success) {
+      set({ ...res.data });
+      const r = await user.readEntity({
+        id: uId ? uId : undefined,
+        entity: "projects",
+      });
+      if (r.success) set({ projects: r.data.projects });
+    } else {
+      alert(res.error);
     }
   },
   update: async (data) => {
     const response = await user.update(data);
-    console.log("UPDATE USER INFO", response);
-    if (!response.error) {
-      console.log("UPDATE COMPLETE");
-    } else {
-      alert("error alert");
-    }
+    if (!response.success) alert(response.error);
   },
 }));

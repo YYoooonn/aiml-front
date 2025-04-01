@@ -1,5 +1,4 @@
 import { style } from "@vanilla-extract/css";
-import { bordertest } from "@/components/test.css";
 import * as constants from "@/styles/constants";
 import { theme } from "@/styles/theme.css";
 
@@ -21,6 +20,7 @@ export const landingInnerContainer = style({
 });
 
 export const button = style({
+  pointerEvents: "auto",
   ":hover": {
     color: theme.color.red,
   },
@@ -31,10 +31,14 @@ export const landingSectionContainer = style({
   color: theme.color.ivory,
   width: "100%",
   height: "100%",
-  padding: "8px",
+  textAlign: "center",
   display: "flex",
-  paddingLeft: "40px",
-  ...theme.textStyle.logo,
+  flexDirection: "column",
+  justifyContent: "center",
+  alignItems: "center",
+  paddingBottom: constants.FOOTERHEIGHT,
+  // padding: "8px",
+  // paddingLeft: "40px",
 });
 
 // @media (prefers-color-scheme: dark) {

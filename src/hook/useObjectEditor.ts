@@ -1,31 +1,31 @@
 "use client";
 
-import { ObjectInfo } from "@/@types/api";
+import { ActionResponse } from "@/app/_actions/actions";
 import { remove, update } from "@/app/_actions/object";
 import { toMatrix, toMatrix4decompose } from "@/utils/calc";
 import { create } from "zustand";
 
-type XYZ = [x: number, y: number, z: number];
+const DEFAULT_MATERIAL = "#575757";
 
 export interface SelectedInfo {
-  selected: ObjectInfo | undefined;
-  position: XYZ | undefined;
-  scale: XYZ | undefined;
-  rotation: XYZ | undefined;
+  selected: TObjectData | undefined;
+  position: Position | undefined;
+  scale: Position | undefined;
+  rotation: Position | undefined;
   material: string | undefined;
   TEST?: boolean;
 }
 
 export interface ObjectActions {
-  setSelected: (objectInfo: ObjectInfo) => void;
+  setSelected: (objectInfo: TObjectData) => void;
   resetSelected: () => void;
-  setScale: (val: XYZ) => void;
-  setPosition: (val: XYZ) => void;
-  setRotation: (val: XYZ) => void;
+  setScale: (val: Position) => void;
+  setPosition: (val: Position) => void;
+  setRotation: (val: Position) => void;
   setMaterial: (val: string) => void;
-  removeSelected: (projectId: string) => Promise<any>;
-  updateMatrix: (projectId: string) => Promise<any>;
-  updateMaterial: (material: string) => Promise<void>;
+  removeSelected: (pId: number) => Promise<ActionResponse>;
+  updateMatrix: (pId: number) => Promise<ActionResponse<TObjectData>>;
+  updateMaterial: (material: string) => void;
   toggleTest: () => void;
 }
 
@@ -40,8 +40,8 @@ const DEFAULT: SelectedInfo = {
 export const useObjectEditor = create<SelectedInfo & ObjectActions>()(
   (set, get) => ({
     ...DEFAULT,
-    setSelected: (obj: ObjectInfo) => {
-      if (get().selected?.objectId === obj.objectId) {
+    setSelected: (obj: TObjectData) => {
+      if (get().selected?.id === obj.id) {
         get().resetSelected();
       } else {
         set({ selected: obj });
@@ -50,7 +50,7 @@ export const useObjectEditor = create<SelectedInfo & ObjectActions>()(
           position: mat.position,
           scale: mat.scale,
           rotation: mat.rotation,
-          material: obj.material ? obj.material : "#575757",
+          material: obj.material ? obj.material : DEFAULT_MATERIAL,
         });
       }
     },
@@ -64,27 +64,31 @@ export const useObjectEditor = create<SelectedInfo & ObjectActions>()(
         get();
       if (selected && position && rotation && scale) {
         const matrix = toMatrix(position, rotation, scale);
-        const response = await update(id, selected.objectId, {
+        const response = await update(id, selected.id, {
           matrix: matrix,
           material: material,
           geometry: selected.geometry,
         });
-        resetSelected()
+        if (response.success) resetSelected();
         return response;
       }
-      return { error: "EMPTY PARAMETER" };
+      return { success: false, error: "EMPTY PARAMETER" };
     },
 
     // fetch
     removeSelected: async (id) => {
       const { selected } = get();
       if (selected) {
-        const res = await remove(id, selected.objectId);
-        if (res.error) return res;
-        return selected;
+        const res = await remove(id, selected.id);
+        return res;
+      } else {
+        return { success: false, error: "not selected" };
       }
     },
-    updateMaterial: async (mat) => alert("NOT IMPLEMENTED YET"),
+    updateMaterial: async (mat) => {
+      // console.log(mat);
+      alert("NOT IMPLEMENTED YET");
+    },
     toggleTest: () => {},
   }),
 );

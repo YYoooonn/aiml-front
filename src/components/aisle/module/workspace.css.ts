@@ -152,27 +152,31 @@ export const bottomContentContainer = style({
   padding: "6px",
 });
 
-export const layerContainer = style({});
+export const layerContainer = style({
+  overflowY: "scroll",
+  display: "flex",
+  flexDirection: "column",
+});
 
-const layerText = {
+const layerText = style({
   ...theme.textStyle.subtitle2,
   padding: "4px",
-  userSelect: "none" as any,
+  userSelect: "none",
   ":hover": {
     cursor: "pointer",
     color: "#FFEA00",
   },
-};
-
-export const layerTag = style({
-  ...layerText,
 });
 
-export const layerTagSelected = style({
-  ...layerText,
-  fontWeight: "700",
-  color: "#FFEA00",
-});
+export const layerTag = style([layerText]);
+
+export const layerTagSelected = style([
+  layerText,
+  {
+    fontWeight: "700",
+    color: "#FFEA00",
+  },
+]);
 
 export const chatWrapper = style({
   width: "100%",

@@ -2,35 +2,15 @@
 
 import { Canvas } from "@react-three/fiber";
 import { WorkspaceObjects } from "../three/ProjectObjects";
-import { ObjectInfo } from "@/@types/api";
 import { UserCams } from "../three/UserCams";
 import { useEditor } from "@/hook/useEditor";
 import Camera from "./camera";
 import Lights from "./lights";
-
-import * as styles from "./canvas.css";
 import EditorObjects from "./EditorObjects";
 
-type Position = [x: number, y: number, z: number];
+import * as styles from "./canvas.css";
 
-// XXX WORKSPACE PROPS
-const DEFAULT = {
-  ambientLight: {
-    intensity: 1,
-  },
-  directionalLight: {
-    intensity: 5,
-    position: [5, 10, 10] as Position,
-  },
-  background: {
-    color: "#000000",
-  },
-  orbit: {
-    enableZoom: true,
-  },
-};
-
-export default function Workspace({ objts }: { objts?: ObjectInfo[] }) {
+export default function Workspace({ objts }: { objts?: TObjectData[] }) {
   const {
     cam,
     setCameraPosition,

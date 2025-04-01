@@ -1,7 +1,6 @@
 "use client";
 
 import { create } from "zustand";
-import { EulerOrder } from "three";
 
 export interface CameraInfo {
   position: Array<number>;

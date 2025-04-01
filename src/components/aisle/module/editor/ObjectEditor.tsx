@@ -5,15 +5,13 @@ import {
   EditorBlock,
   DimSelector,
   SubmitButton,
-  TextSelector,
   MaterialSelector,
 } from "./editor";
 import { useObjectEditor } from "@/hook/useObjectEditor";
-import { useState } from "react";
 
 import * as styles from "./editor.css";
 
-export default function ObjectEditor({ pId }: { pId: string }) {
+export default function ObjectEditor({ pId }: { pId: number }) {
   return (
     <>
       <div className={styles.aisleHeader}>
@@ -25,7 +23,7 @@ export default function ObjectEditor({ pId }: { pId: string }) {
   );
 }
 
-function MatrixEditor({ pId }: { pId: string }) {
+function MatrixEditor({ pId }: { pId: number }) {
   const {
     selected,
     position,
@@ -55,21 +53,26 @@ function MatrixEditor({ pId }: { pId: string }) {
   const handleSubmit = async (e: React.MouseEvent) => {
     e.preventDefault();
     const response = await updateMatrix(pId);
-    if (response.error) {
-      alert(response.error);
+    if (response.success) {
+      updateObject(response.data);
     } else {
-      updateObject(response);
+      alert(response.error);
     }
   };
 
   const handleRemove = async (e: React.MouseEvent) => {
     e.preventDefault();
-    const response = await removeSelected(pId);
-    if (response.error) {
-      alert(response.error);
+    const oId = selected?.id;
+    if (oId) {
+      const response = await removeSelected(pId);
+      if (response.success) {
+        filterObject(oId);
+        resetSelected();
+      } else {
+        alert(response.error);
+      }
     } else {
-      filterObject(response.objectId);
-      resetSelected();
+      alert("no object selected");
     }
   };
 

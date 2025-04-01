@@ -48,10 +48,10 @@ function BackgroundEditor() {
 function CameraEditor() {
   const { cam, setCameraPosition, setCameraZoom } = useEditor();
 
-  // const position = pos.map((p) => p.toString());
-  const handleSubmit = (e: React.MouseEvent) => {
-    e.preventDefault();
-  };
+  // // const position = pos.map((p) => p.toString());
+  // const handleSubmit = (e: React.MouseEvent) => {
+  //   e.preventDefault();
+  // };
 
   return (
     <EditorBlock text={"Camera"}>

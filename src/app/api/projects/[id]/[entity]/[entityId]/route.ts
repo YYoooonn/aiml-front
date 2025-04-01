@@ -1,23 +1,18 @@
-import { headers, responseHandler, DEFAULT_HEADERS } from "@/utils/api";
+import { DEFAULT_HEADERS, userAuthRequest, ENDPOINT } from "@/utils/api";
 import { NextRequest, NextResponse } from "next/server";
+
+const PATH = ENDPOINT.P;
 
 // GET project-entity
 export async function GET(
   req: NextRequest,
   { params }: { params: { id: string; entity: string; entityId: string } },
 ) {
-  const header = headers(req);
-  const res = await fetch(
-    `${process.env.BACKEND_API_BASE}projects/${params.id}/${params.entity}/${params.entityId}`,
-    {
-      method: "GET",
-      headers: header,
-    },
+  const response = await userAuthRequest(
+    PATH.concat(`/${params.id}/${params.entity}/${params.entityId}`),
+    req,
   );
-
-  //
-  const data = await responseHandler(res);
-  return NextResponse.json(JSON.stringify(data), {
+  return NextResponse.json(response, {
     status: 200,
     headers: DEFAULT_HEADERS,
   });
@@ -28,20 +23,11 @@ export async function POST(
   req: NextRequest,
   { params }: { params: { id: string; entity: string; entityId: string } },
 ) {
-  const header = headers(req);
-  const body = await req.json();
-  const res = await fetch(
-    `${process.env.BACKEND_API_BASE}projects/${params.id}/${params.entity}/${params.entityId}`,
-    {
-      method: "POST",
-      body: JSON.stringify(body),
-      headers: header,
-    },
+  const response = await userAuthRequest(
+    PATH.concat(`/${params.id}/${params.entity}/${params.entityId}`),
+    req,
   );
-
-  //
-  const data = await responseHandler(res);
-  return NextResponse.json(JSON.stringify(data), {
+  return NextResponse.json(response, {
     status: 200,
     headers: DEFAULT_HEADERS,
   });
@@ -52,21 +38,11 @@ export async function PUT(
   req: NextRequest,
   { params }: { params: { id: string; entity: string; entityId: string } },
 ) {
-  const header = headers(req);
-  const body = await req.json();
-
-  const res = await fetch(
-    `${process.env.BACKEND_API_BASE}projects/${params.id}/${params.entity}/${params.entityId}`,
-    {
-      method: "PUT",
-      body: JSON.stringify(body),
-      headers: header,
-    },
+  const response = await userAuthRequest(
+    PATH.concat(`/${params.id}/${params.entity}/${params.entityId}}`),
+    req,
   );
-
-  //
-  const data = await responseHandler(res);
-  return NextResponse.json(JSON.stringify(data), {
+  return NextResponse.json(response, {
     status: 200,
     headers: DEFAULT_HEADERS,
   });
@@ -77,18 +53,11 @@ export async function DELETE(
   req: NextRequest,
   { params }: { params: { id: string; entity: string; entityId: string } },
 ) {
-  const header = headers(req);
-  const res = await fetch(
-    `${process.env.BACKEND_API_BASE}projects/${params.id}/${params.entity}/${params.entityId}`,
-    {
-      method: "DELETE",
-      headers: header,
-    },
+  const response = await userAuthRequest(
+    PATH.concat(`/${params.id}/${params.entity}/${params.entityId}}`),
+    req,
   );
-
-  //
-  const data = await responseHandler(res, true);
-  return NextResponse.json(JSON.stringify(data), {
+  return NextResponse.json(response, {
     status: 200,
     headers: DEFAULT_HEADERS,
   });

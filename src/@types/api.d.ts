@@ -1,51 +1,62 @@
-import { NextResponse } from "next/server";
+import { NextResponse, NextRequest } from "next/server";
+import { User } from "@/types/user";
+import { Project } from "@/types/project";
+import { TObject } from "@/types/tobject";
 
-interface RegisterResponse extends NextResponse {
-  // encoded password response
-  body: { password: string };
+/*
+
+API REQUEST
+NextRequest는 Next.js의 내부 구현에 의존하고 있기에
+route.ts에서 직접 extend한 타입 사용하는 것은 불가능
+
+*/
+
+interface BaseRequest<T = unknown> extends NextRequest {
+  body?: T;
+  headers?: HeadersInit;
+  method: string | "GET" | "POST" | "DELETE" | "PATCH" | "PUT";
 }
 
-interface LoginResponse {
-  // jwt token
-  body: { token: string };
+interface AuthRequest<T = unknown> extends BaseRequest {
+  body?: T;
+  headers: { Authorization: string } & Record<string, string>;
 }
 
-interface ObjectConstructor {
-  geometry: string;
-  material: string;
-  matrix: number[];
+type LoginRequest = BaseRequest<{ username: string; password: string }>;
+
+type RegisterRequest = BaseRequest<User>;
+
+type UserRequest = BaseRequest<Omit<User, "username">>;
+
+type ProjectRequest = BaseRequest<Project>;
+
+type TObjectRequest = BaseRequest<TObject>;
+
+type InvitationRequest = BaseRequest<{
+  projectId: number;
+  userId: number;
+  readOnly: boolean;
+}>;
+
+type ImageUploadRequest = BaseRequest<{
+  imageExtension: string;
+  contentLength: number;
+}>;
+
+/* API RESPONSE */
+
+interface BaseResponse<T = unknown> extends NextResponse {
+  body: T;
 }
 
-interface ObjectInfo extends ObjectConstructor {
-  objectId: string;
-  // to be fixed
-  createdAt?: string;
-  lastModifiedAt?: string;
-}
+type ProjectsResponse = BaseResponse<{ projects: ProjectData[] }>;
 
-interface Project {
-  projectId: string;
-  title: string;
-  subtitle: string?;
-  objects: ObjectInfo[];
-  isPublic: boolean;
+type ArchiveResponse = BaseResponse<{ content: ProjectData[] }>;
 
-  // TODO: not implemented yet
-  participants: []; // FIXME
-  lastModifiedAt: string;
-  createdAt: string;
-  createdBy: string;
-  objects: ObjectInfo[];
-}
+type ParticipantsResponse = BaseResponse<{ participants: ParticipantData[] }>;
 
-// GET user/profile
-interface UserInfo {
-  userId: string;
-  username: string;
-  firstName: string;
-  lastName: string;
-  createdAt: string;
-  lastModifiedAt: string; // 안보내도 됨
-  email?: string | undefined; // <==== 없어도 되지 않나?
-  projects: Project[];
-}
+type TObjectsResponse = BaseResponse<{ objects: TObjectData[] }>;
+
+type LoginResponse = BaseResponse<{ token: string }>;
+
+type ImgResponse = BaseResponse<{ preSignedUrl: string }>;

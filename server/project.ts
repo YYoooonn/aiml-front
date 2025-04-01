@@ -4,7 +4,7 @@ type Position = Array<number>;
 type Rotation = Array<number | string | undefined>;
 
 // Users in a room
-let userCamPosition: {
+const userCamPosition: {
   [key: string]: {
     [socketId: string]: { position: Position; rotation: Rotation };
   };

@@ -1,5 +1,5 @@
-import { createVar, keyframes, style } from "@vanilla-extract/css";
-import { theme } from "@/styles/theme.css";
+import { createVar, style } from "@vanilla-extract/css";
+// import { theme } from "@/styles/theme.css";
 import * as constants from "@/styles/constants";
 
 export const outerContainer = style({

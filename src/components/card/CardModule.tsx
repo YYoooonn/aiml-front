@@ -2,31 +2,29 @@
 
 import { navigateWorkspace } from "@/app/_actions/navigate";
 import { useModals } from "@/hook/useModals";
-import { Project } from "@/@types/api";
 import NewProjectForm from "../form/NewProjectForm";
 import { ModalType } from "@/hook/useModalStore";
 
 import * as styles from "./card.css";
 import { useRouter } from "next/navigation";
-import { useProjectInfo } from "@/hook/useProjectInfo";
 
-export function ArchiveCard({ props }: { props: ProjectProps }) {
-  const { fetch } = useProjectInfo();
-  const { open, close } = useModals();
+export function ArchiveCard({ props }: { props: ProjectData }) {
+  // const { fetch } = useProjectInfo();
+  // const { open, close } = useModals();
   const router = useRouter();
 
   const handleClick = (e: React.MouseEvent) => {
     e.preventDefault();
-    router.push(`/archive?from=${props.projectId}`);
-    // navigateArchive(props.projectId);
+    router.push(`/archive?from=${props.id}`);
+    // navigateArchive(props.id);
   };
   return <CardModule props={props} handler={handleClick} />;
 }
 
-export function WorkspaceCard({ props }: { props: ProjectProps }) {
+export function WorkspaceCard({ props }: { props: ProjectData }) {
   const handleClick = (e: React.MouseEvent) => {
     e.preventDefault();
-    navigateWorkspace(props.projectId);
+    navigateWorkspace(props.id);
   };
   return <CardModule props={props} handler={handleClick} />;
 }
@@ -35,7 +33,7 @@ function CardModule({
   props,
   handler,
 }: {
-  props: ProjectProps;
+  props: ProjectData;
   handler: (e: React.MouseEvent) => void;
 }) {
   return (
@@ -53,17 +51,17 @@ export function NewCardModule({
   addProject,
   valid,
 }: {
-  addProject: (project: Project) => void;
+  addProject: (project: ProjectData) => void;
   valid: boolean;
 }) {
-  const { open, close } = useModals();
+  const { open } = useModals();
 
   const handleClick = () => {
     if (valid) {
       open(NewProjectForm, { addProject: addProject }, ModalType.FORM);
     } else {
-      // project limitation 3
-      alert("Currently Project Limited to 3");
+      // project limitation 4
+      alert("Currently Project Limited to 4");
     }
   };
 

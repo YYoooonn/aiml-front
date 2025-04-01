@@ -1,16 +1,16 @@
 "use client";
 
 import { usePathname } from "next/navigation";
-import { LeftAisleLayout } from "./layout";
+import { LeftAisleContainer } from "./layout";
 import User from "./module/user";
 import Archive from "./module/archive";
 import Workspace from "./module/workspace";
 
 export default function LeftAisle() {
   return (
-    <LeftAisleLayout>
+    <LeftAisleContainer>
       <LeftAisleContent />
-    </LeftAisleLayout>
+    </LeftAisleContainer>
   );
 }
 

@@ -1,7 +1,5 @@
-import { createVar, keyframes, style } from "@vanilla-extract/css";
-import { breakpoints } from "@/styles/breakpoints";
+import { style } from "@vanilla-extract/css";
 import { theme } from "@/styles/theme.css";
-import { bordertest } from "../test.css";
 
 export const CanvasContainer = style({
   width: "100%",

@@ -1,3 +1,4 @@
+import { Footer } from "../components";
 import * as styles from "./layout.css";
 
 export default function DefaultLayout({

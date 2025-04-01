@@ -3,7 +3,6 @@
 import { useEffect, useState } from "react";
 import * as styles from "./workspace.css";
 import { useProjectInfo } from "@/hook/useProjectInfo";
-import { ObjectInfo } from "@/@types/api";
 import { useChat } from "@/hook/useChat";
 import { useUserInfo } from "@/hook/useUserInfo";
 import { ChatSocket } from "@/components/socket/ChatSocket";
@@ -12,7 +11,7 @@ import redirectUser from "@/hook/redirectUser";
 import { navigate } from "@/app/_actions/navigate";
 import { useObjectEditor } from "@/hook/useObjectEditor";
 
-export default function Workspace({ id }: { id?: string }) {
+export default function Workspace({}: { id?: string }) {
   const { title, objects } = useProjectInfo();
   const { username } = useUserInfo();
 
@@ -29,7 +28,6 @@ export default function Workspace({ id }: { id?: string }) {
 }
 
 export function WorkspaceTopModule({
-  user,
   children,
 }: { user?: string } & React.PropsWithChildren) {
   return (
@@ -56,9 +54,7 @@ function WorkspaceInfos({ user, title }: { user?: string; title?: string }) {
       <div className={styles.aisleHeader}>
         <div
           className={styles.returnIcon}
-          onClick={() => {
-            user ? redirectUser("me") : navigate("/");
-          }}
+          onClick={() => (user ? redirectUser("me") : navigate("/"))}
         />
         <div className={styles.projectTitle}>
           {title ? title : "PROJECT NAME"}
@@ -88,7 +84,7 @@ function ProfileImages() {
   );
 }
 
-function WorkspaceUtils({ objts }: { objts?: ObjectInfo[] }) {
+function WorkspaceUtils({ objts }: { objts?: TObjectData[] }) {
   // true == layer
   const [isSelected, setIsSelected] = useState(true);
   return (
@@ -122,7 +118,7 @@ function WorkspaceUtils({ objts }: { objts?: ObjectInfo[] }) {
   );
 }
 
-function Layers({ objts }: { objts?: ObjectInfo[] }) {
+function Layers({ objts }: { objts?: TObjectData[] }) {
   return (
     <div className={styles.layerContainer}>
       {objts?.map((o, i) => {
@@ -132,14 +128,12 @@ function Layers({ objts }: { objts?: ObjectInfo[] }) {
   );
 }
 
-function Layer({ obj }: { obj: ObjectInfo }) {
+function Layer({ obj }: { obj: TObjectData }) {
   const { selected, setSelected } = useObjectEditor();
   return (
     <div
       className={
-        selected?.objectId === obj.objectId
-          ? styles.layerTagSelected
-          : styles.layerTag
+        selected?.id === obj.id ? styles.layerTagSelected : styles.layerTag
       }
       onClick={() => {
         setSelected(obj);
@@ -152,19 +146,16 @@ function Layer({ obj }: { obj: ObjectInfo }) {
 
 function Chat() {
   const username = useUserInfo((state) => state.username);
-  useEffect(() => {
-    setChatOn();
-  }, []);
+  const { setChatOn, setChatOff } = useChat();
 
   useEffect(() => {
+    setChatOn();
     return () => setChatOff();
   }, []);
 
-  const { setChatOn, setChatOff } = useChat();
-
   return (
     <div className={styles.chatWrapper}>
-      <ChatSocket {...{ username: username }} />
+      <ChatSocket username={username} />
     </div>
   );
 }

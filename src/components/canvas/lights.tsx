@@ -1,7 +1,8 @@
 import { Light } from "@/hook/useEditor";
 
 // TODO light adding implementation
-export default function Lights({ props }: { props: Light[] }) {
+export default function Lights({}: { props?: Light[] }) {
+  // FIXME : light props implementation
   return (
     <>
       <directionalLight

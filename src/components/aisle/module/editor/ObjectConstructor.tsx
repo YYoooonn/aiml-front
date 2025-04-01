@@ -11,7 +11,6 @@ import {
   EditorBlock,
   SubmitButton,
   DimSelector,
-  TextSelector,
   MaterialSelector,
 } from "./editor";
 import { useObjectCreator } from "@/hook/useObjectCreator";
@@ -19,7 +18,7 @@ import { useProjectInfo } from "@/hook/useProjectInfo";
 
 import * as styles from "./editor.css";
 
-export default function ObjectConstructor({ pId }: { pId: string }) {
+export default function ObjectConstructor({ pId }: { pId: number }) {
   return (
     <>
       <div className={styles.aisleHeader}>
@@ -31,10 +30,10 @@ export default function ObjectConstructor({ pId }: { pId: string }) {
   );
 }
 
-const TYPE = "BoxGeometry";
-const MATRIX = [1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1];
+// const TYPE = "BoxGeometry";
+// const MATRIX = [1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1];
 
-function ObjectBuilder({ pId }: { pId: string }) {
+function ObjectBuilder({ pId }: { pId: number }) {
   const [selected, setSelected] = useState("");
 
   return (
@@ -81,7 +80,7 @@ function MatrixBuilder({
   type,
   setSelect,
 }: {
-  pId: string;
+  pId: number;
   type: string;
   setSelect: Dispatch<SetStateAction<string>>;
 }) {
@@ -103,10 +102,12 @@ function MatrixBuilder({
   const handleSubmit = (e: React.MouseEvent) => {
     e.preventDefault();
     update(pId).then((r) => {
-      reset();
-      addToObjects(r);
+      if (r) {
+        reset();
+        addToObjects(r);
+        setSelect("");
+      }
     });
-    setSelect("");
   };
 
   useEffect(() => {
@@ -152,10 +153,6 @@ function CreatorBlock({
   setSelect,
   children,
 }: BuilderBlockProps) {
-  const handleClick = () => {
-    selected === selector ? setSelect("") : setSelect(selector);
-  };
-
   return (
     <div
       className={
@@ -164,7 +161,11 @@ function CreatorBlock({
           : styles.editorButtonContainer
       }
     >
-      <div onClick={handleClick}>
+      <div
+        onClick={() =>
+          selected === selector ? setSelect("") : setSelect(selector)
+        }
+      >
         <div className={styles.editorBlockTitle}>{selector}</div>
       </div>
       {selected === selector ? (

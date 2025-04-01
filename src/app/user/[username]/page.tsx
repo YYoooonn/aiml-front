@@ -7,11 +7,11 @@ import { useUserInfo } from "@/hook/useUserInfo";
 import * as styles from "./user.css";
 
 export default function Page({ params }: { params: { username: string } }) {
-  const {fetch, projects, addProject,} = useUserInfo();
+  const { fetch, projects, addProject } = useUserInfo();
 
   useEffect(() => {
-    fetch(params.username);
-  }, []);
+    fetch();
+  }, [params.username]);
 
   return (
     <>

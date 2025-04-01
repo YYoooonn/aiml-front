@@ -10,6 +10,7 @@ export default function unescapeSlashes(str: string) {
   try {
     parsedStr = JSON.parse(`"${parsedStr}"`);
   } catch (e) {
+    console.debug(e);
     return str;
   }
   return parsedStr;

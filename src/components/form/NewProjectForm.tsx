@@ -3,7 +3,6 @@
 import { useModals } from "@/hook/useModals";
 import { TextInput } from "../ui/input";
 import { useState } from "react";
-import { Project } from "@/@types/api";
 import * as styles from "./form.css";
 import { BoolButtons, ButtonSubmit } from "../ui/button";
 import { create } from "@/app/_actions/project";
@@ -11,7 +10,7 @@ import { create } from "@/app/_actions/project";
 export default function NewProjectForm({
   addProject,
 }: {
-  addProject: (project: Project) => void;
+  addProject: (project: ProjectData) => void;
 }) {
   const selections = ["Public", "Private"];
 
@@ -29,16 +28,17 @@ export default function NewProjectForm({
       subtitle: subtitle,
       isPublic: selected === selections[0],
     });
-    if (response.error) {
-      alert(error);
-    } else {
+    if (response.success) {
+      addProject(response.data);
       close();
-      addProject(response);
+      // alert(error);
+    } else {
+      setError(error);
     }
   };
 
   return (
-    <div className={styles.newProjectFormContainer}>
+    <form className={styles.newProjectFormContainer}>
       <TextInput title={"TITLE"} dispatch={setTitle} />
       <p style={{ marginTop: "24px" }} />
       <TextInput title={"SUBTITLE"} dispatch={setSubtitle} />
@@ -50,6 +50,14 @@ export default function NewProjectForm({
       />
       <p style={{ marginTop: "24px" }} />
       <ButtonSubmit text={"CREATE"} handler={handleSubmit} />
-    </div>
+      {error ? (
+        <>
+          <p style={{ marginTop: "12px" }} />
+          <div style={{ textAlign: "center", color: "red" }}>{error}</div>
+        </>
+      ) : (
+        <></>
+      )}
+    </form>
   );
 }

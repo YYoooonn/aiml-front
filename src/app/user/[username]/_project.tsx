@@ -1,24 +1,22 @@
 "use client";
 
 import { WorkspaceCard, NewCardModule } from "@/components/card/CardModule";
-import { Project } from "@/@types/api";
 
 import * as styles from "./user.css";
-import { useEffect } from "react";
 
 export function Projects({
   projects,
   addProject,
 }: {
-  projects: Project[];
-  addProject: (project: Project) => void;
+  projects: ProjectData[];
+  addProject: (project: ProjectData) => void;
 }) {
   const props = projects.map((p) => {
     return {
       createdAt: p.createdAt,
       isPublic: p.isPublic,
       lastModifiedAt: p.lastModifiedAt,
-      projectId: p.projectId,
+      id: p.id,
       subtitle: p.subtitle,
       title: p.title,
     };

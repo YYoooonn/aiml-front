@@ -1,27 +1,34 @@
 "use client";
 
-import { ObjectInfo } from "@/@types/api";
-import { SelectedInfo, useObjectEditor } from "@/hook/useObjectEditor";
+import { useObjectEditor } from "@/hook/useObjectEditor";
 
-import { toMatrix4, toMatrix4decompose } from "@/utils/calc";
+import { toMatrix4decompose } from "@/utils/calc";
 import { Center } from "@react-three/drei";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 
-const SELECTEDCOLOR = "#FFEA00";
+// const SELECTEDCOLOR = "#FFEA00";
 
 interface MeshProps {
-  obj: ObjectInfo;
-  selected?: ObjectInfo;
+  obj: TObjectData;
+  selected?: TObjectData;
   handleSelected?: () => void;
 }
+
+/* 
+
+FIXME
+
+1. 겹쳐진 곳 선택했을 때 동시에 선택되는 현상
+2. 더블클릭 했을 때 캔버스 멈추는 현상
+
+*/
 
 export function WorkspaceObjects({
   objectInfos,
 }: {
-  objectInfos?: ObjectInfo[];
+  objectInfos?: TObjectData[];
 }) {
   const pObjects = objectInfos ? objectInfos : [];
-
   const { setSelected, resetSelected, selected } = useObjectEditor();
 
   // unmount시 selected 제거
@@ -48,7 +55,7 @@ export function WorkspaceObjects({
 export function ArchiveObjects({
   objectInfos,
 }: {
-  objectInfos?: ObjectInfo[];
+  objectInfos?: TObjectData[];
 }) {
   const pObjects = objectInfos ? objectInfos : [];
   return (
@@ -63,15 +70,14 @@ export function ArchiveObjects({
 function SelectableMesh({ obj, selected, handleSelected }: MeshProps) {
   const { position, scale, rotation } = toMatrix4decompose(obj.matrix);
 
-  // XXX temporary for error catch
-  // projectId 53
-  const newRotation = rotation.map((d) => (isNaN(d) ? 0 : d)) as any;
+  // FIXME temporary for error catch
+  const newRotation = rotation.map((d) => (isNaN(d) ? 0 : d)) as Position;
 
   return (
     <group scale={scale} position={position} rotation={newRotation}>
       <mesh
         onClick={handleSelected}
-        visible={selected && selected.objectId !== obj.objectId}
+        visible={selected && selected.id !== obj.id}
       >
         {obj.geometry === "BoxGeometry" ? (
           <boxGeometry />
@@ -91,7 +97,7 @@ function MeshObject({ obj }: MeshProps) {
 
   // XXX temporary for error catch
   // projectId 53
-  const newRotation = rotation.map((d) => (isNaN(d) ? 0 : d)) as any;
+  const newRotation = rotation.map((d) => (isNaN(d) ? 0 : d)) as Position;
 
   return (
     <group scale={scale} position={position} rotation={newRotation}>

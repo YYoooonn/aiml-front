@@ -23,6 +23,12 @@
 
 </p>
 
+### _preview_
+
+| landing                                                                                  | archive                                                                                     | workspace                                                                                  |
+| ---------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------ |
+| ![land](https://github.com/user-attachments/assets/e80f4308-de9d-4af7-be8a-a6305b8f3fb0) | ![archive](https://github.com/user-attachments/assets/38c8cc99-70bb-4933-8058-a8a499e87306) | ![wspace](https://github.com/user-attachments/assets/848ebd1e-8440-492d-8a41-e6e9bd64ce94) |
+
 #### [**PRJT) LABit 기획**](https://velog.io/@yyoooonn/PRJT-LABit-%EA%B8%B0%ED%9A%8D)
 
 `front` 윤종욱
@@ -232,7 +238,9 @@ export function WorkspaceCanvas({ objts }: { objts?: ObjectInfo[] }) {
 }
 ```
 
-`canvas` 내부에서 값을 변경하는 경우는 거의 없음. 대부분은 렌더링을 위한 환경(도형 선택 제외)이다. 외부에서 전역 변수 변경 시, 이를 전달받아서 canvas 내부 값들 변경
+`canvas` 내부에서 값을 변경하는 경우는 거의 없음. \
+대부분은 렌더링을 위한 환경(도형 선택 제외)이다. \
+외부에서 전역 변수 변경 시, 이를 전달받아서 canvas 내부 값들 변경
 
 ```typescript
 // editor.tsx
@@ -332,6 +340,18 @@ export const ChatSocket = (io: Server, name: string) => {
 각 namespace는 각기 다른 용도 : 채팅, 접속자 정보, 프로젝트 정보 등등
 
 ![Screenshot 2025-03-16 at 2 03 57 AM](https://github.com/user-attachments/assets/3a7a73bd-187c-40c8-a838-50d8ac4387ba)
+
+---
+
+### _backend for frontend_
+
+`CORS`, 데이터 처리를 위한 backend for frontend 구현
+
+`Nextjs` 의 `api router`를 활용하여 중간 서버 구현
+
+필요한 데이터만 client에 제공하는 형태로 가능하도록 구조 생성
+
+---
 
 ### _folder structure_
 

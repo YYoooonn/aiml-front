@@ -1,5 +1,3 @@
-import { breakpoints } from "./breakpoints";
-
 const HHEIGHT = 56;
 const FHEIGHT = 40;
 

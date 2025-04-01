@@ -1,25 +1,30 @@
 "use client";
 
-import { ObjectInfo, ObjectConstructor, Project } from "@/@types/api";
 import { read } from "@/app/_actions/project";
 import { create } from "@/app/_actions/object";
 import * as z from "zustand";
 
-export interface ProjectAction {
+export interface PAction {
   reset: () => void;
-  fetch: (projectId: Project["projectId"]) => Promise<Project>;
+  fetch: (pId: ProjectData["id"]) => Promise<ProjectData>;
   getObjects: () => Promise<void>;
-  addtoObjects: (object: ObjectInfo) => void;
-  createObject: (objectInfo: ObjectConstructor) => Promise<void>;
-  removeObject?: (objectId: string) => Promise<void>;
-  updateObject: (object: ObjectInfo) => void;
-  filterObject: (objectId: string) => void;
+  addtoObjects: (object: TObjectData) => void;
+  createObject: (objectInfo: TObject) => Promise<void>;
+  removeObject?: (oId: number) => Promise<void>;
+  updateObject: (object: TObjectData) => void;
+  filterObject: (oId: number) => void;
 }
 
-type ProjectState = Omit<Project & ProjectAction, "projects">;
+interface P extends Omit<ProjectData, "id"> {
+  id?: number;
+}
 
-const DEFAULT: Omit<Project, "projects"> = {
-  projectId: "",
+interface ProjectState extends P, PAction {
+  objects: TObjectData[];
+}
+
+const DEFAULT = {
+  id: undefined,
   title: "",
   subtitle: "",
   objects: [],
@@ -35,31 +40,37 @@ export const useProjectInfo = z.create<ProjectState>()((set, get) => ({
   ...DEFAULT,
   reset: () => set({ ...DEFAULT }),
   // setUser: (user) => set({user}),
-  fetch: async (projectId) => {
-    const proInfo = await read(projectId);
-    const pObjts = await read(projectId, "objects");
-    if (proInfo.error || pObjts.error) {
-      return DEFAULT;
+  fetch: async (pId) => {
+    const pInfo = await read(pId);
+    const pObjts = await read(pId, "objects");
+    if (pInfo.success && pObjts.success) {
+      set({ ...pInfo.data, objects: pObjts.data.objects });
+      return pInfo.data;
     } else {
-      set({ ...proInfo, objects: pObjts.objects });
-      return proInfo;
+      return pInfo;
     }
   },
   createObject: async (objectInfo) => {
-    const response = await create(get().projectId, objectInfo);
-    if (!response["error"]) {
-      set({ objects: [...get().objects, response] });
+    const id = get().id;
+    if (id) {
+      const response = await create(id, objectInfo);
+      if (response.success) {
+        set({ objects: [...get().objects, response.data] });
+      }
     }
   },
   getObjects: async () => {
-    const response = await read(get().projectId, "objects");
-    if (response.objects) {
-      set({ objects: response.objects });
+    const id = get().id;
+    if (id) {
+      const response = await read(id, "objects");
+      if (response.success) {
+        set({ objects: response.data.objects });
+      }
     }
   },
-  filterObject: (objectId: string) => {
+  filterObject: (oId: number) => {
     set({
-      objects: get().objects.filter((o) => o.objectId !== objectId),
+      objects: get().objects.filter((o) => o.id !== oId),
     });
   },
   // removeObject: async (objectId) => {
@@ -68,9 +79,7 @@ export const useProjectInfo = z.create<ProjectState>()((set, get) => ({
   // },
   updateObject: (obj) => {
     set({
-      objects: get().objects.map((o) =>
-        o.objectId === obj.objectId ? obj : o,
-      ),
+      objects: get().objects.map((o) => (o.id === obj.id ? obj : o)),
     });
   },
   addtoObjects: (object) => {
