@@ -54,7 +54,7 @@ export const useUserInfo = create<UserState>()((set, get) => ({
   },
   fetchUserInfo: async (id) => {
     set(DEFAULT);
-    const res = id? await user.read(id) : await user.read()
+    const res = id ? await user.read(id) : await user.read();
     if (res.success) set({ ...res.data });
     // !response.error && response.username === username
     //   ? set(response)
@@ -64,13 +64,16 @@ export const useUserInfo = create<UserState>()((set, get) => ({
     //     });
   },
   fetch: async (uId) => {
-    const res = uId? await user.read(uId) : await user.read();
+    const res = uId ? await user.read(uId) : await user.read();
     if (res.success) {
       set({ ...res.data });
-      const r = await user.readEntity({ id: uId? uId: undefined, entity: "projects" });
+      const r = await user.readEntity({
+        id: uId ? uId : undefined,
+        entity: "projects",
+      });
       if (r.success) set({ projects: r.data.projects });
     } else {
-      alert(res.error)
+      alert(res.error);
     }
   },
   update: async (data) => {

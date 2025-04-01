@@ -8,7 +8,10 @@ export async function GET(
   req: NextRequest,
   { params }: { params: { id: string; entity: string; entityId: string } },
 ) {
-  const response = await userAuthRequest(PATH.concat(`/${params.id}/${params.entity}/${params.entityId}`), req)
+  const response = await userAuthRequest(
+    PATH.concat(`/${params.id}/${params.entity}/${params.entityId}`),
+    req,
+  );
   return NextResponse.json(response, {
     status: 200,
     headers: DEFAULT_HEADERS,
@@ -20,7 +23,10 @@ export async function POST(
   req: NextRequest,
   { params }: { params: { id: string; entity: string; entityId: string } },
 ) {
-  const response = await userAuthRequest(PATH.concat(`/${params.id}/${params.entity}/${params.entityId}`), req)
+  const response = await userAuthRequest(
+    PATH.concat(`/${params.id}/${params.entity}/${params.entityId}`),
+    req,
+  );
   return NextResponse.json(response, {
     status: 200,
     headers: DEFAULT_HEADERS,
@@ -32,7 +38,10 @@ export async function PUT(
   req: NextRequest,
   { params }: { params: { id: string; entity: string; entityId: string } },
 ) {
-  const response = await userAuthRequest(PATH.concat(`/${params.id}/${params.entity}/${params.entityId}}`), req)
+  const response = await userAuthRequest(
+    PATH.concat(`/${params.id}/${params.entity}/${params.entityId}}`),
+    req,
+  );
   return NextResponse.json(response, {
     status: 200,
     headers: DEFAULT_HEADERS,
@@ -44,7 +53,10 @@ export async function DELETE(
   req: NextRequest,
   { params }: { params: { id: string; entity: string; entityId: string } },
 ) {
-  const response = await userAuthRequest(PATH.concat(`/${params.id}/${params.entity}/${params.entityId}}`), req)
+  const response = await userAuthRequest(
+    PATH.concat(`/${params.id}/${params.entity}/${params.entityId}}`),
+    req,
+  );
   return NextResponse.json(response, {
     status: 200,
     headers: DEFAULT_HEADERS,

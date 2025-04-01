@@ -5,7 +5,7 @@ const PATH = ENDPOINT.P;
 
 // GET projects
 export async function GET(req: NextRequest) {
-  const response = await userAuthRequest(PATH, req)
+  const response = await userAuthRequest(PATH, req);
   return NextResponse.json(response, {
     status: 200,
     headers: DEFAULT_HEADERS,
@@ -13,7 +13,7 @@ export async function GET(req: NextRequest) {
 }
 
 export async function POST(req: NextRequest) {
-  const response = await userAuthRequest(PATH, req)
+  const response = await userAuthRequest(PATH, req);
   return NextResponse.json(response, {
     status: 200,
     headers: DEFAULT_HEADERS,

@@ -9,7 +9,7 @@ interface ErrorResponse {
 }
 
 interface ArchiveData {
-  content : ProjectData[]
+  content: ProjectData[];
 }
 
 type TData =

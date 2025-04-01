@@ -55,10 +55,7 @@ export async function remove(username?: string) {
   return data;
 }
 
-export async function readEntity(props: {
-  id?: number;
-  entity?: string;
-}) {
+export async function readEntity(props: { id?: number; entity?: string }) {
   const uId = props.id ? props.id : "me";
   const response = await fetch(`${ENDPOINT.U}/${uId}/${props.entity}`, {
     method: "GET",

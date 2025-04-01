@@ -14,42 +14,49 @@ route.ts에서 직접 extend한 타입 사용하는 것은 불가능
 interface BaseRequest<T = unknown> extends NextRequest {
   body?: T;
   headers?: HeadersInit;
-  method : string | "GET" | "POST" | "DELETE" | "PATCH" | "PUT"
+  method: string | "GET" | "POST" | "DELETE" | "PATCH" | "PUT";
 }
 
-interface AuthRequest<T = unknown>  extends BaseRequest {
-  body? : T
+interface AuthRequest<T = unknown> extends BaseRequest {
+  body?: T;
   headers: { Authorization: string } & Record<string, string>;
 }
 
-type LoginRequest = BaseRequest<{ username: string; password: string }>
+type LoginRequest = BaseRequest<{ username: string; password: string }>;
 
-type RegisterRequest = BaseRequest<User>
+type RegisterRequest = BaseRequest<User>;
 
-type UserRequest = BaseRequest<Omit<User, "username">>
+type UserRequest = BaseRequest<Omit<User, "username">>;
 
-type ProjectRequest = BaseRequest<Project>
+type ProjectRequest = BaseRequest<Project>;
 
-type TObjectRequest = BaseRequest<TObject> 
+type TObjectRequest = BaseRequest<TObject>;
 
-type InvitationRequest = BaseRequest<{ projectId: number; userId: number; readOnly: boolean }> 
+type InvitationRequest = BaseRequest<{
+  projectId: number;
+  userId: number;
+  readOnly: boolean;
+}>;
 
-type ImageUploadRequest = BaseRequest<{ imageExtension: string; contentLength: number }> 
+type ImageUploadRequest = BaseRequest<{
+  imageExtension: string;
+  contentLength: number;
+}>;
 
 /* API RESPONSE */
 
-interface BaseResponse<T=unknown> extends NextResponse {
+interface BaseResponse<T = unknown> extends NextResponse {
   body: T;
 }
 
-type ProjectsResponse = BaseResponse<{projects: ProjectData[]}>
+type ProjectsResponse = BaseResponse<{ projects: ProjectData[] }>;
 
-type ArchiveResponse = BaseResponse<{content: ProjectData[]}>
+type ArchiveResponse = BaseResponse<{ content: ProjectData[] }>;
 
-type ParticipantsResponse = BaseResponse<{participants: ParticipantData[]}>
+type ParticipantsResponse = BaseResponse<{ participants: ParticipantData[] }>;
 
-type TObjectsResponse = BaseResponse<{objects: TObjectData[]}>
+type TObjectsResponse = BaseResponse<{ objects: TObjectData[] }>;
 
-type LoginResponse = BaseResponse<{ token: string }>
+type LoginResponse = BaseResponse<{ token: string }>;
 
-type ImgResponse = BaseResponse<{ preSignedUrl: string }>
+type ImgResponse = BaseResponse<{ preSignedUrl: string }>;

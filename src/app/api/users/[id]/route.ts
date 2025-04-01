@@ -9,7 +9,7 @@ export async function GET(
   req: NextRequest,
   { params }: { params: { id: string } },
 ) {
-  const response = await userAuthRequest(PATH.concat(`/${params.id}`), req)
+  const response = await userAuthRequest(PATH.concat(`/${params.id}`), req);
   return NextResponse.json(response, {
     status: 200,
     headers: DEFAULT_HEADERS,
@@ -21,7 +21,7 @@ export async function PUT(
   req: NextRequest,
   { params }: { params: { id: string } },
 ) {
-  const response = await userAuthRequest(PATH.concat(`/${params.id}`), req)
+  const response = await userAuthRequest(PATH.concat(`/${params.id}`), req);
   return NextResponse.json(response, {
     status: 200,
     headers: DEFAULT_HEADERS,
@@ -33,7 +33,7 @@ export async function DELETE(
   req: NextRequest,
   { params }: { params: { id: string } },
 ) {
-  const response = await userAuthRequest(PATH.concat(`/${params.id}`), req)
+  const response = await userAuthRequest(PATH.concat(`/${params.id}`), req);
   return NextResponse.json(response, {
     status: 200,
     headers: DEFAULT_HEADERS,

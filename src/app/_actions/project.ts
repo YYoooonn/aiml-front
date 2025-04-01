@@ -8,7 +8,10 @@ export async function search({ k, n, s }: ProjectSearchParams) {
     `${ENDPOINT.P}/search?keyword=${k}&pageNum=${n}&pageSize=${s}`,
     { method: "GET" },
   );
-  const r : ActionResponse<ArchiveData> = await responseHandler(response, ERROR_FROM);
+  const r: ActionResponse<ArchiveData> = await responseHandler(
+    response,
+    ERROR_FROM,
+  );
   return r;
 }
 

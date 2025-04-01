@@ -1,4 +1,3 @@
-
 /* 백엔드랑 동일 환경 구성 */
 
 export interface TUser extends Omit<UserData, "id"> {
@@ -15,30 +14,29 @@ export interface TObject extends Omit<TObjectData, "id"> {
 
 export const SampleUser = (id?: number) => {
   return generateRandomUser(id);
-}
+};
 
 export const SampleUsers = (count: number) => {
   return generateRandomUsers(count);
-}
+};
 export const SampleProject = (id?: number) => {
   return generateRandomProject(id);
-}
+};
 export const SampleProjects = (count: number) => {
   return generateRandomProjects(count);
-}
+};
 export const SampleObject = (id?: number) => {
   return generateRandomObject(id);
-}
+};
 export const SampleObjects = (count: number) => {
   return generateRandomObjects(count);
-}
+};
 
 export const SampleToken = () => {
   return generateRandomToken();
-}
+};
 
-
-function generateRandomUser(id?: number) : TUser{
+function generateRandomUser(id?: number): TUser {
   return {
     userId: id ? id : 1,
     username: generateRandomString(),

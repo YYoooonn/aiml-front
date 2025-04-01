@@ -1,4 +1,3 @@
-
 /* 백엔드랑 동일 환경 구성 */
 
 export interface TUser extends Omit<UserData, "id"> {
@@ -13,7 +12,7 @@ export interface TObject extends Omit<TObjectData, "id"> {
   objectId: number;
 }
 
-export function generateRandomUser(id?: number) : TUser{
+export function generateRandomUser(id?: number): TUser {
   return {
     userId: id ? id : 1,
     username: generateRandomString(),

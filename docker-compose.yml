@@ -7,7 +7,7 @@ services:
     environment:
       NEXT_PUBLIC_HOSTNAME: ${NEXT_PUBLIC_HOSTNAME}
       BACKEND_API_BASE: ${BACKEND_API_BASE}
-      JWT_COOKIE_NAME : ${JWT_COOKIE_NAME}
+      JWT_COOKIE_NAME: ${JWT_COOKIE_NAME}
     platform: linux/x86_64
     image: yyoooonn/aimlfront:latest
     ports:

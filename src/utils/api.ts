@@ -14,15 +14,20 @@ export const DEFAULT_HEADERS = {
   "Content-Type": "application/json",
 };
 
-type THeader = (req: BaseRequest, _method: BaseRequest["method"]) => HeadersInit;
+type THeader = (
+  req: BaseRequest,
+  _method: BaseRequest["method"],
+) => HeadersInit;
 
-type ReqHandler = (req : BaseRequest,
-  auth: boolean) => Promise<{
-    headers: HeadersInit;
-    body?: string;
-  }>
+type ReqHandler = (
+  req: BaseRequest,
+  auth: boolean,
+) => Promise<{
+  headers: HeadersInit;
+  body?: string;
+}>;
 
-type DObj = { [key: string]: unknown | Data | Data[] }
+type DObj = { [key: string]: unknown | Data | Data[] };
 type Data = string | DObj;
 
 type ResHandler = (res: Response) => Promise<{
@@ -33,12 +38,12 @@ type ResHandler = (res: Response) => Promise<{
 
 export const headers: THeader = (req, _method = "GET") => {
   const token = req.cookies.get(JWT_COOKIE_NAME);
-  let base = {}
+  let base = {};
   if (token) {
-    base = {...base, Authorization: "Bearer ".concat(token.value),}
+    base = { ...base, Authorization: "Bearer ".concat(token.value) };
   }
   if (_method !== "GET") {
-    base = {...base, "Content-Type": "application/json",}
+    base = { ...base, "Content-Type": "application/json" };
   }
   return base;
 };
@@ -52,7 +57,7 @@ function handleIdFields(obj: DObj) {
         // 배열일 경우 각 항목에 대해 처리
         val.forEach((item) => {
           if (item && typeof item === "object") {
-            handleIdFields(item);  // 배열 안의 객체도 재귀적으로 처리
+            handleIdFields(item); // 배열 안의 객체도 재귀적으로 처리
           }
         });
       } else {
@@ -62,16 +67,14 @@ function handleIdFields(obj: DObj) {
     }
     if (key.endsWith("Id")) {
       obj.id = val;
-      delete obj[key];  // 'Id' 키 삭제
+      delete obj[key]; // 'Id' 키 삭제
     }
   });
 }
 
-export const responseHandler : ResHandler = async (
-  res 
-) => {
+export const responseHandler: ResHandler = async (res) => {
   if (res.ok) {
-    const data = await parser(res)
+    const data = await parser(res);
     if (!data) {
       return { success: true };
     } else {
@@ -82,12 +85,12 @@ export const responseHandler : ResHandler = async (
       return { success: true, data: data };
     }
   } else {
-    const message = await parser(res) as string;
+    const message = (await parser(res)) as string;
     return { success: false, error: message ? message : `code ${res.status}` };
   }
 };
 
-export const requestHandler : ReqHandler = async (req, _auth=true) => {
+export const requestHandler: ReqHandler = async (req, _auth = true) => {
   const m = req.method;
   const h = headers(req, m);
   if (m === "GET") {
@@ -96,47 +99,47 @@ export const requestHandler : ReqHandler = async (req, _auth=true) => {
       method: m,
     };
   }
-  const body = await req.json()
+  const body = await req.json();
   // XXX DO SOMETHING
   return {
     headers: h,
     method: m,
     body: JSON.stringify(body),
   };
-}
+};
 
 type TParser = (res: Response) => Promise<string | Data>;
 
-const parser : TParser = async (res) => {
+const parser: TParser = async (res) => {
   const t = res.headers.get("Content-Type");
   if (t && t.includes("application/json")) {
     const p = await res.json();
-    return p
+    return p;
   }
   const p = await res.text();
-  return p
-}
+  return p;
+};
 
-export async function userApiRequest(
-  endpoint: string,
-  request: BaseRequest,
-) {
+export async function userApiRequest(endpoint: string, request: BaseRequest) {
   // console.debug(`API REQUEST TO ${process.env.BACKEND_API_BASE + endpoint}`);
   const req = await requestHandler(request, false);
-  const response = await fetch(`${process.env.BACKEND_API_BASE + endpoint}`, req).then(async (res) => await responseHandler(res))
-  return response
+  const response = await fetch(
+    `${process.env.BACKEND_API_BASE + endpoint}`,
+    req,
+  ).then(async (res) => await responseHandler(res));
+  return response;
 }
 
-export async function userAuthRequest(
-  endpoint: string,
-  request: BaseRequest,
-) {
+export async function userAuthRequest(endpoint: string, request: BaseRequest) {
   // console.debug(`AUTH REQUEST TO ${process.env.BACKEND_API_BASE + endpoint}`);
-  const req = await requestHandler(request, true)
+  const req = await requestHandler(request, true);
   if ("Authorization" in req.headers) {
     // console.debug("REQUEST WITH CREDENTIALS FAILED, CONVERTS TO API REQUEST ");
-    const response = await fetch(`${process.env.BACKEND_API_BASE + endpoint}`, req).then(async (res) => await responseHandler(res))
-    return response
+    const response = await fetch(
+      `${process.env.BACKEND_API_BASE + endpoint}`,
+      req,
+    ).then(async (res) => await responseHandler(res));
+    return response;
   } else {
     return await userApiRequest(endpoint, request);
   }

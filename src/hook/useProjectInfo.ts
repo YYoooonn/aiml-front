@@ -79,9 +79,7 @@ export const useProjectInfo = z.create<ProjectState>()((set, get) => ({
   // },
   updateObject: (obj) => {
     set({
-      objects: get().objects.map((o) =>
-        o.id === obj.id ? obj : o,
-      ),
+      objects: get().objects.map((o) => (o.id === obj.id ? obj : o)),
     });
   },
   addtoObjects: (object) => {

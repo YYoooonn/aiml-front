@@ -28,7 +28,7 @@ interface DateInfo {
 
 interface Entity<T extends object> extends T, DateInfo {
   id: number;
-} 
+}
 
 type UserData = Entity<User>;
 type ProjectData = Entity<Project>;

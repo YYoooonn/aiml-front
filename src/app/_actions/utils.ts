@@ -1,5 +1,5 @@
-
-const BASE_ROUTE = process.env.NODE_ENV === "development" ? "/api/test" : "/api";
+const BASE_ROUTE =
+  process.env.NODE_ENV === "development" ? "/api/test" : "/api";
 
 export const ENDPOINT: Record<string, string> = {
   P: `${BASE_ROUTE}/projects`,
@@ -12,5 +12,5 @@ export const responseHandler = async (r: Response, from?: string) => {
   // console.debug("RESPONSE RECEIVED FROM", from);
   // TO JSON
   const data = await r.json();
-  return data
+  return data;
 };
