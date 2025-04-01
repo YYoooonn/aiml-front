@@ -1,10 +1,10 @@
 import { ActionResponse, UserRegisterData } from "./actions";
-import { responseHandler, USER_ROUTE } from "./utils";
+import { responseHandler, ENDPOINT } from "./utils";
 
 const ERROR_FROM = "USER ACTION";
 
 export async function create(props: UserRegisterData) {
-  const response = await fetch(USER_ROUTE, {
+  const response = await fetch(ENDPOINT.U, {
     method: "POST",
     body: JSON.stringify(props),
   });
@@ -16,9 +16,9 @@ export async function create(props: UserRegisterData) {
   return data;
 }
 
-export async function read(nameOrId?: string | number) {
-  const id = nameOrId ? nameOrId : "me";
-  const response = await fetch(`${USER_ROUTE}/${id}`, { method: "GET" });
+export async function read(id?: number) {
+  const uId = id ? id : "me";
+  const response = await fetch(`${ENDPOINT.U}/${uId}`, { method: "GET" });
 
   const data: ActionResponse<UserData> = await responseHandler(
     response,
@@ -35,7 +35,7 @@ export async function update({
   userInfos: User;
 }) {
   const id = username ? username : "me";
-  const response = await fetch(`${USER_ROUTE}/${id}`, {
+  const response = await fetch(`${ENDPOINT.U}/${id}`, {
     method: "PUT",
     body: JSON.stringify(userInfos),
   });
@@ -48,7 +48,7 @@ export async function update({
 
 export async function remove(username?: string) {
   const id = username ? username : "me";
-  const response = await fetch(`${USER_ROUTE}/${id}`, {
+  const response = await fetch(`${ENDPOINT.U}/${id}`, {
     method: "DELETE",
   });
   const data: ActionResponse = await responseHandler(response, ERROR_FROM);
@@ -56,11 +56,11 @@ export async function remove(username?: string) {
 }
 
 export async function readEntity(props: {
-  nameOrId?: string | number;
+  id?: number;
   entity?: string;
 }) {
-  const id = props.nameOrId ? props.nameOrId : "me";
-  const response = await fetch(`${USER_ROUTE}/${id}/${props.entity}`, {
+  const uId = props.id ? props.id : "me";
+  const response = await fetch(`${ENDPOINT.U}/${uId}/${props.entity}`, {
     method: "GET",
   });
   const data: ActionResponse<UserData> = await responseHandler(

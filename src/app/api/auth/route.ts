@@ -1,20 +1,15 @@
 "use server";
 
-import { DEFAULT_HEADERS, headers, responseHandler } from "@/utils/api";
-import { NextRequest, NextResponse } from "next/server";
+import { LoginRequest } from "@/@types/api";
+import { DEFAULT_HEADERS, ENDPOINT, userApiRequest } from "@/utils/api";
+import { NextResponse } from "next/server";
+
+const PATH = ENDPOINT.A;
 
 // login
-export async function POST(req: NextRequest) {
-  const body = await req.json();
-  const header = headers(req);
-  const res = await fetch(`${process.env.BACKEND_API_BASE}auth/login`, {
-    body: JSON.stringify(body),
-    method: "POST",
-    headers: header,
-  });
-
-  const data = await responseHandler(res);
-  return NextResponse.json(JSON.stringify(data), {
+export async function POST(req: LoginRequest) {
+  const response = await userApiRequest(PATH.concat("/login"), req);
+  return NextResponse.json(response, {
     status: 200,
     headers: DEFAULT_HEADERS,
   });

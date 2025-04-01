@@ -10,7 +10,7 @@ export default function Page({ params }: { params: { username: string } }) {
   const { fetch, projects, addProject } = useUserInfo();
 
   useEffect(() => {
-    fetch(params.username);
+    fetch();
   }, [params.username]);
 
   return (

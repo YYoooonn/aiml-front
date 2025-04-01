@@ -26,20 +26,15 @@ interface DateInfo {
   lastModifiedAt: string;
 }
 
-interface UserData extends User, DateInfo {
-  userId: number;
-}
+interface Entity<T extends object> extends T, DateInfo {
+  id: number;
+} 
 
-interface ProjectData extends Project, DateInfo {
-  projectId: number;
-}
+type UserData = Entity<User>;
+type ProjectData = Entity<Project>;
+type TObjectData = Entity<TObject>;
 
-interface TObjectData extends TObject, DateInfo {
-  objectId: number;
-}
-
-interface ParticipantData extends User {
-  userId: number;
+interface ParticipantData extends UserData {
   isOwner: boolean;
   readonly: boolean;
 }

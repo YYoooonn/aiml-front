@@ -1,15 +1,13 @@
-import { headers, responseHandler, DEFAULT_HEADERS } from "@/utils/api";
-import { NextRequest, NextResponse } from "next/server";
+import { BaseRequest } from "@/@types/api";
+import { DEFAULT_HEADERS, ENDPOINT, userAuthRequest } from "@/utils/api";
+import { NextResponse } from "next/server";
 
-// GET projects
-export async function GET(req: NextRequest) {
-  const header = headers(req);
-  const res = await fetch(`${process.env.BACKEND_API_BASE}objects`, {
-    method: "GET",
-    headers: header,
-  });
-  const data = await responseHandler(res);
-  return NextResponse.json(JSON.stringify(data), {
+const PATH = ENDPOINT.O;
+
+// GET objects
+export async function GET(req: BaseRequest) {
+  const response = await userAuthRequest(PATH, req)
+  return NextResponse.json(response, {
     status: 200,
     headers: DEFAULT_HEADERS,
   });

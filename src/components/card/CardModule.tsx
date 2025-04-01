@@ -15,8 +15,8 @@ export function ArchiveCard({ props }: { props: ProjectData }) {
 
   const handleClick = (e: React.MouseEvent) => {
     e.preventDefault();
-    router.push(`/archive?from=${props.projectId}`);
-    // navigateArchive(props.projectId);
+    router.push(`/archive?from=${props.id}`);
+    // navigateArchive(props.id);
   };
   return <CardModule props={props} handler={handleClick} />;
 }
@@ -24,7 +24,7 @@ export function ArchiveCard({ props }: { props: ProjectData }) {
 export function WorkspaceCard({ props }: { props: ProjectData }) {
   const handleClick = (e: React.MouseEvent) => {
     e.preventDefault();
-    navigateWorkspace(props.projectId);
+    navigateWorkspace(props.id);
   };
   return <CardModule props={props} handler={handleClick} />;
 }

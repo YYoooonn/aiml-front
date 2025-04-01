@@ -1,13 +1,15 @@
-import { DEFAULT_HEADERS, headers, responseHandler } from "@/utils/api";
-import { NextRequest, NextResponse } from "next/server";
+import { BaseRequest, ProjectRequest } from "@/@types/api";
+import { DEFAULT_HEADERS, ENDPOINT, userAuthRequest } from "@/utils/api";
+import { NextResponse } from "next/server";
+
+const PATH = ENDPOINT.P;
 
 // GET projects
 export async function GET(
-  req: NextRequest,
+  req: BaseRequest,
   { params }: { params: { id: string } },
 ) {
-  const header = headers(req);
-  let res;
+  // Archive SEARCH
   if (params.id === "search") {
     const searchParam = req.nextUrl.searchParams;
     const { k, n, s } = {
@@ -15,21 +17,14 @@ export async function GET(
       n: searchParam.get("pageNum"),
       s: searchParam.get("pageSize"),
     };
-    res = await fetch(
-      `${process.env.BACKEND_API_BASE}projects/search?keyword=${k}&pageNum=${n}&pageSize=${s}`,
-      {
-        method: "GET",
-        headers: header,
-      },
-    );
-  } else {
-    res = await fetch(`${process.env.BACKEND_API_BASE}projects/${params.id}`, {
-      method: "GET",
-      headers: header,
+    const response = await userAuthRequest(PATH.concat(`/search?keyword=${k}&pageNum=${n}&pageSize=${s}`), req)
+    return NextResponse.json(response, {
+      status: 200,
+      headers: DEFAULT_HEADERS,
     });
   }
-  const data = await responseHandler(res);
-  return NextResponse.json(JSON.stringify(data), {
+  const response = await userAuthRequest(PATH.concat(`/${params.id}`), req)
+  return NextResponse.json(response, {
     status: 200,
     headers: DEFAULT_HEADERS,
   });
@@ -37,21 +32,11 @@ export async function GET(
 
 // UPDATE project
 export async function PUT(
-  req: NextRequest,
+  req: ProjectRequest,
   { params }: { params: { id: string } },
 ) {
-  const header = headers(req);
-  const body = await req.json();
-  const res = await fetch(
-    `${process.env.BACKEND_API_BASE}projects/${params.id}`,
-    {
-      method: "PUT",
-      body: JSON.stringify(body),
-      headers: header,
-    },
-  );
-  const data = await responseHandler(res);
-  return NextResponse.json(JSON.stringify(data), {
+  const response = await userAuthRequest(PATH.concat(`/${params.id}`), req)
+  return NextResponse.json(response, {
     status: 200,
     headers: DEFAULT_HEADERS,
   });
@@ -59,19 +44,11 @@ export async function PUT(
 
 // DELETE project
 export async function DELETE(
-  req: NextRequest,
+  req: BaseRequest,
   { params }: { params: { id: string } },
 ) {
-  const header = headers(req);
-  const res = await fetch(
-    `${process.env.BACKEND_API_BASE}projects/${params.id}`,
-    {
-      method: "DELETE",
-      headers: header,
-    },
-  );
-  const data = await responseHandler(res, true);
-  return NextResponse.json(JSON.stringify(data), {
+  const response = await userAuthRequest(PATH.concat(`/${params.id}`), req)
+  return NextResponse.json(response, {
     status: 200,
     headers: DEFAULT_HEADERS,
   });

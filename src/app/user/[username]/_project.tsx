@@ -16,7 +16,7 @@ export function Projects({
       createdAt: p.createdAt,
       isPublic: p.isPublic,
       lastModifiedAt: p.lastModifiedAt,
-      projectId: p.projectId,
+      id: p.id,
       subtitle: p.subtitle,
       title: p.title,
     };

@@ -11,7 +11,7 @@ interface UserActions {
   addProject: (project: ProjectData) => void;
   reset: () => void;
   logout: () => void;
-  fetch: (username?: string) => Promise<void>;
+  fetch: (uId?: number) => Promise<void>;
   fetchUserInfo: (id?: number) => Promise<void>;
   update: ({
     id,
@@ -23,15 +23,15 @@ interface UserActions {
   fetchProjects?: () => Promise<void>;
 }
 
-interface U extends Omit<UserData, "userId"> {
-  userId?: number;
+interface U extends Omit<UserData, "id"> {
+  id?: number;
   projects: ProjectData[];
 }
 
 type UserState = U & UserActions;
 
 const DEFAULT: U = {
-  userId: undefined,
+  id: undefined,
   username: "",
   firstName: "",
   lastName: "",
@@ -54,7 +54,7 @@ export const useUserInfo = create<UserState>()((set, get) => ({
   },
   fetchUserInfo: async (id) => {
     set(DEFAULT);
-    const res = await user.read(id);
+    const res = id? await user.read(id) : await user.read()
     if (res.success) set({ ...res.data });
     // !response.error && response.username === username
     //   ? set(response)
@@ -63,13 +63,15 @@ export const useUserInfo = create<UserState>()((set, get) => ({
     //       navigate("/login");
     //     });
   },
-  fetch: async (username) => {
-    const res = await user.read(username);
+  fetch: async (uId) => {
+    const res = uId? await user.read(uId) : await user.read();
     if (res.success) {
       set({ ...res.data });
+      const r = await user.readEntity({ id: uId? uId: undefined, entity: "projects" });
+      if (r.success) set({ projects: r.data.projects });
+    } else {
+      alert(res.error)
     }
-    const r = await user.readEntity({ nameOrId: username, entity: "projects" });
-    if (r.success) set({ projects: r.data.projects });
   },
   update: async (data) => {
     const response = await user.update(data);

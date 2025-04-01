@@ -133,7 +133,7 @@ function Layer({ obj }: { obj: TObjectData }) {
   return (
     <div
       className={
-        selected?.objectId === obj.objectId
+        selected?.id === obj.id
           ? styles.layerTagSelected
           : styles.layerTag
       }
