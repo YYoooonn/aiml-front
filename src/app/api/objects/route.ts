@@ -1,11 +1,10 @@
-import { BaseRequest } from "@/@types/api";
 import { DEFAULT_HEADERS, ENDPOINT, userAuthRequest } from "@/utils/api";
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 
 const PATH = ENDPOINT.O;
 
 // GET objects
-export async function GET(req: BaseRequest) {
+export async function GET(req: NextRequest) {
   const response = await userAuthRequest(PATH, req)
   return NextResponse.json(response, {
     status: 200,

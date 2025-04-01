@@ -1,12 +1,11 @@
-import { BaseRequest, TObjectRequest } from "@/@types/api";
 import { DEFAULT_HEADERS, userAuthRequest, ENDPOINT } from "@/utils/api";
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 
 const PATH = ENDPOINT.O
 
 // GET projects
 export async function GET(
-  req: BaseRequest,
+  req: NextRequest,
   { params }: { params: { id: string } },
 ) {
   const response = await userAuthRequest(PATH.concat(`/${params.id}`), req)
@@ -17,7 +16,7 @@ export async function GET(
 }
 
 export async function PUT(
-  req: TObjectRequest,
+  req: NextRequest,
   { params }: { params: { id: string } },
 ) {
   const response = await userAuthRequest(PATH.concat(`/${params.id}`), req)
@@ -28,7 +27,7 @@ export async function PUT(
 }
 
 export async function DELETE(
-  req: BaseRequest,
+  req: NextRequest,
   { params }: { params: { id: string } },
 ) {
   const response = await userAuthRequest(PATH.concat(`/${params.id}`), req)

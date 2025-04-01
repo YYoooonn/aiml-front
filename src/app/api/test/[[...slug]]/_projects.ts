@@ -1,13 +1,7 @@
 "use server";
 
 import { NextRequest, NextResponse } from "next/server";
-import {
-  generateRandomObjects,
-  generateRandomObject,
-  generateRandomProject,
-  generateRandomProjects,
-  TProject,
-} from "./_utils";
+import { SampleObject, SampleObjects, SampleProject, SampleProjects, TProject } from "@/utils/sample";
 
 const ROOT = "PROJECT";
 
@@ -23,7 +17,7 @@ export async function getProjects(
       //entity
       if (params[2] === "objects") {
         return NextResponse.json(
-          { objects: generateRandomObjects(40) },
+          { objects: SampleObjects(40) },
           {
             status: 200,
             headers: { "Content-Type": "application/json" },
@@ -32,7 +26,7 @@ export async function getProjects(
       }
       const entity = params[2] as keyof TProject;
       return NextResponse.json(
-        { [entity]: generateRandomProject()[entity] },
+        { [entity]: SampleProject()[entity] },
         {
           status: 200,
           headers: { "Content-Type": "application/json" },
@@ -41,7 +35,7 @@ export async function getProjects(
     }
     if (params[1] === "search") {
       return NextResponse.json(
-        { content: generateRandomProjects(100) },
+        { content: SampleProjects(100) },
         {
           status: 200,
           headers: { "Content-Type": "application/json" },
@@ -50,7 +44,7 @@ export async function getProjects(
     }
     return NextResponse.json(
       {
-        ...generateRandomProject(),
+        ...SampleProject(),
         ...{ projectId: params[1] },
       },
       {
@@ -82,7 +76,7 @@ export async function postProjects(
     if (params[2] === "objects") {
       //entity
       return NextResponse.json(
-        { ...generateRandomObject(), ...body },
+        { ...SampleObject(), ...body },
         {
           status: 200,
           headers: { "Content-Type": "application/json" },
@@ -98,7 +92,7 @@ export async function postProjects(
     );
   }
   return NextResponse.json(
-    { ...generateRandomProject(), ...body },
+    { ...SampleProject(), ...body },
     {
       status: 200,
       headers: { "Content-Type": "application/json" },
@@ -127,7 +121,7 @@ export async function putProjects(
       );
     }
     return NextResponse.json(
-      { ...generateRandomProject(), ...body },
+      { ...SampleProject(), ...body },
       {
         status: 200,
         headers: { "Content-Type": "application/json" },

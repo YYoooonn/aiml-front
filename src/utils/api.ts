@@ -1,19 +1,20 @@
 import { BaseRequest } from "@/@types/api";
 import { JWT_COOKIE_NAME } from "./constants";
-export type TENDPOINT = Record<string, string>;
 
-export const ENDPOINT : TENDPOINT = {
-  O : "objects",
-  P : "projects",
-  U : "users",
-  A : "auth",
-}
+export const ENDPOINT = {
+  O: "objects",
+  P: "projects",
+  U: "users",
+  A: "auth",
+} as const;
+
+export type ENDPOINT = (typeof ENDPOINT)[keyof typeof ENDPOINT];
 
 export const DEFAULT_HEADERS = {
   "Content-Type": "application/json",
 };
 
-type THeader = (req: BaseRequest, _method: BaseRequest["method"]) => Record<string, string>;
+type THeader = (req: BaseRequest, _method: BaseRequest["method"]) => HeadersInit;
 
 type ReqHandler = (req : BaseRequest,
   auth: boolean) => Promise<{

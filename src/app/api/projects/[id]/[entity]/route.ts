@@ -1,13 +1,12 @@
-import { BaseRequest, ProjectRequest } from "@/@types/api";
-import { headers, responseHandler, DEFAULT_HEADERS, userAuthRequest, ENDPOINT } from "@/utils/api";
-import { NextResponse } from "next/server";
+import { DEFAULT_HEADERS, userAuthRequest, ENDPOINT } from "@/utils/api";
+import { NextRequest, NextResponse } from "next/server";
 
 
 const PATH = ENDPOINT.P;
 
 // GET project entity
 export async function GET(
-  req: BaseRequest,
+  req: NextRequest,
   { params }: { params: { id: string; entity: string } },
 ) {
   const response = await userAuthRequest(PATH.concat(`/${params.id}/${params.entity}`), req)
@@ -19,7 +18,7 @@ export async function GET(
 
 // POST project entity
 export async function POST(
-  req: ProjectRequest,
+  req: NextRequest,
   { params }: { params: { id: string; entity: string } },
 ) {
   const response = await userAuthRequest(PATH.concat(`/${params.id}/${params.entity}`), req)

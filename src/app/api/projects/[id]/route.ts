@@ -1,12 +1,11 @@
-import { BaseRequest, ProjectRequest } from "@/@types/api";
 import { DEFAULT_HEADERS, ENDPOINT, userAuthRequest } from "@/utils/api";
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 
 const PATH = ENDPOINT.P;
 
 // GET projects
 export async function GET(
-  req: BaseRequest,
+  req: NextRequest,
   { params }: { params: { id: string } },
 ) {
   // Archive SEARCH
@@ -17,6 +16,7 @@ export async function GET(
       n: searchParam.get("pageNum"),
       s: searchParam.get("pageSize"),
     };
+    console.log(k,n,s)
     const response = await userAuthRequest(PATH.concat(`/search?keyword=${k}&pageNum=${n}&pageSize=${s}`), req)
     return NextResponse.json(response, {
       status: 200,
@@ -32,7 +32,7 @@ export async function GET(
 
 // UPDATE project
 export async function PUT(
-  req: ProjectRequest,
+  req: NextRequest,
   { params }: { params: { id: string } },
 ) {
   const response = await userAuthRequest(PATH.concat(`/${params.id}`), req)
@@ -44,7 +44,7 @@ export async function PUT(
 
 // DELETE project
 export async function DELETE(
-  req: BaseRequest,
+  req: NextRequest,
   { params }: { params: { id: string } },
 ) {
   const response = await userAuthRequest(PATH.concat(`/${params.id}`), req)

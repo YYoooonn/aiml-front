@@ -1,33 +1,19 @@
-export interface TUser {
+
+/* 백엔드랑 동일 환경 구성 */
+
+export interface TUser extends Omit<UserData, "id"> {
   userId: number;
-  username: string;
-  firstName?: string;
-  lastName?: string;
-  createdAt: string;
-  lastModifiedAt: string;
-  email?: string;
 }
 
-export interface TProject {
+export interface TProject extends Omit<ProjectData, "id"> {
   projectId: number;
-  title: string;
-  subtitle: string;
-  createdAt: string;
-  lastModifiedAt: string;
 }
 
-export interface TObject {
+export interface TObject extends Omit<TObjectData, "id"> {
   objectId: number;
-  createdAt: string;
-  lastModifiedAt: string;
-  matrix: number[];
-  geometry: string;
-  material: string;
 }
 
-
-
-export function generateRandomUser(id?: number): TUser {
+export function generateRandomUser(id?: number) : TUser{
   return {
     userId: id ? id : 1,
     username: generateRandomString(),
@@ -46,6 +32,7 @@ export function generateRandomUsers(count: number) {
 export function generateRandomProject(id?: number): TProject {
   return {
     projectId: id ? id : 1,
+    isPublic: true,
     title: generateRandomString(),
     subtitle: generateRandomString(),
     createdAt: "2025-03-17T09:49:16.332093",

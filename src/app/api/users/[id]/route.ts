@@ -1,12 +1,12 @@
 import { AuthRequest, BaseRequest } from "@/@types/api";
 import { DEFAULT_HEADERS, ENDPOINT, userAuthRequest } from "@/utils/api";
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 
 const PATH = ENDPOINT.U;
 
 // GET user profile
 export async function GET(
-  req: BaseRequest,
+  req: NextRequest,
   { params }: { params: { id: string } },
 ) {
   const response = await userAuthRequest(PATH.concat(`/${params.id}`), req)
@@ -18,7 +18,7 @@ export async function GET(
 
 // UPDATE user profile
 export async function PUT(
-  req: AuthRequest,
+  req: NextRequest,
   { params }: { params: { id: string } },
 ) {
   const response = await userAuthRequest(PATH.concat(`/${params.id}`), req)
@@ -30,7 +30,7 @@ export async function PUT(
 
 // DELETE user
 export async function DELETE(
-  req: AuthRequest,
+  req: NextRequest,
   { params }: { params: { id: string } },
 ) {
   const response = await userAuthRequest(PATH.concat(`/${params.id}`), req)
