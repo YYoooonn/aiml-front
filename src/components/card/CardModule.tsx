@@ -60,8 +60,8 @@ export function NewCardModule({
     if (valid) {
       open(NewProjectForm, { addProject: addProject }, ModalType.FORM);
     } else {
-      // project limitation 3
-      alert("Currently Project Limited to 3");
+      // project limitation 4
+      alert("Currently Project Limited to 4");
     }
   };
 

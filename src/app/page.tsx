@@ -8,24 +8,22 @@ export default function Home() {
   return (
     <SnapPageScroll>
       <section className={styles.landingSectionContainer}>
-        <p>pg1: Landing</p>
+        <h1>&quot;Landing&quot;</h1>
+        <h3>work in progress</h3>
       </section>
       <section className={styles.landingSectionContainer}>
-        pg2:
         <Link href={"/login"} className={styles.button}>
-          Click to login
+          <h1>&quot;Click to login&quot;</h1>
         </Link>
       </section>
       <section className={styles.landingSectionContainer}>
-        pg3:
         <Link href={"/register"} className={styles.button}>
-          Click to register
+          <h1>&quot;Click to register&quot;</h1>
         </Link>
       </section>
       <section className={styles.landingSectionContainer}>
-        pg4:
         <Link href={"/archive"} className={styles.button}>
-          Go to Archive
+          <h1>&quot;Go to Archive&quot;</h1>
         </Link>
       </section>
     </SnapPageScroll>
