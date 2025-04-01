@@ -62,7 +62,7 @@ function MatrixEditor({ pId }: { pId: number }) {
 
   const handleRemove = async (e: React.MouseEvent) => {
     e.preventDefault();
-    const oId = selected?.objectId;
+    const oId = selected?.id;
     if (oId) {
       const response = await removeSelected(pId);
       if (response.success) {

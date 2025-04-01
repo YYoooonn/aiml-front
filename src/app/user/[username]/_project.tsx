@@ -16,7 +16,7 @@ export function Projects({
       createdAt: p.createdAt,
       isPublic: p.isPublic,
       lastModifiedAt: p.lastModifiedAt,
-      projectId: p.projectId,
+      id: p.id,
       subtitle: p.subtitle,
       title: p.title,
     };
@@ -27,8 +27,7 @@ export function Projects({
       {props?.map((p, i) => {
         return <WorkspaceCard key={i} props={p} />;
       })}
-      {/* <NewCardModule addProject={addProject} valid={projects?.length < 5} /> */}
-      <NewCardModule addProject={addProject} valid={true} />
+      <NewCardModule addProject={addProject} valid={projects?.length < 5} />
     </div>
   );
 }

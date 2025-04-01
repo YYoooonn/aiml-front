@@ -8,12 +8,17 @@ interface ErrorResponse {
   error: string;
 }
 
+interface ArchiveData {
+  content: ProjectData[];
+}
+
 type TData =
   | undefined
   | UserData
   | TObjectData
   | ProjectData
-  | LoginResponse["body"];
+  | LoginResponse["body"]
+  | ArchiveData;
 
 interface IData<T extends TData = undefined> {
   data: T;

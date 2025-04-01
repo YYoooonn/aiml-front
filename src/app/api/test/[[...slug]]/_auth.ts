@@ -1,7 +1,7 @@
 "use server";
 
 import { NextRequest, NextResponse } from "next/server";
-import { generateRandomToken } from "./_utils";
+import { SampleToken } from "@/utils/sample";
 
 const ROOT = "AUTH";
 
@@ -31,7 +31,7 @@ export async function postAuth(
   console.log(`TEST POST ${ROOT} body : `, body);
   console.log(`TEST POST ${ROOT} auth : `, token);
   return NextResponse.json(
-    { token: generateRandomToken() },
+    { token: SampleToken() },
     {
       status: 200,
       headers: { "Content-Type": "application/json" },

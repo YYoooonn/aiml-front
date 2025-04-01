@@ -16,10 +16,10 @@ interface MeshProps {
 
 /* 
 
-!!! FIXME
+FIXME
 
 1. 겹쳐진 곳 선택했을 때 동시에 선택되는 현상
-2. 비어있는 캔버스 클릭했을 때 멈추는 현상
+2. 더블클릭 했을 때 캔버스 멈추는 현상
 
 */
 
@@ -77,7 +77,7 @@ function SelectableMesh({ obj, selected, handleSelected }: MeshProps) {
     <group scale={scale} position={position} rotation={newRotation}>
       <mesh
         onClick={handleSelected}
-        visible={selected && selected.objectId !== obj.objectId}
+        visible={selected && selected.id !== obj.id}
       >
         {obj.geometry === "BoxGeometry" ? (
           <boxGeometry />

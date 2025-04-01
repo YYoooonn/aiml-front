@@ -1,78 +1,117 @@
-export const Object1 = {
-  objectId: "objectid1",
-  data: {
-    geometry: "anygeometry",
-    material: "anymaterial",
-  },
+/* 백엔드랑 동일 환경 구성 */
+
+export interface TUser extends Omit<UserData, "id"> {
+  userId: number;
+}
+
+export interface TProject extends Omit<ProjectData, "id"> {
+  projectId: number;
+}
+
+export interface TObject extends Omit<TObjectData, "id"> {
+  objectId: number;
+}
+
+export const SampleUser = (id?: number) => {
+  return generateRandomUser(id);
 };
 
-export const Object2 = {
-  objectId: "objectid2",
-  data: {
-    geometry: "anygeometry",
-    material: "anymaterial",
-  },
+export const SampleUsers = (count: number) => {
+  return generateRandomUsers(count);
+};
+export const SampleProject = (id?: number) => {
+  return generateRandomProject(id);
+};
+export const SampleProjects = (count: number) => {
+  return generateRandomProjects(count);
+};
+export const SampleObject = (id?: number) => {
+  return generateRandomObject(id);
+};
+export const SampleObjects = (count: number) => {
+  return generateRandomObjects(count);
 };
 
-export const Object3 = {
-  objectId: "objectid3",
-  data: {
-    geometry: "anygeometry",
-    material: "anymaterial",
-  },
+export const SampleToken = () => {
+  return generateRandomToken();
 };
 
-export const Object4 = {
-  objectId: "objectid4",
-  data: {
-    geometry: "anygeometry",
-    material: "anymaterial",
-  },
-};
+function generateRandomUser(id?: number): TUser {
+  return {
+    userId: id ? id : 1,
+    username: generateRandomString(),
+    firstName: generateRandomString(),
+    lastName: generateRandomString(),
+    createdAt: "2025-03-17T09:49:16.332093",
+    lastModifiedAt: "2025-03-17T09:49:06.985782",
+    email: generateRandomString().concat("@gmail.com"),
+  };
+}
 
-export const Project1 = {
-  projectId: "projectId1",
-  title: "sample project title 1",
-  subtitle: "sample project subtitle 1",
-  createdAt: "20240827",
-  createdBy: "username",
-  lastModifiedAt: "20241027",
-  objects: [Object1, Object2, Object3],
-};
+function generateRandomUsers(count: number) {
+  return Array.from({ length: count }).map((_, i) => generateRandomUser(i + 1));
+}
 
-export const Project2 = {
-  projectId: "projectId2",
-  title: "sample project title 2",
-  subtitle: "sample project subtitle 2",
-  createdAt: "20240827",
-  createdBy: "username",
-  lastModifiedAt: "20241027",
-  objects: [Object4],
-};
+function generateRandomProject(id?: number): TProject {
+  return {
+    projectId: id ? id : 1,
+    isPublic: true,
+    title: generateRandomString(),
+    subtitle: generateRandomString(),
+    createdAt: "2025-03-17T09:49:16.332093",
+    lastModifiedAt: "2025-03-17T09:49:06.985782",
+  };
+}
 
-export const Project3 = {
-  projectId: "projectId3",
-  title: "sample project title 3",
-  subtitle: "sample project subtitle 3",
-  createdAt: "20240827",
-  createdBy: "username",
-  lastModifiedAt: "20241027",
-  objects: [],
-};
-export const Project4 = {
-  projectId: "projectId3",
-  title: "sample project title 4",
-  subtitle: "sample project subtitle 4",
-  createdAt: "20240827",
-  createdBy: "username",
-  lastModifiedAt: "20241027",
-  objects: [],
-};
+function generateRandomProjects(count: number) {
+  return Array.from({ length: count }).map((_, i) =>
+    generateRandomProject(i + 1),
+  );
+}
 
-export const User1 = {
-  userId: "userID",
-  username: "username1",
-  firstName: "firstname",
-  lastName: "lastname",
-  projects: [Project1, Project2, Project3, Project4],
-};
+function generateRandomObject(id?: number): TObject {
+  return {
+    objectId: id ? id : 1,
+    createdAt: "2025-03-17T09:49:16.332093",
+    lastModifiedAt: "2025-03-17T09:49:06.985782",
+    matrix: generateRandomMatrix(),
+    geometry: generateRandomGeometry(),
+    material: generateRandomHexcolor(),
+  };
+}
+
+function generateRandomToken() {
+  return generateRandomString();
+}
+
+function generateRandomObjects(count: number) {
+  return Array.from({ length: count }).map((_, i) =>
+    generateRandomObject(i + 1),
+  );
+}
+
+function generateRandomString() {
+  return Math.random().toString(36).substring(2, 11);
+}
+
+function generateRandomMatrix() {
+  return Array.from({ length: 16 }, () => Math.random() * 10);
+}
+
+function generateRandomGeometry() {
+  const trigger = Math.floor(Math.random() * 3);
+  if (trigger < 1) {
+    return "ConeGeometry";
+  } else if (trigger < 2) {
+    return "SphereGeometry";
+  }
+  return "CubeGeometry";
+}
+
+function generateRandomHexcolor() {
+  return "#".concat(
+    Array.from({ length: 6 }, () =>
+      Math.floor(Math.random() * 16 - 0.001).toString(16),
+    ).join(""),
+  );
+}

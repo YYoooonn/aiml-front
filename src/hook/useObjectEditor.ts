@@ -23,8 +23,8 @@ export interface ObjectActions {
   setPosition: (val: Position) => void;
   setRotation: (val: Position) => void;
   setMaterial: (val: string) => void;
-  removeSelected: (projectId: number) => Promise<ActionResponse>;
-  updateMatrix: (projectId: number) => Promise<ActionResponse<TObjectData>>;
+  removeSelected: (pId: number) => Promise<ActionResponse>;
+  updateMatrix: (pId: number) => Promise<ActionResponse<TObjectData>>;
   updateMaterial: (material: string) => void;
   toggleTest: () => void;
 }
@@ -41,7 +41,7 @@ export const useObjectEditor = create<SelectedInfo & ObjectActions>()(
   (set, get) => ({
     ...DEFAULT,
     setSelected: (obj: TObjectData) => {
-      if (get().selected?.objectId === obj.objectId) {
+      if (get().selected?.id === obj.id) {
         get().resetSelected();
       } else {
         set({ selected: obj });
@@ -64,7 +64,7 @@ export const useObjectEditor = create<SelectedInfo & ObjectActions>()(
         get();
       if (selected && position && rotation && scale) {
         const matrix = toMatrix(position, rotation, scale);
-        const response = await update(id, selected.objectId, {
+        const response = await update(id, selected.id, {
           matrix: matrix,
           material: material,
           geometry: selected.geometry,
@@ -79,7 +79,7 @@ export const useObjectEditor = create<SelectedInfo & ObjectActions>()(
     removeSelected: async (id) => {
       const { selected } = get();
       if (selected) {
-        const res = await remove(id, selected.objectId);
+        const res = await remove(id, selected.id);
         return res;
       } else {
         return { success: false, error: "not selected" };

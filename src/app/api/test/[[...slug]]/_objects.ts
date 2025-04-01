@@ -1,7 +1,7 @@
 "use server";
 
 import { NextRequest, NextResponse } from "next/server";
-import { generateRandomObject } from "./_utils";
+import { SampleObject } from "@/utils/sample";
 
 const ROOT = "OBJECTS";
 
@@ -24,7 +24,7 @@ export async function getObjects(
       );
     }
     return NextResponse.json(
-      { ...generateRandomObject(), ...{ objectId: params[1] } },
+      { ...SampleObject(), ...{ objectId: params[1] } },
       {
         status: 200,
         headers: { "Content-Type": "application/json" },
@@ -59,7 +59,7 @@ export async function postObjects(
     );
   }
   return NextResponse.json(
-    { ...generateRandomObject(), ...body },
+    { ...SampleObject(), ...body },
     {
       status: 200,
       headers: { "Content-Type": "application/json" },
@@ -88,7 +88,7 @@ export async function putObjects(
       );
     }
     return NextResponse.json(
-      { ...generateRandomObject(), ...body },
+      { ...SampleObject(), ...body },
       {
         status: 200,
         headers: { "Content-Type": "application/json" },

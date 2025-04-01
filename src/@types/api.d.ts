@@ -1,104 +1,62 @@
 import { NextResponse, NextRequest } from "next/server";
+import { User } from "@/types/user";
+import { Project } from "@/types/project";
+import { TObject } from "@/types/tobject";
 
-/* API REQUEST */
-interface LoginRequest extends NextRequest {
-  body: {
-    username: string;
-    password: string;
-  };
+/*
+
+API REQUEST
+NextRequest는 Next.js의 내부 구현에 의존하고 있기에
+route.ts에서 직접 extend한 타입 사용하는 것은 불가능
+
+*/
+
+interface BaseRequest<T = unknown> extends NextRequest {
+  body?: T;
+  headers?: HeadersInit;
+  method: string | "GET" | "POST" | "DELETE" | "PATCH" | "PUT";
 }
 
-interface AuthRequest extends NextRequest {
-  header: { Authorization: string } & Record<string, unknown>;
+interface AuthRequest<T = unknown> extends BaseRequest {
+  body?: T;
+  headers: { Authorization: string } & Record<string, string>;
 }
 
-interface RegisterRequest extends NextRequest {
-  body: User;
-}
+type LoginRequest = BaseRequest<{ username: string; password: string }>;
 
-interface UserRequest extends NextRequest {
-  body: Omit<User, "username">;
-}
+type RegisterRequest = BaseRequest<User>;
 
-interface ProjectRequest extends NextRequest {
-  body: Project;
-}
+type UserRequest = BaseRequest<Omit<User, "username">>;
 
-interface TObjectRequest extends NextRequest {
-  body: TObject;
-}
+type ProjectRequest = BaseRequest<Project>;
 
-interface InvitationRequest extends NextRequest {
-  body: {
-    projectId: number;
-    userId: number;
-    readOnly: boolean;
-  };
-}
+type TObjectRequest = BaseRequest<TObject>;
 
-interface ImageRequest extends NextRequest {
-  body: {
-    imageExtension: string; // "jpeg" "png"
-    contentLength: number;
-  };
-}
+type InvitationRequest = BaseRequest<{
+  projectId: number;
+  userId: number;
+  readOnly: boolean;
+}>;
 
-interface ImgUploadRequest extends NextRequest {
-  body: {
-    imageExtension: string;
-    contentLength: number;
-  };
-}
+type ImageUploadRequest = BaseRequest<{
+  imageExtension: string;
+  contentLength: number;
+}>;
 
 /* API RESPONSE */
-interface SuccessResponse extends Response {
-  body?: { success: boolean };
-}
 
-interface ErrorResponse extends Response {
-  body?: { error: string };
-}
-
-interface IResponse<T extends UserData | ProjectData | TObjectData>
-  extends NextResponse {
+interface BaseResponse<T = unknown> extends NextResponse {
   body: T;
 }
 
-// TODO 나중에 백엔드 이렇게 구성하도록 요청하자
-// interface IMultiResponse<T extends UserData | ProjectData | TObjectData> extends NextResponse {
-//   body : {data : T[]}
-// }
+type ProjectsResponse = BaseResponse<{ projects: ProjectData[] }>;
 
-interface ProjectsResponse extends NextResponse {
-  body: {
-    projects: ProjectData[];
-  };
-}
+type ArchiveResponse = BaseResponse<{ content: ProjectData[] }>;
 
-interface ProjectsSearchResponse extends NextResponse {
-  body: {
-    content: ProjectData[];
-  };
-}
+type ParticipantsResponse = BaseResponse<{ participants: ParticipantData[] }>;
 
-interface ParticipantsResponse extends NextResponse {
-  body: {
-    participants: Participant[];
-  };
-}
+type TObjectsResponse = BaseResponse<{ objects: TObjectData[] }>;
 
-interface TObjectsResponse extends NextResponse {
-  body: {
-    objects: TObjectData[];
-  };
-}
+type LoginResponse = BaseResponse<{ token: string }>;
 
-interface LoginResponse extends NextResponse {
-  body: {
-    token: string;
-  };
-}
-
-interface ImgResponse extends NextResponse {
-  body: { preSignedUrl: string };
-}
+type ImgResponse = BaseResponse<{ preSignedUrl: string }>;

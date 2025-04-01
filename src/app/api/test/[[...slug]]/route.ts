@@ -40,27 +40,25 @@ async function handleRequest(
 ) {
   console.log(`TEST: ${method} REQUEST FOR`, slug);
 
-  if (slug && handlers[slug[0]]) {
-    const handler = handlers[slug[0]][method];
-    if (handler) {
-      const response = await handler(request, { params: slug });
-      const data = await responseHandler(response);
-      return NextResponse.json(JSON.stringify(data), {
-        status: 200,
-        headers: { "Content-Type": "application/json" },
-      });
-    }
+  const handler = slug?.[0]
+    ? handlers[slug[0]]?.[method.toUpperCase()]
+    : undefined;
+  if (handler) {
+    const response = await handler(request, { params: slug ?? [] });
+    const data = await responseHandler(response);
+    return NextResponse.json(data, {
+      status: 200,
+      headers: { "Content-Type": "application/json" },
+    });
   }
+
   return NextResponse.json(
-    JSON.stringify({
+    {
       result: slug
         ? `INVALID TEST INPUT ${slug}`
         : `TEST REQUEST FOR ${method}`,
-    }),
-    {
-      status: 200,
-      headers: { "Content-Type": "application/json" },
     },
+    { status: 200, headers: { "Content-Type": "application/json" } },
   );
 }
 

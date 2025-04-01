@@ -9,7 +9,7 @@ export default async function redirectUser(username: string) {
       throw new Error("error while pushing user");
     }
   } catch (err) {
-    console.log(err);
+    alert(err);
   }
   return;
 }

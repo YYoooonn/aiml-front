@@ -24,7 +24,7 @@ jobs:
     env:
       NEXT_PUBLIC_HOSTNAME: ${{secrets.NEXT_PUBLIC_HOSTNAME}}
       BACKEND_API_BASE: ${{secrets.BACKEND_API_BASE}}
-
+      JWT_COOKIE_NAME: ${{secrets.JWT_COOKIE_NAME}}
     steps:
       - name: checkout
         uses: actions/checkout@v4

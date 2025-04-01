@@ -133,9 +133,7 @@ function Layer({ obj }: { obj: TObjectData }) {
   return (
     <div
       className={
-        selected?.objectId === obj.objectId
-          ? styles.layerTagSelected
-          : styles.layerTag
+        selected?.id === obj.id ? styles.layerTagSelected : styles.layerTag
       }
       onClick={() => {
         setSelected(obj);

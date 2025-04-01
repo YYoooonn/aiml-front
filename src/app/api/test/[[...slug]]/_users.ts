@@ -1,11 +1,7 @@
 "use server";
 
 import { NextRequest, NextResponse } from "next/server";
-import {
-  generateRandomProjects,
-  generateRandomToken,
-  generateRandomUser,
-} from "./_utils";
+import { SampleProjects, SampleToken, SampleUser } from "@/utils/sample";
 
 export async function getUsers(
   request: Request,
@@ -19,7 +15,7 @@ export async function getUsers(
       //entity
       if (params[2] === "projects") {
         return NextResponse.json(
-          { projects: generateRandomProjects(10) },
+          { projects: SampleProjects(10) },
           {
             status: 200,
             headers: { "Content-Type": "application/json" },
@@ -35,7 +31,7 @@ export async function getUsers(
       );
     }
     return NextResponse.json(
-      { ...generateRandomUser() },
+      { ...SampleUser() },
       {
         status: 200,
         headers: { "Content-Type": "application/json" },
@@ -80,7 +76,7 @@ export async function postUsers(
     );
   }
   return NextResponse.json(
-    { token: generateRandomToken() },
+    { token: SampleToken() },
     {
       status: 200,
       headers: { "Content-Type": "application/json" },
@@ -109,7 +105,7 @@ export async function putUsers(
       );
     }
     return NextResponse.json(
-      { ...generateRandomUser(), ...body },
+      { ...SampleUser(), ...body },
       {
         status: 200,
         headers: { "Content-Type": "application/json" },

@@ -1,11 +1,12 @@
-import { AUTH_ROUTE, responseHandler } from "./utils";
+import { ENDPOINT, responseHandler } from "./utils";
 import { createCookie, deleteCookie } from "./cookie";
 import { LoginRequest, LoginResponse } from "@/@types/api";
 import { ActionResponse } from "./actions";
 
 export async function login(props: LoginRequest["body"]) {
+  // initiate cookie
   deleteCookie();
-  const response = await fetch(AUTH_ROUTE, {
+  const response = await fetch(ENDPOINT.A, {
     method: "POST",
     body: JSON.stringify(props),
   });
