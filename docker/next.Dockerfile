@@ -46,7 +46,7 @@ COPY --from=builder /app/public ./public
 # https://nextjs.org/docs/advanced-features/output-file-tracing
 COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
 COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
-# COPY --from=builder --chown=nextjs:nodejs /app/.next/requred-server-files.json ./.next/required-server-files.json
+COPY --from=builder --chown=nextjs:nodejs /app/.next/required-server-files.json ./.next/required-server-files.json
 
 # Custom server
 COPY --from=deps --chown=nextjs:nodejs /app/node_modules ./node_modules
