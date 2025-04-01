@@ -9,7 +9,7 @@ const dev = process.env.NODE_ENV !== "production";
 
 if (!dev) {
   // eslint-disable-next-line @typescript-eslint/no-require-imports
-  const { config } = require("./.next/required-server-files.json");
+  const { config } = require("../.next/required-server-files.json");
   process.env.__NEXT_PRIVATE_STANDALONE_CONFIG = JSON.stringify(config);
 }
 dotenv.config(dev ? { path: ".env.local" } : { path: ".env.production.local" });
