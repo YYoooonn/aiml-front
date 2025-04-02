@@ -125,14 +125,12 @@ export const chatLogContainer = style({
   display: "block",
   height: "100%",
   maxWidth: "100%",
-  overflowX: "auto",
   overflowY: "auto",
   wordWrap: "break-word",
 });
 
 export const buttonExit = style({
   display: "block",
-
   ":hover": {
     color: "red",
     cursor: "pointer",

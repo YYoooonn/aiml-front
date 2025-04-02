@@ -18,7 +18,7 @@ function getUsers(roomId: string) {
   return Object.keys(userCamPosition[roomId]);
 }
 
-export const ProjectSocket = (io: Server, name: string) => {
+export const WorkspaceSocket = (io: Server, name: string) => {
   const namespace = io.of(`/${name}`);
 
   // NAMESPACE
@@ -28,11 +28,13 @@ export const ProjectSocket = (io: Server, name: string) => {
       headers: { referer },
     } = req;
 
+    console.log("PROJECT");
+
     // parse info from uri
     const roomId = referer
       ? referer.split("/")[referer.split("/").length - 1].replace(/\?.+/, "")
       : "default";
-    //console.debug(roomId);
+    console.debug("Project Socket", roomId);
 
     // join room
     socket.join(roomId);

@@ -1,83 +1,121 @@
-import { Server } from "socket.io";
+import { DefaultEventsMap, Namespace, Server, Socket } from "socket.io";
 
-// Users in a room
-const usersRoom: {
-  [key: string]: Array<{ socketId: string; username: string }>;
-} = { default: [] };
+const activeNamespaces = new Map<string, Namespace>(); // Manage active namespaces
 
-function getRoomUsersArray(roomId: string) {
-  // XXX: if roomId doesn't exist
-  if (!usersRoom[roomId]) {
-    return [];
-  }
-  return usersRoom[roomId].map((id) => ({
-    username: id.username,
-  }));
+type TSocket = Socket<DefaultEventsMap, DefaultEventsMap, DefaultEventsMap, any>;
+
+interface UserMessage {
+  username: string;
+  message?: string;
+  type?: string;
 }
 
+type MSG = UserMessage | string;
+
 export const ChatSocket = (io: Server, name: string) => {
-  const namespace = io.of(`/${name}`);
+  let usersRoom: Record<string, Record<string, string>> = {}; // roomId -> { socketId: username }
+  const activeUsers = new Map<string, Socket>();
+  let timeout: NodeJS.Timeout | undefined;
 
-  // NAMESPACE
-  namespace.on("connection", (socket) => {
-    const req = socket.request;
-    const {
-      headers: { referer },
-    } = req;
+  // Helper function: Get all users in a room
+  const getRoomUsersArray = (roomId: string): string[] => {
+    return usersRoom[roomId] ? Object.values(usersRoom[roomId]) : [];
+  };
 
-    // parse info from uri
-    const roomId = referer
-      ? referer.split("/")[referer.split("/").length - 1].replace(/\?.+/, "")
-      : "default";
-    console.debug("roomid", roomId);
-
-    // join room
-    socket.join(roomId);
-    // send message to room in the namespace
-    socket.to(roomId).emit("join", {
-      user: "system",
-      chat: `user joined`,
-    });
-
+  // Helper function: Handle participants update
+  const handleParticipants = (namespace: Namespace, roomId: string) => {
     namespace.to(roomId).emit("users", getRoomUsersArray(roomId));
-    // debug
-    console.debug(usersRoom[roomId]);
+  };
 
-    // chat messages
-    socket.on("chatMessage", (msg: { username: string; message: string }) => {
-      //console.debug("message", msg);
-      namespace.to(roomId).emit("chatMessage", msg);
+  // Helper function: Handle chat messages
+  const handleChat = (namespace: Namespace, roomId: string, msg: MSG) => {
+    namespace.to(roomId).emit("chatMessage", msg);
+  };
+
+  // Helper function: Handle user disconnection
+  const handleDisconnect = (
+    namespace: Namespace,
+    userId: string,
+    roomId: string
+  ) => {
+    activeUsers.delete(userId);
+
+    if (usersRoom[roomId]) {
+      const username = usersRoom[roomId][userId];
+      delete usersRoom[roomId][userId];
+      handleChat(namespace, roomId, `${username} left the room`);
+      handleParticipants(namespace, roomId);
+    }
+
+    if (activeUsers.size === 0) {
+      timeout = setTimeout(() => {
+        console.log(`Namespace ${name} is inactive. Marking as inactive.`);
+        namespace.removeAllListeners(); // Remove listeners to save resources
+      }, 30000); // 30 seconds timeout
+    }
+  };
+
+  // Initialize namespace
+  if (activeNamespaces.has(name)) {
+    console.log("Chat Socket already exists");
+    return activeNamespaces.get(name);
+  }
+
+  const namespace = io.of(`/${name}`);
+  activeNamespaces.set(name, namespace);
+
+  namespace.on("connection", (socket) => {
+    const { userId, roomId } = socket.handshake.query as {
+      userId: string;
+      roomId: string;
+    };
+
+    if (!userId || !roomId) {
+      console.log("Invalid connection: Missing userId or roomId");
+      socket.disconnect();
+      return;
+    }
+
+    // Handle duplicate connections
+    if (activeUsers.has(userId)) {
+      console.log("Duplicate connection detected. Disconnecting previous socket.");
+      activeUsers.get(userId)?.disconnect();
+    }
+
+    activeUsers.set(userId, socket);
+    if (timeout) {
+      clearTimeout(timeout); // Clear namespace timeout
+      timeout = undefined;
+    }
+    console.log("Active Users:", activeUsers.size);
+
+    // Join room
+    socket.join(roomId);
+    handleParticipants(namespace, roomId);
+
+    // Event listeners
+    socket.on("chatMessage", (msg: MSG) => {
+      handleChat(namespace, roomId, msg);
     });
 
-    socket.on("join", (msg: { username: string; type: string }) => {
-      // console.debug("join", msg);
-      if (!(roomId in usersRoom)) {
-        usersRoom[roomId] = [];
+    socket.on("join", (msg: UserMessage) => {
+      if (!usersRoom[roomId]) usersRoom[roomId] = {};
+      if (msg.type === "join" && !usersRoom[roomId][userId]) {
+        usersRoom[roomId][userId] = msg.username;
+        handleChat(namespace, roomId, `${msg.username} joined the room`);
+        handleParticipants(namespace, roomId);
       }
-      const found = socket.id in usersRoom[roomId];
-      if (msg.type === "join" && !found) {
-        namespace
-          .to(roomId)
-          .emit("chatMessage", `${msg.username} joined the room`);
-        usersRoom[roomId].push({ socketId: socket.id, username: msg.username });
-        namespace.to(roomId).emit("users", getRoomUsersArray(roomId));
-        console.log(usersRoom[roomId]);
-      }
     });
 
-    // on disconnect message
-    socket.on("disconnect", () => {
-      console.log("disconnect to room namespace");
-      socket.leave(roomId);
+    socket.on("disconnect", () => handleDisconnect(namespace, userId, roomId));
+  });
 
-      const user = usersRoom[roomId]?.find((val) => val.socketId === socket.id);
-      namespace
-        .to(roomId)
-        .emit("chatMessage", `${user?.username} leaved the room`);
-      usersRoom[roomId] = usersRoom[roomId]?.filter(
-        (ele) => ele.socketId !== socket.id,
-      );
-      namespace.to(roomId).emit("users", getRoomUsersArray(roomId));
-    });
+  // Reactivate namespace
+  namespace.on("connect", () => {
+    if (timeout) {
+      clearTimeout(timeout); // Cancel the timeout if a new connection occurs
+      timeout = undefined;
+      console.log(`Namespace ${name} reactivated.`);
+    }
   });
 };

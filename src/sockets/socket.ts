@@ -1,12 +1,11 @@
-"use client";
+// "use client";
 
-import { io } from "socket.io-client";
-import dotenv from "dotenv";
+// import { io } from "socket.io-client";
 
-const dev = process.env.NODE_ENV !== "production";
+// const dev = process.env.NODE_ENV !== "production";
 
-dotenv.config(dev ? { path: ".env.local" } : { path: ".env.production.local" });
+// const host = dev ? "localhost:3000" : process.env.NEXT_PUBLIC_HOSTNAME;
 
-export const socket = io(`http://${process.env.NEXT_PUBLIC_HOSTNAME}`, {
-  path: "/socket.io/",
-});
+// export const socket = io(`http://${host}`, {
+//   path: "/socket.io/",
+// });
