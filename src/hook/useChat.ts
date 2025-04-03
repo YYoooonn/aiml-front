@@ -31,7 +31,7 @@ export const useChat = (username?: string, id?: string) => {
     socket.connect();
     // console.log("CHAT SOCKET", socket.id);
     console.log("connecting to chat space...");
-    
+
     const onConnect = () => {
       setIsConnected(true);
       socket.emit("join", username);
