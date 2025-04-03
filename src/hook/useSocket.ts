@@ -1,50 +1,30 @@
 "use client";
 
+import { generate } from "@/socket";
 import { useEffect, useRef, useState } from "react";
-import { io, Socket } from "socket.io-client";
-import { v4 as uuidv4 } from "uuid";
-
-const dev = process.env.NODE_ENV !== "production";
-const host = dev ? "localhost:3000" : process.env.NEXT_PUBLIC_HOSTNAME;
+import { Socket } from "socket.io-client";
 
 export const useSocket = (namespace: string, roomId?: string) => {
   const socketRef = useRef<Socket | null>(null);
-  const [on, setOn] = useState(false);
+  const [valid, setValid] = useState(false);
 
   useEffect(() => {
-    if(!namespace || !roomId) {
-        return;
-    }
-    // Retrieve or generate a unique socket ID
-    let socketId = localStorage.getItem("socketId");
-    if (!socketId) {
-      socketId = uuidv4();
-      localStorage.setItem("socketId", socketId);
+    if (!namespace || !roomId) {
+      return;
     }
 
-    // Initialize the socket connection
-    const socketInstance = io(`http://${host}/${namespace}`, {
-      path: "/socket.io/",
-      reconnectionAttempts: 5,
-      reconnectionDelay: 1000,
-      reconnectionDelayMax: 5000,
-      timeout: 20000,
-      autoConnect: false,
-      query: {
-        userId: socketId,
-        roomId: roomId
-      },
-    });
+    // generate socket io instance
+    const socket = generate(namespace, { roomId: roomId });
 
-    socketRef.current = socketInstance;
-    setOn(true)
+    socketRef.current = socket;
+    setValid(true);
 
     // Cleanup on unmount
     return () => {
-      socketInstance.disconnect();
-      setOn(false);
+      socket.disconnect();
+      setValid(false);
     };
   }, [namespace, roomId]);
 
-  return {socket : socketRef.current, on : on};
+  return { socket: socketRef.current, valid };
 };

@@ -1,5 +1,5 @@
 import * as styles from "./aisle.css";
-import Editor from "./module/editor/editor";
+import Editor from "./editor";
 
 export default function RightAisle() {
   return (

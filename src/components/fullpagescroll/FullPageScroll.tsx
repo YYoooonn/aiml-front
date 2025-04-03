@@ -9,7 +9,7 @@ import {
 } from "react";
 import { Dots } from "./Dots";
 import * as styles from "./fps.css";
-import { Footer } from "../components";
+import { Footer } from "..";
 
 // milli second
 const TIMEOUT = 1000;

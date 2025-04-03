@@ -2,7 +2,7 @@
 
 // import { CAMERAMATERIAL } from "@/assets/material";
 // import { urlCam } from "@/assets/models";
-import { useParticipants } from "@/hook/useParticipants";
+import { useParticipants } from "@/store/useParticipants";
 import { getRandomHexColor } from "@/utils/radom";
 // import { Instance, Instances, useGLTF } from "@react-three/drei";
 

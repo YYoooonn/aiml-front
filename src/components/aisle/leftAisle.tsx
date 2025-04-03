@@ -1,12 +1,40 @@
 "use client";
 
 import { usePathname } from "next/navigation";
-import { LeftAisleContainer } from "./layout";
-import User from "./module/user";
-import Archive from "./module/archive";
-import Workspace from "./module/workspace";
+import User from "./user";
+import Archive from "./archive";
+import Workspace from "./workspace";
+import * as styles from "./aisle.css";
 
-export default function LeftAisle() {
+export function LUserAisle() {
+  return (
+    <LeftAisleContainer>
+      <User />
+    </LeftAisleContainer>
+  );
+}
+
+export function LArchiveAisle() {
+  return (
+    <LeftAisleContainer>
+      <Archive />
+    </LeftAisleContainer>
+  );
+}
+export function LWorkspaceAisle() {
+  return (
+    <LeftAisleContainer>
+      <Workspace />
+    </LeftAisleContainer>
+  );
+}
+
+function LeftAisleContainer({ children }: React.PropsWithChildren) {
+  return <div className={styles.leftAisleContainer}>{children}</div>;
+}
+
+/* deprecated */
+export function LeftAisle() {
   return (
     <LeftAisleContainer>
       <LeftAisleContent />
@@ -14,7 +42,8 @@ export default function LeftAisle() {
   );
 }
 
-export function LeftAisleContent() {
+/* deprecated */
+function LeftAisleContent() {
   const [pathname, id] = usePathname().split("/").slice(1, 3);
 
   if (pathname === "user") {

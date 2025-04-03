@@ -3,6 +3,10 @@ import { User } from "@/types/user";
 import { Project } from "@/types/project";
 import { TObject } from "@/types/tobject";
 
+/* API Request input */
+
+/* API Request output */
+
 /*
 
 API REQUEST
@@ -21,6 +25,8 @@ interface AuthRequest<T = unknown> extends BaseRequest {
   body?: T;
   headers: { Authorization: string } & Record<string, string>;
 }
+
+/* API request */
 
 type LoginRequest = BaseRequest<{ username: string; password: string }>;
 
@@ -43,7 +49,7 @@ type ImageUploadRequest = BaseRequest<{
   contentLength: number;
 }>;
 
-/* API RESPONSE */
+/* API response */
 
 interface BaseResponse<T = unknown> extends NextResponse {
   body: T;

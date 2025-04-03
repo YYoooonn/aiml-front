@@ -4,8 +4,8 @@ import { Suspense, useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { Archives } from "./_archives";
 import { useModals } from "@/hook/useModals";
-import { ArchiveModal } from "@/components/modal/archive";
-import { ModalType } from "@/hook/useModalStore";
+import { ArchiveModal } from "@/components/modal/ArchiveModal";
+import { ModalType } from "@/store/useModalStore";
 import { search } from "../_actions/project";
 
 export default function Archive() {

@@ -1,4 +1,3 @@
-import { AuthRequest, BaseRequest } from "@/@types/api";
 import { DEFAULT_HEADERS, ENDPOINT, userAuthRequest } from "@/utils/api";
 import { NextRequest, NextResponse } from "next/server";
 

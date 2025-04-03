@@ -1,11 +1,10 @@
 "use client";
 
-import { useModals } from "@/hook/useModals";
-import { TextInput } from "../ui/input";
 import { useState } from "react";
-import * as styles from "./form.css";
-import { BoolButtons, ButtonSubmit } from "../ui/button";
+import { useModals } from "@/hook/useModals";
+import { TextInput, BoolButtons, ButtonSubmit } from "@/components/ui";
 import { create } from "@/app/_actions/project";
+import * as styles from "./form.css";
 
 export default function NewProjectForm({
   addProject,

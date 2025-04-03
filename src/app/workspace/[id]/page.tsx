@@ -3,12 +3,12 @@
 import Workspace from "@/components/canvas/Workspace";
 import * as styles from "../workspace.css";
 import { useEffect } from "react";
-import { useProjectInfo } from "@/hook/useProjectInfo";
+import { useProjectStore } from "@/store/useProjectStore";
 import { useUserInfo } from "@/hook/useUserInfo";
 
 export default function Page({ params }: { params: { id: string } }) {
   const id = Number(params.id);
-  const { objects, fetch, reset } = useProjectInfo();
+  const { objects, fetch, reset } = useProjectStore();
   const fetchUser = useUserInfo((s) => s.fetchUserInfo);
 
   useEffect(() => {
