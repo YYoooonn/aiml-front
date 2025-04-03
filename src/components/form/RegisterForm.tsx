@@ -1,13 +1,11 @@
 "use client";
 
-import redirectUser from "@/hook/redirectUser";
 import { useEffect, useState } from "react";
-import { PasswordInput, TextInput } from "../ui/input";
-import { ButtonSubmit } from "../ui/button";
-
-import * as styles from "./form.css";
-import { useUserInfo } from "@/hook/useUserInfo";
 import { create } from "@/app/_actions/user";
+import redirectUser from "@/hook/redirectUser";
+import { useUserInfo } from "@/hook/useUserInfo";
+import { PasswordInput, TextInput, ButtonSubmit } from "@/components/ui";
+import * as styles from "./form.css";
 
 export default function RegisterForm() {
   const [username, setUsername] = useState("");

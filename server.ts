@@ -1,9 +1,8 @@
 import next from "next";
-import dotenv from "dotenv";
+
 import { Server } from "socket.io";
 import { createServer } from "node:http";
 import { ChatSocket } from "./server/chat";
-import { WorkspaceSocket } from "./server/workspace";
 
 const dev = process.env.NODE_ENV !== "production";
 
@@ -33,7 +32,7 @@ app.prepare().then(() => {
 
   ChatSocket(io, "chat");
 
-  WorkspaceSocket(io, "workspace");
+  // WorkspaceSocket(io, "workspace");
 
   httpServer
     .once("error", (err) => {

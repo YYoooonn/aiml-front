@@ -1,6 +1,6 @@
 "use client";
 
-import { useModalStore, ModalType } from "@/hook/useModalStore";
+import { useModalStore, ModalType } from "@/store/useModalStore";
 
 import { FormModalLayout, ArchiveModalLayout } from "./layouts";
 

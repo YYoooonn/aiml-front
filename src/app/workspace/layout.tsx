@@ -1,4 +1,4 @@
-import WorkspaceLayout from "@/components/layouts/WorkspaceLayout";
+import { WorkspaceLayout } from "@/components/layouts";
 
 export default function RootLayout({
   children,

@@ -1,9 +1,9 @@
-import LeftAisleLayout from "@/components/layouts/LeftAisleLayout";
+import { ArchiveAisleLayout } from "@/components/layouts";
 
 export default function UserLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  return <LeftAisleLayout>{children}</LeftAisleLayout>;
+  return <ArchiveAisleLayout>{children}</ArchiveAisleLayout>;
 }

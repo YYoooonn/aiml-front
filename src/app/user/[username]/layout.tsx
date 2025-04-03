@@ -1,5 +1,5 @@
 import DefaultLayout from "@/components/layouts/DefaultLayout";
-import LeftAisleLayout from "@/components/layouts/LeftAisleLayout";
+import { UserAisleLayout } from "@/components/layouts";
 
 export default function UserLayout({
   children,
@@ -7,8 +7,8 @@ export default function UserLayout({
   children: React.ReactNode;
 }) {
   return (
-    <LeftAisleLayout>
+    <UserAisleLayout>
       <DefaultLayout>{children}</DefaultLayout>
-    </LeftAisleLayout>
+    </UserAisleLayout>
   );
 }

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useThree } from "@react-three/fiber";
-import { useCameraInfo } from "@/hook/useCameraInfo";
+import { useCameraStore } from "@/store/useCameraStore";
 import { EditorProps } from "@/hook/useEditor";
 
 interface CamTrackerProps {
@@ -10,7 +10,7 @@ interface CamTrackerProps {
 function CamTracker(props: CamTrackerProps) {
   const { camera } = useThree();
   const [isDragging, setIsDragging] = useState(false);
-  const { setPosition, setRotation } = useCameraInfo();
+  const { setPosition, setRotation } = useCameraStore();
 
   // track camera on mouse down condition
   useEffect(() => {

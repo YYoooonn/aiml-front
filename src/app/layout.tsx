@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 // import Image from "next/image";
 import { geistSans, rajdhani } from "@/assets/fonts";
 import "@/styles/global.css";
-import { Header } from "@/components/components";
-import ModalContainer from "@/components/modal/Modal";
+import { Header } from "@/components";
+import { ModalContainer } from "@/components/modal";
 
 import * as styles from "./layout.css";
 

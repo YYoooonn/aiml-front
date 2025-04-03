@@ -1,4 +1,4 @@
-import { useModalStore } from "./useModalStore";
+import { useModalStore } from "../store/useModalStore";
 
 export const useModals = () => {
   const modals = useModalStore((state) => state.modals);

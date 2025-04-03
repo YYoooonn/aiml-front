@@ -2,7 +2,7 @@ import { Namespace, Server, Socket } from "socket.io";
 
 const activeNamespaces = new Map<string, Namespace>();
 
-export const initNS = <T>(
+export const initNS = <T = unknown>(
   io: Server,
   name: string,
   activeUsers: Map<string, Socket>,
@@ -21,7 +21,10 @@ export const initNS = <T>(
   namespace.on("connection", (socket) => {
     console.log(`New connection to ${name} namespace`);
     console.log(`Socket ID: ${socket.id}`);
-    const { userId, roomId } = socket.handshake.query as { userId: string; roomId: string };
+    const { userId, roomId } = socket.handshake.query as {
+      userId: string;
+      roomId: string;
+    };
 
     if (!userId || !roomId) {
       console.log("Invalid connection: Missing userId or roomId");
@@ -31,14 +34,16 @@ export const initNS = <T>(
 
     // Handle duplicate connections
     if (activeUsers.has(userId)) {
-      console.log("Duplicate connection detected. Disconnecting previous socket.");
+      console.log(
+        "Duplicate connection detected. Disconnecting previous socket.",
+      );
       activeUsers.get(userId)?.disconnect();
     }
 
     // connection starts
     activeUsers.set(userId, socket);
     console.log(`Active Users on ${name}: ${activeUsers.size}`);
-    
+
     // Join room
     socket.join(roomId);
 
@@ -65,20 +70,20 @@ export const initNS = <T>(
       socket.on(event, (input: T) => {
         namespace.to(roomId).emit(event, input);
       });
-    })
+    });
   });
 
-  const handleConnect = (userId: string, roomId: string) => {
+  const handleConnect = (userId: string, _roomId: string) => {
     console.log(`User ${userId} connected to ${name}`);
     console.log(`Active Users on ${name}: ${activeUsers.size}`);
   };
 
-  const handleDisconnect = (userId: string, roomId: string) => {
+  const handleDisconnect = (userId: string, _roomId: string) => {
     activeUsers.delete(userId);
     console.log(`User ${userId} disconnected from ${name}`);
     console.log(`Active Users on ${name}: ${activeUsers.size}`);
-    // 갑자기 disconnect 되는 경우 leave 이벤트 발생하지 않음 -> force leave
-    handleLeave(userId, roomId);
+    // 갑자기 leave없이 disconnect 되는 경우 가능한가? 그런 경우 발견하면 아래 force leave
+    // handleLeave(userId, roomId);
   };
 
   const handleUsers = (roomId: string) => {
@@ -95,7 +100,7 @@ export const initNS = <T>(
 
   const handleLeave = (userId: string, roomId: string, username?: string) => {
     const room = roomUsers.get(roomId);
-    const user = username? username : room?.get(userId)
+    const user = username ? username : room?.get(userId);
     if (room && user) {
       room.delete(userId);
       console.log(`User ${user} left room ${roomId}`);

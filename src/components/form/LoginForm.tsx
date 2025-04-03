@@ -1,13 +1,11 @@
 "use client";
 
 import { useState } from "react";
-import { PasswordInput, TextInput } from "../ui/input";
-import { ButtonSubmit } from "../ui/button";
-
-import * as styles from "./form.css";
-import { navigate } from "@/app/_actions/navigate";
-import { login } from "@/app/_actions/auth";
 import { redirect } from "next/navigation";
+import { login } from "@/app/_actions/auth";
+import { navigate } from "@/app/_actions/navigate";
+import { PasswordInput, TextInput, ButtonSubmit } from "@/components/ui";
+import * as styles from "./form.css";
 
 export default function LoginForm() {
   const [username, setUsername] = useState("");
