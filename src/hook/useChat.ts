@@ -29,8 +29,8 @@ export const useChat = (username?: string, id?: string) => {
 
     // TODO : AUTH CHECK
     socket.connect();
-    console.log("CHAT SOCKET", socket.id);
-    console.log("CHAT SOCKET connected", socket.connected);
+    // console.log("CHAT SOCKET", socket.id);
+    console.log("chat socket connected", socket.connected);
     socket.emit("join", username);
 
     const onConnect = () => {
