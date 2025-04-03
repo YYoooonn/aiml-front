@@ -49,6 +49,4 @@ jobs:
             NEXT_PUBLIC_PORT: ${{env.NEXT_PUBLIC_PORT}}
             NEXT_PUBLIC_SOCKET_HOST: ${{env.NEXT_PUBLIC_SOCKET_HOST}}
             NEXT_PUBLIC_SOCKET_PORT: ${{env.NEXT_PUBLIC_SOCKET_PORT}}
-            BACKEND_API_ENDPOINT: ${{env.BACKEND_API_ENDPOINT}}
-            JWT_COOKIE_KEY: ${{env.JWT_COOKIE_KEY}}
           tags: ${{secrets.DOCKER_REPO}}/aimlfront:latest
