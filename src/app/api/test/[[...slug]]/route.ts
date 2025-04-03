@@ -8,7 +8,7 @@ import {
   putProjects,
 } from "./_projects";
 import { deleteAuth, getAuth, postAuth, putAuth } from "./_auth";
-import { responseHandler } from "@/utils/api";
+import { responseHandler } from "@/utils/api/handlers";
 
 const handlers: Record<
   string,
