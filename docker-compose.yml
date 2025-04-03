@@ -4,7 +4,15 @@ services:
     build:
       context: .
       dockerfile: ./docker/next.Dockerfile
+      args:
+        # 빌드시 전달할 환경변수
+        NEXT_PUBLIC_HOSTNAME: ${NEXT_PUBLIC_HOSTNAME}
+        BACKEND_API_BASE: ${BACKEND_API_BASE}
+        JWT_COOKIE_NAME: ${JWT_COOKIE_NAME}
+    env_file:
+      - .env
     environment:
+      # runtime에서 전달할 환경변수
       NEXT_PUBLIC_HOSTNAME: ${NEXT_PUBLIC_HOSTNAME}
       BACKEND_API_BASE: ${BACKEND_API_BASE}
       JWT_COOKIE_NAME: ${JWT_COOKIE_NAME}
