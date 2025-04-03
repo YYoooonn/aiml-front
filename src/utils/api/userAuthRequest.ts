@@ -8,7 +8,7 @@ export async function userAuthRequest(endpoint: string, request: BaseRequest) {
   if ("Authorization" in req.headers) {
     // console.debug("REQUEST WITH CREDENTIALS FAILED, CONVERTS TO API REQUEST ");
     const response = await fetch(
-      `${process.env.BACKEND_API_BASE + endpoint}`,
+      `${process.env.BACKEND_API_ENDPOINT + endpoint}`,
       req,
     ).then(async (res) => await responseHandler(res));
     return response;
