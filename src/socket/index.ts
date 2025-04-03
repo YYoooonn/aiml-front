@@ -4,7 +4,8 @@ import { io } from "socket.io-client";
 import { v4 as uuidv4 } from "uuid";
 
 const dev = process.env.NODE_ENV !== "production";
-const host = dev ? "localhost:3000" : process.env.NEXT_PUBLIC_HOSTNAME;
+const host = dev ? "localhost" : process.env.NEXT_PUBLIC_HOSTNAME;
+const port = dev ? 3000 : Number(process.env.PORT || 3000);
 
 export const generate = (ns: string, query: Record<string, string>) => {
   // console.log("namespace", ns)
@@ -18,7 +19,7 @@ export const generate = (ns: string, query: Record<string, string>) => {
   }
 
   // Initialize the socket connection
-  return io(`http://${host}/${ns}`, {
+  return io(`http://${host}:${port}/${ns}`, {
     path: "/socket.io/",
     reconnectionAttempts: 5,
     reconnectionDelay: 1000,

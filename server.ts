@@ -30,7 +30,7 @@ app.prepare().then(() => {
     // addTrailingSlash: true
   });
 
-  ChatSocket(io, "chat");
+  ChatSocket(io);
 
   // WorkspaceSocket(io, "workspace");
 

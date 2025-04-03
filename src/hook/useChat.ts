@@ -1,7 +1,8 @@
 "use client";
 
-import { useSocket } from "./useSocket";
-import { useEffect, useState } from "react";
+import { Socket } from "socket.io-client";
+import { useEffect, useRef, useState } from "react";
+import { generate } from "@/socket";
 
 type TChat =
   | string
@@ -11,16 +12,20 @@ type TChat =
     };
 
 export const useChat = (username?: string, id?: string) => {
-  const { socket, valid } = useSocket("chat", id);
+  const socketRef = useRef<Socket | null>(null);
+  // const { socket, valid } = useSocket("chat", id);
   const [logs, setLogs] = useState<string[]>([]);
   const [users, setUsers] = useState<string[]>([]);
   const [isConnected, setIsConnected] = useState(false);
 
   useEffect(() => {
     // Retrieve or generate a unique socket ID
-    if (!username || !id || !socket) {
+    if (!username || !id) {
       return;
     }
+
+    const socket = generate("chat", { roomId: id });
+    socketRef.current = socket;
 
     // TODO : AUTH CHECK
     socket.connect();
@@ -70,7 +75,7 @@ export const useChat = (username?: string, id?: string) => {
     // Cleanup on unmount
     return () => {
       socket.emit("leave", username);
-      // 아래 잘 작동하는지 확인해보고 지우자
+      // 아래 잘 작동하는지 확인해보고 한번에 제거하자
       // socket.removeAllListeners()
       socket.off("connect", onConnect);
       socket.off("disconnect", onDisconnect);
@@ -80,12 +85,12 @@ export const useChat = (username?: string, id?: string) => {
       socket.off("users", onUsers);
       socket.disconnect();
     };
-  }, [username, valid, id]);
+  }, [username, id]);
 
   const sendMessage = (message: string) => {
-    if (socket !== null && message) {
+    if (socketRef.current !== null && message) {
       const data: TChat = { user: username, msg: message };
-      socket.emit("chatMessage", data);
+      socketRef.current.emit("chatMessage", data);
     }
   };
 

@@ -14,14 +14,14 @@ export const useSocket = (namespace: string, roomId?: string) => {
     }
 
     // generate socket io instance
-    const socketio = generate(namespace, { roomId: roomId });
+    const socket = generate(namespace, { roomId: roomId });
 
-    socketRef.current = socketio;
+    socketRef.current = socket;
     setValid(true);
 
     // Cleanup on unmount
     return () => {
-      socketio.disconnect();
+      socket.disconnect();
       setValid(false);
     };
   }, [namespace, roomId]);
