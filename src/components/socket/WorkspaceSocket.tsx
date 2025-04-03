@@ -4,7 +4,7 @@
 // import { faker } from '@faker-js/faker';
 import * as styles from "./socket.css";
 import { useEffect, useState } from "react";
-import { socket } from "@/sockets/project";
+import { socket } from "@/sockets/workspace";
 import { useCameraInfo } from "@/hook/useCameraInfo";
 import { useParticipants } from "@/hook/useParticipants";
 import { useProjectInfo } from "@/hook/useProjectInfo";
@@ -21,7 +21,7 @@ interface SocketProps {
   username?: string;
 }
 
-export function ProjectSocket(props: SocketProps) {
+export function WorkspaceSocket(props: SocketProps) {
   const username = props.username ? props.username : "anonymous";
 
   //   const [userId, setUserId] = useState("");

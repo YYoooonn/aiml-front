@@ -3,25 +3,34 @@
 import { useEffect, useState } from "react";
 import * as styles from "./workspace.css";
 import { useProjectInfo } from "@/hook/useProjectInfo";
-import { useChat } from "@/hook/useChat";
 import { useUserInfo } from "@/hook/useUserInfo";
 import { ChatSocket } from "@/components/socket/ChatSocket";
 
 import redirectUser from "@/hook/redirectUser";
 import { navigate } from "@/app/_actions/navigate";
 import { useObjectEditor } from "@/hook/useObjectEditor";
+import { useChat } from "@/sockets/chat";
 
 export default function Workspace({}: { id?: string }) {
-  const { title, objects } = useProjectInfo();
-  const { username } = useUserInfo();
+  const { title, objects, id } = useProjectInfo();
+  const username = useUserInfo((s) => s.username);
+  const {isConnected, logs, users, sendMessage} =  useChat(username,id? id.toString(): undefined)
+  
+  const [selected, setSelected] = useState(true)
+  const handler = () => {
+    setSelected(!selected)
+  }
 
   return (
     <div className={styles.workspaceContainer}>
       <WorkspaceTopModule user={username}>
-        <WorkspaceInfos user={username} title={title} />
+        <WorkspaceInfos user={username} title={title} users={users} connected={isConnected}/>
       </WorkspaceTopModule>
       <WorkspaceBottomModule>
-        <WorkspaceUtils objts={objects} />
+        <UtilHeader selected={selected} handler={handler} />
+        <div className={styles.bottomContentContainer}>
+        {selected ? <Layers objts={objects} /> : <Chat logs={logs} sendMessage={sendMessage}/>}
+        </div>
       </WorkspaceBottomModule>
     </div>
   );
@@ -48,7 +57,7 @@ export function WorkspaceBottomModule({ children }: React.PropsWithChildren) {
   );
 }
 
-function WorkspaceInfos({ user, title }: { user?: string; title?: string }) {
+function WorkspaceInfos({ user, title, users, connected }: { user: string; title: string, users: string[], connected?: boolean }) {
   return (
     <>
       <div className={styles.aisleHeader}>
@@ -61,62 +70,68 @@ function WorkspaceInfos({ user, title }: { user?: string; title?: string }) {
         </div>
       </div>
       <div className={styles.profileImgContainer}>
-        <ProfileImages />
+        <ProfileImages count={users.length}/>
       </div>
       <div className={styles.usersContainer}>
-        <div className={styles.socketHeader}>Online</div>
-        <div className={styles.socketUser}>participant1</div>
-        <div className={styles.socketUser}>participant2</div>
-        <div className={styles.socketUser}>participant3</div>
+        <div className={styles.socketHeader}>{connected? "connected" : "no connection"}</div>
+        {users.map((u, i) => {
+          return (
+            <div key={i} className={styles.socketUser}>
+              {u}
+            </div>
+          );
+        }
+        )}
       </div>
     </>
   );
 }
 
-function ProfileImages() {
+function ProfileImages({count} : {count?:number}) {
+  const length = count ? count : 1;
   return (
     <div style={{ width: "100%", height: "100%", display: "flex" }}>
-      <div className={styles.profileIcon} />
-      <div className={styles.profileIcon} />
-      <div className={styles.profileIcon} />
-      <div className={styles.profileIcon} />
+      {new Array(length).fill(null).map((_, i) => {
+        return (
+          <div key={i} className={styles.profileIcon} />
+        );
+      }
+      )}  
     </div>
   );
 }
 
-function WorkspaceUtils({ objts }: { objts?: TObjectData[] }) {
-  // true == layer
-  const [isSelected, setIsSelected] = useState(true);
-  return (
-    <>
-      <div className={styles.headerButtonContainer}>
-        <div
-          className={
-            isSelected
-              ? styles.headerButtonSelected
-              : styles.headerButtonUnSelected
-          }
-          onClick={() => setIsSelected(true)}
-        >
-          Layer
-        </div>
-        <div
-          className={
-            isSelected
-              ? styles.headerButtonUnSelected
-              : styles.headerButtonSelected
-          }
-          onClick={() => setIsSelected(false)}
-        >
-          Chat
-        </div>
-      </div>
-      <div className={styles.bottomContentContainer}>
-        {isSelected ? <Layers objts={objts} /> : <Chat />}
-      </div>
-    </>
-  );
-}
+interface H {
+  selected : boolean
+  handler : () => void
+} 
+
+function UtilHeader({selected, handler} : H){
+  return(
+    <div className={styles.headerButtonContainer}>
+    <div
+      className={
+        selected
+          ? styles.headerButtonSelected
+          : styles.headerButtonUnSelected
+      }
+      onClick={handler}
+    >
+      Layer
+    </div>
+    <div
+      className={
+        selected
+          ? styles.headerButtonUnSelected
+          : styles.headerButtonSelected
+      }
+      onClick={handler}
+    >
+      Chat
+    </div>
+  </div>
+  )
+} 
 
 function Layers({ objts }: { objts?: TObjectData[] }) {
   return (
@@ -144,18 +159,10 @@ function Layer({ obj }: { obj: TObjectData }) {
   );
 }
 
-function Chat() {
-  const username = useUserInfo((state) => state.username);
-  const { setChatOn, setChatOff } = useChat();
-
-  useEffect(() => {
-    setChatOn();
-    return () => setChatOff();
-  }, []);
-
+function Chat({logs, sendMessage} : {logs: string[], sendMessage: (msg: string) => void}) {
   return (
     <div className={styles.chatWrapper}>
-      <ChatSocket username={username} />
+      <ChatSocket sendMessage={sendMessage} logs={logs}/>
     </div>
   );
 }
