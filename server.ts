@@ -18,7 +18,6 @@ const port = dev ? 3000 : Number(process.env.NEXT_PUBLIC_PORT || 3000);
 const app = next({ dev, hostname, port });
 const handler = app.getRequestHandler();
 
-
 const socketHostname = dev ? "localhost" : process.env.SOCKET_CLIENT_HOST;
 const socketPort = dev ? 3000 : Number(process.env.SOCKET_CLIENT_PORT || 3000);
 app.prepare().then(() => {
@@ -29,7 +28,10 @@ app.prepare().then(() => {
     cors: {
       // 현재 동일 컨테이너 내에서 돌아가고 있기 때문에 localhost로 설정
       // 서버 분리할 경우, 따로 설정을 해줘야함 - 클라이언트 컨테이너의 host를 허용해야함
-      origin: [`http://${socketHostname}`, `http://${socketHostname}:${socketPort}`],
+      origin: [
+        `http://${socketHostname}`,
+        `http://${socketHostname}:${socketPort}`,
+      ],
       methods: ["GET", "POST"],
     },
     // addTrailingSlash: true
