@@ -14,7 +14,7 @@ import { useChat } from "@/sockets/chat";
 export default function Workspace({}: { id?: string }) {
   const { title, objects, id } = useProjectInfo();
   const username = useUserInfo((s) => s.username);
-  const {logs, users, sendMessage} =  useChat(username,id? id.toString(): undefined)
+  const {isConnected, logs, users, sendMessage} =  useChat(username,id? id.toString(): undefined)
   
   const [selected, setSelected] = useState(true)
   const handler = () => {
@@ -24,7 +24,7 @@ export default function Workspace({}: { id?: string }) {
   return (
     <div className={styles.workspaceContainer}>
       <WorkspaceTopModule user={username}>
-        <WorkspaceInfos user={username} title={title} users={users}/>
+        <WorkspaceInfos user={username} title={title} users={users} connected={isConnected}/>
       </WorkspaceTopModule>
       <WorkspaceBottomModule>
         <UtilHeader selected={selected} handler={handler} />
@@ -57,7 +57,7 @@ export function WorkspaceBottomModule({ children }: React.PropsWithChildren) {
   );
 }
 
-function WorkspaceInfos({ user, title, users }: { user?: string; title?: string, users: string[] }) {
+function WorkspaceInfos({ user, title, users, connected }: { user: string; title: string, users: string[], connected?: boolean }) {
   return (
     <>
       <div className={styles.aisleHeader}>
@@ -73,7 +73,7 @@ function WorkspaceInfos({ user, title, users }: { user?: string; title?: string,
         <ProfileImages count={users.length}/>
       </div>
       <div className={styles.usersContainer}>
-        <div className={styles.socketHeader}>Online</div>
+        <div className={styles.socketHeader}>{connected? "connected" : "no connection"}</div>
         {users.map((u, i) => {
           return (
             <div key={i} className={styles.socketUser}>

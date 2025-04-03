@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { io, Socket } from "socket.io-client";
 import { v4 as uuidv4 } from "uuid";
 
@@ -9,6 +9,7 @@ const host = dev ? "localhost:3000" : process.env.NEXT_PUBLIC_HOSTNAME;
 
 export const useSocket = (namespace: string, roomId?: string) => {
   const socketRef = useRef<Socket | null>(null);
+  const [on, setOn] = useState(false);
 
   useEffect(() => {
     if(!namespace || !roomId) {
@@ -28,6 +29,7 @@ export const useSocket = (namespace: string, roomId?: string) => {
       reconnectionDelay: 1000,
       reconnectionDelayMax: 5000,
       timeout: 20000,
+      autoConnect: false,
       query: {
         userId: socketId,
         roomId: roomId
@@ -35,12 +37,14 @@ export const useSocket = (namespace: string, roomId?: string) => {
     });
 
     socketRef.current = socketInstance;
+    setOn(true)
 
     // Cleanup on unmount
     return () => {
       socketInstance.disconnect();
+      setOn(false);
     };
   }, [namespace, roomId]);
 
-  return socketRef.current;
+  return {socket : socketRef.current, on : on};
 };
