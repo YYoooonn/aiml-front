@@ -4,8 +4,10 @@ import { io } from "socket.io-client";
 import { v4 as uuidv4 } from "uuid";
 
 const dev = process.env.NODE_ENV !== "production";
-const host = dev ? "localhost" : process.env.NEXT_PUBLIC_HOSTNAME;
-const port = dev ? 3000 : Number(process.env.PORT || 3000);
+// 현재 같은 nextjs의 custom domain에서 소켓을 사용하기 때문에 localhost,
+// 서버 분리할 경우, 따로 설정을 해줘야함 - 서버 컨테이너의 host를 사용해야함
+const host = dev ? "localhost" : process.env.NEXT_PUBLIC_SOCKET_HOST || "localhost";
+const port = dev ? 3000 : Number(process.env.NEXT_PUBLIC_SOCKET_PORT) || 3000;
 
 export const generate = (ns: string, query: Record<string, string>) => {
   // console.log("namespace", ns)

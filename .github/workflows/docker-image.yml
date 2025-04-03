@@ -22,9 +22,12 @@ jobs:
   build:
     runs-on: ubuntu-latest
     env:
-      NEXT_PUBLIC_HOSTNAME: ${{secrets.NEXT_PUBLIC_HOSTNAME}}
-      BACKEND_API_BASE: ${{secrets.BACKEND_API_BASE}}
-      JWT_COOKIE_NAME: ${{secrets.JWT_COOKIE_NAME}}
+      NEXT_PUBLIC_HOSTNAME: ${{env.NEXT_PUBLIC_HOSTNAME}}
+      NEXT_PUBLIC_PORT: ${{env.NEXT_PUBLIC_PORT}}
+      NEXT_PUBLIC_SOCKET_HOST: ${{env.NEXT_PUBLIC_SOCKET_HOST}}
+      NEXT_PUBLIC_SOCKET_PORT: ${{env.NEXT_PUBLIC_SOCKET_PORT}}
+      BACKEND_API_ENDPOINT: ${{secrets.BACKEND_API_ENDPOINT}}
+      JWT_COOKIE_KEY: ${{secrets.JWT_COOKIE_KEY}}
     steps:
       - name: checkout
         uses: actions/checkout@v4
@@ -43,5 +46,9 @@ jobs:
           file: ./docker/next.Dockerfile
           build-args: |
             NEXT_PUBLIC_HOSTNAME: ${{env.NEXT_PUBLIC_HOSTNAME}}
-            BACKEND_API_BASE: ${{env.BACKEND_API_BASE}}
+            NEXT_PUBLIC_PORT: ${{env.NEXT_PUBLIC_PORT}}
+            NEXT_PUBLIC_SOCKET_HOST: ${{env.NEXT_PUBLIC_SOCKET_HOST}}
+            NEXT_PUBLIC_SOCKET_PORT: ${{env.NEXT_PUBLIC_SOCKET_PORT}}
+            BACKEND_API_ENDPOINT: ${{env.BACKEND_API_ENDPOINT}}
+            JWT_COOKIE_KEY: ${{env.JWT_COOKIE_KEY}}
           tags: ${{secrets.DOCKER_REPO}}/aimlfront:latest
