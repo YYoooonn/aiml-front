@@ -1,4 +1,4 @@
-import { LeftAisle, RightAisle } from "@/components/components";
+import { LWorkspaceAisle, RightAisle } from "@/components/aisle";
 import * as styles from "./layout.css";
 
 export default function WorkspaceLayout({
@@ -8,7 +8,7 @@ export default function WorkspaceLayout({
 }) {
   return (
     <div className={styles.aisleLayoutContainer}>
-      <LeftAisle />
+      <LWorkspaceAisle />
       <RightAisle />
       <div className={styles.bothAislePageContainer}>{children}</div>
     </div>

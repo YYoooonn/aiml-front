@@ -1,9 +1,8 @@
 import next from "next";
-import dotenv from "dotenv";
+
 import { Server } from "socket.io";
 import { createServer } from "node:http";
 import { ChatSocket } from "./server/chat";
-import { ProjectSocket } from "./server/project";
 
 const dev = process.env.NODE_ENV !== "production";
 
@@ -12,7 +11,6 @@ if (!dev) {
   const { config } = require("../.next/required-server-files.json");
   process.env.__NEXT_PRIVATE_STANDALONE_CONFIG = JSON.stringify(config);
 }
-dotenv.config(dev ? { path: ".env.local" } : { path: ".env.production.local" });
 
 const hostname = dev ? "localhost" : process.env.NEXT_PUBLIC_HOSTNAME;
 const port = dev ? 3000 : Number(process.env.PORT || 3000);
@@ -32,9 +30,9 @@ app.prepare().then(() => {
     // addTrailingSlash: true
   });
 
-  ChatSocket(io, "chat");
+  ChatSocket(io);
 
-  ProjectSocket(io, "project");
+  // WorkspaceSocket(io, "workspace");
 
   httpServer
     .once("error", (err) => {

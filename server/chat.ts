@@ -1,83 +1,48 @@
-import { Server } from "socket.io";
+import { initNS } from "./utils/namespace";
+import { Server, Socket } from "socket.io";
 
-// Users in a room
-const usersRoom: {
-  [key: string]: Array<{ socketId: string; username: string }>;
-} = { default: [] };
+/*
 
-function getRoomUsersArray(roomId: string) {
-  // XXX: if roomId doesn't exist
-  if (!usersRoom[roomId]) {
-    return [];
-  }
-  return usersRoom[roomId].map((id) => ({
-    username: id.username,
-  }));
-}
+activeUsers : {userId : socket} 
+one chat socket per user
+restricts to single room per user
 
-export const ChatSocket = (io: Server, name: string) => {
-  const namespace = io.of(`/${name}`);
+roomUsers : {roomId : { socketId: username }}
+map of users in a room
+restricts to single user per room
 
-  // NAMESPACE
-  namespace.on("connection", (socket) => {
-    const req = socket.request;
-    const {
-      headers: { referer },
-    } = req;
+*/
 
-    // parse info from uri
-    const roomId = referer
-      ? referer.split("/")[referer.split("/").length - 1].replace(/\?.+/, "")
-      : "default";
-    console.debug("roomid", roomId);
+const activeUsers = new Map<string, Socket>();
+const roomUsers = new Map<string, Map<string, string>>();
 
-    // join room
-    socket.join(roomId);
-    // send message to room in the namespace
-    socket.to(roomId).emit("join", {
-      user: "system",
-      chat: `user joined`,
-    });
+const NAME = "chat";
 
-    namespace.to(roomId).emit("users", getRoomUsersArray(roomId));
-    // debug
-    console.debug(usersRoom[roomId]);
+export const ChatSocket = (io: Server) => {
+  // add custom events
+  const customEvents = ["chatMessage"];
 
-    // chat messages
-    socket.on("chatMessage", (msg: { username: string; message: string }) => {
-      //console.debug("message", msg);
-      namespace.to(roomId).emit("chatMessage", msg);
-    });
+  // init namespace
+  const chat = initNS(io, NAME, activeUsers, roomUsers, customEvents);
 
-    socket.on("join", (msg: { username: string; type: string }) => {
-      // console.debug("join", msg);
-      if (!(roomId in usersRoom)) {
-        usersRoom[roomId] = [];
-      }
-      const found = socket.id in usersRoom[roomId];
-      if (msg.type === "join" && !found) {
-        namespace
-          .to(roomId)
-          .emit("chatMessage", `${msg.username} joined the room`);
-        usersRoom[roomId].push({ socketId: socket.id, username: msg.username });
-        namespace.to(roomId).emit("users", getRoomUsersArray(roomId));
-        console.log(usersRoom[roomId]);
-      }
-    });
-
-    // on disconnect message
-    socket.on("disconnect", () => {
-      console.log("disconnect to room namespace");
-      socket.leave(roomId);
-
-      const user = usersRoom[roomId]?.find((val) => val.socketId === socket.id);
-      namespace
-        .to(roomId)
-        .emit("chatMessage", `${user?.username} leaved the room`);
-      usersRoom[roomId] = usersRoom[roomId]?.filter(
-        (ele) => ele.socketId !== socket.id,
-      );
-      namespace.to(roomId).emit("users", getRoomUsersArray(roomId));
-    });
+  // error catch
+  chat?.once("error", (err) => {
+    console.error(`Error in ${NAME} namespace:`, err);
+    process.exit(1);
   });
+
+  return chat;
 };
+
+// TODO 적정 시간 지나면 disable되고 connection 생기면 다시 열리는 구조로 변경 해보자
+// https://stackoverflow.com/questions/13430505/do-i-have-to-remove-event-listener-when-socket-is-disconnected
+//
+//   // Reactivate namespace
+//   namespace.on("connect", () => {
+//     if (timeout) {
+//       clearTimeout(timeout); // Cancel the timeout if a new connection occurs
+//       timeout = undefined;
+//       console.log(`Namespace ${name} reactivated.`);
+//     }
+//   });
+// };

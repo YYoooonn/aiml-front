@@ -3,13 +3,13 @@
 import { navigateWorkspace } from "@/app/_actions/navigate";
 import { useModals } from "@/hook/useModals";
 import NewProjectForm from "../form/NewProjectForm";
-import { ModalType } from "@/hook/useModalStore";
+import { ModalType } from "@/store/useModalStore";
 
 import * as styles from "./card.css";
 import { useRouter } from "next/navigation";
 
 export function ArchiveCard({ props }: { props: ProjectData }) {
-  // const { fetch } = useProjectInfo();
+  // const { fetch } = useProjectStore();
   // const { open, close } = useModals();
   const router = useRouter();
 

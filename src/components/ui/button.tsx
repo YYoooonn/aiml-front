@@ -1,6 +1,7 @@
 import { SetStateAction } from "react";
-import * as styles from "./ui.css";
 import { assignInlineVars } from "@vanilla-extract/dynamic";
+
+import * as styles from "./ui.css";
 
 interface ButtonWithHandler {
   text: string;

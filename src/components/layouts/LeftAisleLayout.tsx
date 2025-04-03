@@ -1,14 +1,35 @@
-import { Footer, LeftAisle } from "@/components/components";
+import { Footer, LeftAisle } from "@/components";
+import { LUserAisle, LArchiveAisle } from "@/components/aisle";
 import * as styles from "./layout.css";
 
-export default function LeftAisleLayout({
+export function LeftAisleLayout({ children }: { children: React.ReactNode }) {
+  return (
+    <div className={styles.aisleLayoutContainer}>
+      <LeftAisle />
+      <div className={styles.leftAislePageContainer}>{children}</div>
+      <Footer />
+    </div>
+  );
+}
+
+export function ArchiveAisleLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
   return (
     <div className={styles.aisleLayoutContainer}>
-      <LeftAisle />
+      <LArchiveAisle />
+      <div className={styles.leftAislePageContainer}>{children}</div>
+      <Footer />
+    </div>
+  );
+}
+
+export function UserAisleLayout({ children }: { children: React.ReactNode }) {
+  return (
+    <div className={styles.aisleLayoutContainer}>
+      <LUserAisle />
       <div className={styles.leftAislePageContainer}>{children}</div>
       <Footer />
     </div>

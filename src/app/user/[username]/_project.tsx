@@ -1,6 +1,6 @@
 "use client";
 
-import { WorkspaceCard, NewCardModule } from "@/components/card/CardModule";
+import { WorkspaceCard, NewCardModule } from "@/components/card";
 
 import * as styles from "./user.css";
 

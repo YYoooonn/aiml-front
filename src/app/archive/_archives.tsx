@@ -1,5 +1,5 @@
 import * as styles from "./archive.css";
-import { ArchiveCard } from "@/components/card/CardModule";
+import { ArchiveCard } from "@/components/card";
 
 export function Archives({ archives }: { archives: ProjectData[] }) {
   return (

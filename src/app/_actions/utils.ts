@@ -8,7 +8,7 @@ export const ENDPOINT: Record<string, string> = {
   O: `${BASE_ROUTE}/objects`,
 };
 
-export const responseHandler = async (r: Response, from?: string) => {
+export const responseHandler = async (r: Response, _from?: string) => {
   // console.debug("RESPONSE RECEIVED FROM", from);
   // TO JSON
   const data = await r.json();

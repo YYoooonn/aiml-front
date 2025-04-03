@@ -14,11 +14,9 @@ const nextConfig = {
   reactStrictMode: false,
   swcMinify: true,
   output: "standalone", // 여기서 standalone 폴더를 사용한다고 해준다.
-  eslint: {
-    // FIXME
-    ignoreDuringBuilds: true,
-  },
+  // eslint: {
+  //   ignoreDuringBuilds: true,
+  // },
 };
 
-// @ts-ignore
 module.exports = withVanillaExtract(nextConfig);
