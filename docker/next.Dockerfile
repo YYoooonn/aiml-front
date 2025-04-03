@@ -19,6 +19,12 @@ WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 
+# 빌드시에 전달 되어야 한다
+ARG NEXT_PUBLIC_HOSTNAME
+ENV NEXT_PUBLIC_HOSTNAME=${NEXT_PUBLIC_HOSTNAME}
+ARG BACKEND_API_BASE
+ENV BACKEND_API_BASE = ${BACKEND_API_BASE}
+
 RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --frozen-lockfile
 RUN pnpm run build
 
