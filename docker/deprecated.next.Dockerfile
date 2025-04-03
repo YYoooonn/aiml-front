@@ -37,7 +37,7 @@ COPY server ./server
 ARG NEXT_PUBLIC_HOSTNAME
 ENV NEXT_PUBLIC_HOSTNAME=${NEXT_PUBLIC_HOSTNAME}
 ARG BACKEND_API_BASE
-ENV BACKEND_API_BASE = ${BACKEND_API_BASE}
+ENV BACKEND_API_BASE=${BACKEND_API_BASE}
 
 # Next.js collects completely anonymous telemetry data about general usage. Learn more here: https://nextjs.org/telemetry
 # Uncomment the following line to disable telemetry at build time
