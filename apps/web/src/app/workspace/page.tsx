@@ -1,10 +1,16 @@
-import Workspace from "@/components/canvas/Workspace";
-import * as styles from "./workspace.css";
+"use client";
+
+import { BaseCanvas } from "@/components/three/BaseCanvas";
+import { BaseCamera } from "@/components/three/Cameras";
+import { BaseLights } from "@/components/three/Lights";
+import SampleObjects from "@/components/three/SampleObjects";
 
 export default function Test() {
   return (
-    <div className={styles.workspaceContainer}>
-      <Workspace />
-    </div>
+    <BaseCanvas>
+      <BaseCamera />
+      <BaseLights />
+      <SampleObjects id="1"/>
+    </BaseCanvas>
   );
 }

@@ -1,5 +1,5 @@
 import { style } from "@vanilla-extract/css";
-import { theme } from "@/styles/theme.css";
+import { themeVars } from "@repo/ui/styles";
 import * as constants from "@/styles/constants";
 
 export const snapContainer = style({
@@ -26,8 +26,8 @@ export const snapAnimateSectionContainer = style({
   overflow: "hidden",
   top: 0,
   // scrollPaddingBottom: "100px",
-  color: theme.color.ivory,
-  ...theme.textStyle.logo,
+  color: themeVars.color.text,
+  ...themeVars.textStyle.heading4,
 });
 
 export const snapSection = style({
@@ -65,11 +65,11 @@ export const scrollNav = style({
 
 export const scrollNavSelector = style({
   ...baseNav,
-  opacity: 0.1,
+  opacity: 0.15,
   ":hover": {
     cursor: "pointer",
     opacity: 1,
-    color: theme.color.theme1,
+    color: themeVars.color.primary,
   },
 });
 

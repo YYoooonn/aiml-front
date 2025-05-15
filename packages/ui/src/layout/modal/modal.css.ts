@@ -35,13 +35,19 @@ export const modalWrapper = style({
 });
 
 export const modalInWrapper = style({
-  height: "100%",
   width: "100%",
+  height: "100%",
   padding: "12px",
-  backgroundColor: themeVars.color.background,
+  display: "flex",
+  flexDirection: "column",
   border: globalTheme.border.bSolid,
   borderColor: themeVars.color.border,
   ...themeVars.textStyle.subtitle2,
+});
+
+export const modalContent = style({
+  paddingTop: globalTheme.spacing.s8,
+  flex: 1,
 });
 
 export const modalHeader = style({

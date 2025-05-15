@@ -1,4 +1,5 @@
-import { themeVars } from "@/styles";
+import { themeVars } from "../../styles";
+import { globalTheme } from "../../styles/global";
 import { style } from "@vanilla-extract/css";
 
 export const formTag = style({
@@ -14,19 +15,11 @@ export const textInput = style({
   marginBottom: 0,
   overflow: "hidden",
   border: "none",
+  borderBottom: globalTheme.border.bDashed,
   background: themeVars.color.background,
 
   ":focus": {
-    border: "none",
+    border: globalTheme.border.bSolid,
     background: themeVars.color.backgroundDark,
   },
-});
-
-export const inputBlock = style({
-  display: "flex",
-  flexDirection: "column",
-  justifyContent: "space-between",
-  width: "100%",
-  height: "64px",
-  ...themeVars.textStyle.subtitle1,
 });

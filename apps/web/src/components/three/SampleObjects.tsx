@@ -17,7 +17,11 @@ export default function SampleObjects({ id }: { id: string }) {
       <Instances geometry={sampleBoxGeometry} material={blackMaterial}>
         {positions.map((pos, i) => {
           return (
-            <ObjectInstance key={i} position={pos} rotation={rotations[i]} />
+            <ObjectInstance
+              key={i}
+              position={pos}
+              rotation={rotations[i] ? rotations[i] : [0, 0, 0]}
+            />
           );
         })}
       </Instances>

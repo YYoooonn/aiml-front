@@ -11,6 +11,8 @@ interface TObject {
   matrix: number[];
   geometry: string;
   material?: string;
+  type?: string;
+  name?: string;
 }
 
 interface Project {

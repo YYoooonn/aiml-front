@@ -5,7 +5,9 @@
   "scripts": {
     "dev": "pnpm --filter web --filter socket-server dev",
     "build": "pnpm --filter web build",
-    "format": "prettier --write \"**/*.{ts,tsx,md,json}\""
+    "format": "prettier --write \"**/*.{ts,tsx,md,json}\"",
+    "lint": "pnpm -r lint",
+    "lint:fix": "pnpm -r lint:fix"
   },
   "devDependencies": {
     "@repo/eslint-config": "workspace:*",

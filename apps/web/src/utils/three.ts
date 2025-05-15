@@ -1,8 +1,8 @@
 // const EULER_ORDER = ["XYZ", "XZY", "YXZ", "YZX", "ZXY", "ZYX"];
 
 import { BoxGeometry, MeshNormalMaterial } from "three";
-import { mergeVertices } from "three/examples/jsm/utils/BufferGeometryUtils";
-import { seededRandom } from "three/src/math/MathUtils";
+import { mergeVertices } from "three-stdlib";
+import { seededRandom } from "three/src/math/MathUtils.js";
 
 interface Position {
   position: [x: number, y: number, z: number];

@@ -27,7 +27,7 @@ export interface EditorProps {
 }
 const DEFAULT = <EditorProps>{
   background: {
-    color: "#000000",
+    color: "#d1d5db",
   },
   cam: {
     position: [5, 10, 10] as Position,

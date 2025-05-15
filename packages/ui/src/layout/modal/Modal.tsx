@@ -58,8 +58,9 @@ export function ModalLayout({
               handleClose={handleClose}
             />
           )}
-          <div style={{ paddingTop: globalTheme.spacing.s8 }} />
-          {children}
+          <div className={styles.modalContent}>
+            {children}
+          </div>
         </div>
       </div>
     </div>

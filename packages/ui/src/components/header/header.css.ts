@@ -32,16 +32,13 @@ export const headerWrapper = style({
 
 export const logo = style({
   width: "max-content",
-  height: constants.HEADERHEIGHT,
+  height: "max-content",
   alignContent: "center",
   textDecoration: "none",
-  ...themeVars.textStyle.body1,
+  ...themeVars.textStyle.heading4,
   ":hover": {
     cursor: "pointer",
     color: themeVars.color.primary,
-  },
-  "@media": {
-    [breakpoints.lowTablet]: { padding: 0 },
   },
 });
 
@@ -60,3 +57,9 @@ export const headerLink = style({
   textDecoration: "none",
   marginLeft: themeVars.spacing.medium,
 });
+
+export const pageHeader = style({
+  width: "100%",
+  height: "32px",
+  ...themeVars.textStyle.heading4,
+})

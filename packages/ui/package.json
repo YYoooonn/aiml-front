@@ -9,15 +9,19 @@
     "./styles": "./src/styles/index.ts",
     "./styles/global": "./src/styles/global.ts",
     "./components": "./src/components/index.ts",
-    "./layout": "./src/layout/index.ts"
+    "./components/*": "./src/components/*/index.ts",
+    "./layout": "./src/layout/index.ts",
+    "./layout/*": "./src/layout/*/index.ts"
   },
   "scripts": {
-    "lint": "eslint . --max-warnings 0"
+    "lint": "eslint . --max-warnings 0",
+    "lint:fix": "eslint --fix --ext .ts,.tsx ."
   },
   "peerDependencies": {
     "react": "^18",
     "react-dom": "^18",
-    "next": "14.2.25"
+    "next": "14.2.25",
+    "@react-spring/web": "^9.7.5"
   },
   "devDependencies": {
     "@react-spring/web": "^9.7.5",

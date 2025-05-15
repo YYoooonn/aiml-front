@@ -4,7 +4,7 @@ import { globalTheme } from "../../styles/global";
 
 export const baseButton = style({
   width: "100%",
-  height: "32px",
+  height: "100%",
   alignContent: "center",
   textAlign: "center",
   cursor: "pointer",
@@ -29,6 +29,7 @@ export const submitButton = style([
       color: themeVars.color.textDarkest,
       backgroundColor: themeVars.color.primary,
       border: globalTheme.border.bSolid,
+      fontWeight: "600",
     },
   },
 ]);
@@ -37,5 +38,8 @@ export const selectedButton = style([
   baseButton,
   {
     backgroundColor: themeVars.color.primary,
+    color: themeVars.color.textDarkest,
+    border: globalTheme.border.bSolid,
+    fontWeight: "600",
   },
 ]);

@@ -1,6 +1,15 @@
 "use client";
 
-import { FC, PropsWithChildren, ReactNode, useRef, useState } from "react";
+import {
+  FC,
+  PropsWithChildren,
+  ReactNode,
+  useRef,
+  useState,
+  useMemo,
+  Children,
+  useCallback,
+} from "react";
 import { animated, SpringValue, useScroll, useSpring } from "@react-spring/web";
 import * as styles from "./snap.css";
 import { Nav } from "./nav";
@@ -11,8 +20,11 @@ type PSnapPageScroll = {
 } & PropsWithChildren;
 
 const DAMP = 2;
+const LAST_PAGE_TOLERANCE = 0.01;
 
 export const SnapPageScroll: FC<PSnapPageScroll> = ({ titles, children }) => {
+  const pages = useMemo(() => Children.toArray(children), [children]);
+
   const l = children ? children.length : 1;
   const containerRef = useRef<HTMLDivElement>(null!);
   const [page, setPage] = useState(0);
@@ -21,9 +33,8 @@ export const SnapPageScroll: FC<PSnapPageScroll> = ({ titles, children }) => {
   useScroll({
     container: containerRef,
     onChange: ({ value: { scrollYProgress } }) => {
-      // FIXME : last page issue -> quick fix with tolerance
-      const t = Math.min(scrollYProgress * l, l - 0.01);
-      setPage(t - (t % 1));
+      const t = Math.min(scrollYProgress * l, l - LAST_PAGE_TOLERANCE);
+      setPage(Math.floor(t));
       setProgress(t % 1);
     },
     default: {
@@ -44,17 +55,22 @@ export const SnapPageScroll: FC<PSnapPageScroll> = ({ titles, children }) => {
     [page],
   );
 
-  const phandler = (i: number) => {
-    containerRef.current.scrollTo({
-      top: Math.ceil(
+  const scrollToPage = useCallback(
+    (i: number) => {
+      if (!containerRef.current) return;
+      const targetY =
         ((DAMP * l - 1) / (DAMP * l)) *
-          containerRef.current.clientHeight *
-          i *
-          DAMP,
-      ),
-      behavior: "smooth",
-    });
-  };
+        containerRef.current.clientHeight *
+        i *
+        DAMP;
+
+      containerRef.current.scrollTo({
+        top: Math.ceil(targetY),
+        behavior: "smooth",
+      });
+    },
+    [l],
+  );
 
   return (
     <div ref={containerRef} className={styles.snapContainer}>
@@ -63,10 +79,10 @@ export const SnapPageScroll: FC<PSnapPageScroll> = ({ titles, children }) => {
         titles={titles}
         current={page}
         progress={progress}
-        phandler={phandler}
+        phandler={scrollToPage}
       />
       <ALayer current={current} l={l}>
-        {children}
+        {pages}
       </ALayer>
       {
         // empty array of scroll

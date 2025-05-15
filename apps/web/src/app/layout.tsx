@@ -1,18 +1,9 @@
 import type { Metadata } from "next";
 // import Image from "next/image";
-import {
-  geistSans,
-  rajdhani,
-  jetBrains_Mono,
-  ibmPlexSans,
-} from "@/assets/fonts";
+import ModalContainer from "@/components/modal";
+import { rajdhani, jetBrains_Mono, ibmPlexSans } from "@/assets/fonts";
+import { defaultTheme } from "@repo/ui/styles";
 import "@/styles/global.css";
-import { Header } from "@/components";
-import { ModalContainer } from "@/components/modal";
-import { defaultTheme, themeVars } from "@repo/ui/styles";
-import "@repo/ui/styles/global";
-
-import * as styles from "./layout.css";
 
 export const metadata: Metadata = {
   title: "AIML Project",
@@ -34,21 +25,7 @@ export default function RootLayout({
       </head>
       <body>
         <ModalContainer />
-        <main className={styles.layoutContainer}>
-          <Header />
-          <div className={styles.pageContentContainer}>
-            <div className={styles.mainContentContainer}>{children}</div>
-          </div>
-          {/* <Footer /> */}
-        </main>
-        {/* <div className={styles.backgroundContainer}>
-          <Image
-            className={styles.backgroundImage}
-            src={"/image/background.png"}
-            alt="img"
-            fill
-          />
-        </div> */}
+        {children}
       </body>
     </html>
   );
