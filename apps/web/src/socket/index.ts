@@ -4,8 +4,9 @@ import { io, Socket } from "socket.io-client";
 import { v4 as uuidv4 } from "uuid";
 
 const dev = process.env.NODE_ENV !== "production";
-// 서버 분리, 서버 컨테이너의 host를 사용해야함
 const path = dev ? "localhost:3001" : process.env.NEXT_PUBLIC_HOSTNAME;
+// for local docker test
+// const path = "localhost"
 
 export const generate = (ns: string, query: Record<string, string>): Socket => {
   // console.log("namespace", ns)

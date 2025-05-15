@@ -39,7 +39,7 @@ export const responseHandler: ResHandler = async (res) => {
 export const requestHandler: ReqHandler = async (req, _auth = true) => {
   const m = req.method;
   const h = headers(req, m);
-  if (m === "GET") {
+  if (m === "GET" || m === "DELETE") {
     return {
       headers: h,
       method: m,
