@@ -4,7 +4,10 @@
   "version": "0.0.0",
   "scripts": {
     "dev": "pnpm --filter web --filter socket-server dev",
-    "build": "pnpm --filter web build",
+    "build": "pnpm -r build",
+    "build:web": "pnpm --filter web build",
+    "build:socket": "pnpm --filter socket-server build",
+    "start": "pnpm --filter web start",
     "format": "prettier --write \"**/*.{ts,tsx,md,json}\"",
     "lint": "pnpm -r lint",
     "lint:fix": "pnpm -r lint:fix"

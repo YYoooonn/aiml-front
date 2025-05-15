@@ -4,7 +4,10 @@ import { generate } from "@/socket";
 import { useEffect, useRef, useState } from "react";
 import { Socket } from "socket.io-client";
 
-export const useSocket = (namespace: string, roomId?: string) => {
+export const useSocket = (
+  namespace: string,
+  roomId?: string
+): { socket: Socket | null; valid: boolean } => {
   const socketRef = useRef<Socket | null>(null);
   const [valid, setValid] = useState(false);
 

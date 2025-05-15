@@ -22,7 +22,7 @@ export default function Login() {
   );
 }
 
-export function LoginForm() {
+function LoginForm() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");

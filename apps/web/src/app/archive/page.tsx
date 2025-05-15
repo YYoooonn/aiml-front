@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { ArchiveContent, ArchiveCard } from "./_archives";
 import { useModals } from "@/hook/useModals";
@@ -44,7 +44,9 @@ export default function Archive() {
           ))
         }
       </GridLayout>
-      <ArchiveRouter />
+      <Suspense fallback={<div>Loading...</div>}>
+        <ArchiveRouter />
+      </Suspense>
     </>
   );
 }

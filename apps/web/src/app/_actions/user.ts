@@ -4,7 +4,7 @@ import { responseHandler, ENDPOINT } from "./utils";
 const ERROR_FROM = "USER ACTION";
 
 export async function create(props: UserRegisterData) {
-  const response = await fetch(ENDPOINT.U, {
+  const response = await fetch(ENDPOINT.U!!, {
     method: "POST",
     body: JSON.stringify(props),
   });

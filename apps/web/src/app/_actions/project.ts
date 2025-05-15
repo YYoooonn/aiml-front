@@ -16,7 +16,7 @@ export async function search({ k, n, s }: ProjectSearchParams) {
 }
 
 export async function create(props: Project) {
-  const response = await fetch(ENDPOINT.P, {
+  const response = await fetch(ENDPOINT.P!!, {
     method: "POST",
     body: JSON.stringify(props),
   });

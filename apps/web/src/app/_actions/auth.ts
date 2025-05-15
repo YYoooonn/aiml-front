@@ -6,7 +6,7 @@ import { ActionResponse } from "./actions";
 export async function login(props: LoginRequest["body"]) {
   // initiate cookie
   deleteCookie();
-  const response = await fetch(ENDPOINT.A, {
+  const response = await fetch(ENDPOINT.A!!, {
     method: "POST",
     body: JSON.stringify(props),
   });

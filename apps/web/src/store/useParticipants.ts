@@ -56,10 +56,12 @@ export const useParticipants = create<
   getCameras: () => Object.values(get().participants).map((p) => p.camera),
   setCamera: (userId, username, camera) => {
     const participants = get().participants;
-    if (!(userId in participants)) {
+    const user = participants[userId];
+    if (!user) {
       get().setParticipant(userId, username, camera);
+    } else {
+      participants[userId] = { ...user, camera: camera };
     }
-    participants[userId] = { ...participants[userId], camera: camera };
     set({ participants: participants });
   },
 }));

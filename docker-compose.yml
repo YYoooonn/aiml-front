@@ -5,36 +5,41 @@ services:
       - .env
     build:
       context: .
-      dockerfile: ./docker/next.Dockerfile
-      args:
-        # 빌드시 전달할 환경변수
-        NEXT_PUBLIC_HOSTNAME: ${NEXT_PUBLIC_HOSTNAME}
-        NEXT_PUBLIC_PORT: ${NEXT_PUBLIC_PORT}
-        NEXT_PUBLIC_SOCKET_HOST: ${NEXT_PUBLIC_SOCKET_HOST}
-        NEXT_PUBLIC_SOCKET_PORT: ${NEXT_PUBLIC_SOCKET_PORT}
-    environment:
-      # runtime에서 전달할 환경변수
-      NEXT_PUBLIC_HOSTNAME: ${NEXT_PUBLIC_HOSTNAME}
-      NEXT_PUBLIC_PORT: ${NEXT_PUBLIC_PORT}
-      NEXT_PUBLIC_SOCKET_HOST: ${NEXT_PUBLIC_SOCKET_HOST}
-      NEXT_PUBLIC_SOCKET_PORT: ${NEXT_PUBLIC_SOCKET_PORT}
-      SOCKET_CLIENT_HOST: ${SOCKET_CLIENT_HOST}
-      SOCKET_CLIENT_PORT: ${SOCKET_CLIENT_PORT}
-      BACKEND_API_ENDPOINT: ${BACKEND_API_ENDPOINT}
-      JWT_COOKIE_KEY: ${JWT_COOKIE_KEY}
+      dockerfile: ./docker/web.Dockerfile
+    container_name: frontend
     platform: linux/x86_64
     image: yyoooonn/aimlfront:latest
-    ports:
-      - 3000:3000
-
-  nginx:
+    expose:
+      - "3000"
+    networks:
+      - nginx-net
+  
+  socket:
+    env_file:
+      - .env
     build:
       context: .
-      dockerfile: ./docker/nginx/nginx.Dockerfile
-    # platform for ec2 environment
+      dockerfile: ./docker/socket.Dockerfile
+    container_name: socket
     platform: linux/x86_64
-    image: yyoooonn/aimlfrontnginx:latest
+    image: yyoooonn/aimlsocket:latest
+    expose:
+      - "3001"
+    networks:
+      - nginx-net
+
+  nginx:
+    image: nginx:latest
+    container_name: nginx
+    platform: linux/x86_64
+    volumes:
+      - ./nginx/nginx.prod.conf:/etc/nginx/nginx.conf:ro
     ports:
       - 80:80
     depends_on:
       - frontend
+    networks:
+      - nginx-net
+
+networks:
+  nginx-net:
