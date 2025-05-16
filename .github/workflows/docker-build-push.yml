@@ -16,9 +16,11 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      - name: Create .env file
-        run: |
-          echo "NEXT_PUBLIC_HOSTNAME=${{ vars.NEXT_PUBLIC_HOSTNAME }}" >> .env
+      - name: Create .env
+        run:
+          echo "NEXT_PUBLIC_HOSTNAME=${{ vars.NEXT_PUBLIC_HOSTNAME }}" > .env |
+          echo "DOCKER_REPO=${{ vars.DOCKER_AIML_USERNAME }}" >> .env
+        shell: bash
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
@@ -29,29 +31,24 @@ jobs:
           username: ${{ vars.DOCKER_AIML_USERNAME }}
           password: ${{ secrets.DOCKER_AIML_ACCESS_TOKEN }}
 
-      - name: Build containers with Docker Compose
-        run: docker-compose -f docker-compose.yml build
+      - name: Build containers
+        run: docker compose -f docker-compose.yml build
 
-      # 예: 빌드 후 컨테이너 실행 및 테스트
-      - name: Run services
-        run: docker-compose -f docker-compose.yml up -d
+      - name: Run containers
+        run: docker compose -f docker-compose.yml up -d
 
-      # Optional: Wait for services to be healthy
-      - name: Wait for services to be healthy
-        run: |
-          echo "Waiting for services to be healthy..."
-          sleep 30  # Adjust the sleep time as needed
+      - name: Wait for services
+        run: sleep 10
 
-      # add test if needed
-      # - name: Run tests inside container (optional)
-      #   run: docker-compose exec -T your-service-name npm test
+      - name: Check services
+        run: docker compose ps -a
 
       - name: Stop containers
-        run: docker-compose down
+        run: docker compose down
 
       # Optional: Push images to Docker Hub
       - name: Push images to Docker Hub
-        run: docker-compose push
+        run: docker compose push
 # name: Docker Image CI
 
 # on:
