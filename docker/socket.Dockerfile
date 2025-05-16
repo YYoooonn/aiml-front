@@ -33,6 +33,6 @@ RUN addgroup --system --gid 1001 express
 RUN adduser --system --uid 1001 express
 USER express
 
-COPY --from=builder /app .
+COPY --from=builder /app/apps/socket-server/dist ./apps/socket-server/dist
 
 CMD ["node", "apps/socket-server/dist/index.js"]
