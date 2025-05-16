@@ -11,13 +11,14 @@ RUN apk add --no-cache libc6-compat
 RUN apk update
 WORKDIR /app
 COPY pnpm-lock.yaml pnpm-workspace.yaml package.json ./
-COPY apps/socket-server/package.json ./apps/socket-server/
+COPY apps/socket-server/package.json ./apps/socket-server/package.json
 RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --frozen-lockfile
 
 FROM base AS builder
 WORKDIR /app
 COPY . .
 COPY --from=deps /app/node_modules ./node_modules
+COPY --from=deps /app/apps/socket-server/node_modules ./apps/socket-server/node_modules
 RUN pnpm --filter ./apps/socket-server... build
 
 # 3. Install only production deps
