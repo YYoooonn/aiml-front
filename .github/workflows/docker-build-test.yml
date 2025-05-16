@@ -1,0 +1,39 @@
+# .github/workflows/docker-build-test.yml
+name: Docker Compose CI
+
+on:
+  pull_request:
+    branches: [dev]
+
+jobs:
+  docker-build-push:
+    runs-on: ubuntu-latest
+    environment: AIML_DEV
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Create .env
+        run:
+          echo "NEXT_PUBLIC_HOSTNAME=${{ vars.NEXT_PUBLIC_HOSTNAME }}" > .env |
+          echo "DOCKER_REPO=${{ vars.DOCKER_AIML_USERNAME }}" >> .env
+        shell: bash
+
+      - name: Build containers
+        run: docker compose -f docker-compose.yml build
+
+      - name: Run containers
+        run: docker compose -f docker-compose.yml up -d
+
+      - name: Wait for services
+        run: sleep 10
+
+      - name: Check services
+        run: docker compose ps
+
+      - name: Optional health check
+        run: curl -f http://localhost || exit 1
+
+      - name: Stop containers
+        run: docker compose down
