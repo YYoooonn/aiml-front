@@ -8,6 +8,7 @@ on:
 jobs:
   docker-build-push:
     runs-on: ubuntu-latest
+    environment: AIML_PROD
 
     steps:
       - name: Checkout repository
