@@ -1,4 +1,4 @@
-# .github/workflows/docker-build-push.yml
+# .github/workflows/docker-build-test.yml
 name: Docker Compose CI
 
 on:
@@ -8,35 +8,30 @@ on:
 jobs:
   docker-build-push:
     runs-on: ubuntu-latest
-    environment: AIML_PROD
+    environment: AIML_DEV
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      - name: Create .env file
-        run: |
-          echo "NEXT_PUBLIC_HOSTNAME=${{ vars.NEXT_PUBLIC_HOSTNAME }}" >> .env
+      - name: Create .env
+        run: echo "NEXT_PUBLIC_HOSTNAME=${{ vars.NEXT_PUBLIC_HOSTNAME }}" > .env
+        shell: bash
 
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
+      - name: Build containers
+        run: docker compose -f docker-compose.yml build
 
-      - name: Build containers with Docker Compose
-        run: docker-compose -f docker-compose.yml build
+      - name: Run containers
+        run: docker compose -f docker-compose.yml up -d
 
-      # 예: 빌드 후 컨테이너 실행 및 테스트
-      - name: Run services
-        run: docker-compose -f docker-compose.yml up -d
+      - name: Wait for services
+        run: sleep 10
 
-      # Optional: Wait for services to be healthy
-      - name: Wait for services to be healthy
-        run: |
-          echo "Waiting for services to be healthy..."
-          sleep 30  # Adjust the sleep time as needed
+      - name: Check services
+        run: docker compose ps
 
-      # add test if needed
-      # - name: Run tests inside container (optional)
-      #   run: docker-compose exec -T your-service-name npm test
+      - name: Optional health check
+        run: curl -f http://localhost || exit 1
 
       - name: Stop containers
-        run: docker-compose down
+        run: docker compose down
