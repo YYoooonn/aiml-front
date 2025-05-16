@@ -1,12 +1,14 @@
 # .github/workflows/docker-build-test.yml
-name: Docker Compose CI
+name: Docker Compose Test CI
 
 on:
+  push:
+    branches: [dev]
   pull_request:
     branches: [dev]
 
 jobs:
-  docker-build-push:
+  docker-build-test:
     runs-on: ubuntu-latest
     environment: AIML_DEV
 

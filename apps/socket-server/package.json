@@ -6,7 +6,7 @@
   "main": "index.ts",
   "scripts": {
     "dev": "tsx watch src/index.ts",
-    "build": "tsup src/index.ts --format cjs --dts --out-dir dist",
+    "build": "tsup src/index.ts --format esm,cjs --dts --out-dir dist --target es2020",
     "start": "pnpm build && node ./dist/index.js"
   },
   "keywords": [],
