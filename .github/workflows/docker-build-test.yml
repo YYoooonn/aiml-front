@@ -15,7 +15,9 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Create .env
-        run: echo "NEXT_PUBLIC_HOSTNAME=${{ vars.NEXT_PUBLIC_HOSTNAME }}" > .env
+        run:
+          echo "NEXT_PUBLIC_HOSTNAME=${{ vars.NEXT_PUBLIC_HOSTNAME }}" > .env |
+          echo "DOCKER_REPO=${{ vars.DOCKER_AIML_USERNAME }}" >> .env
         shell: bash
 
       - name: Build containers
