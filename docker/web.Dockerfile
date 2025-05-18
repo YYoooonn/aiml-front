@@ -18,6 +18,7 @@ RUN apk update
 
 WORKDIR /app
 COPY . .
+COPY ./.env ./apps/web/.env
 RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --frozen-lockfile
 RUN pnpm --filter web build
 
