@@ -8,16 +8,14 @@ import { responseMapper } from "@/app/api/utils/responseMapper";
 
 const ENDPOINT = API_ENDPOINTS.AUTH;
 
-export async function POST(
-  request: NextRequest,
-) {
+export async function POST(request: NextRequest) {
   const body = await request.json();
   const response = await fetcher(`${ENDPOINT}/login`, {
     method: "POST",
     body: JSON.stringify(body),
   });
 
-  if ( response.success) {
+  if (response.success) {
     const { accessToken, refreshToken } = response.data as AuthResponse["data"];
     const mapped = responseMapper(response);
     const res = NextResponse.json(mapped);

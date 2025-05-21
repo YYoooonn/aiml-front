@@ -12,9 +12,7 @@ const ENDPOINT = API_ENDPOINTS.AUTH;
 // actions : login, reissue, register
 // todo: logout
 
-export async function POST(
-  request: NextRequest,
-) {
+export async function POST(request: NextRequest) {
   // const body = await request.json();
 
   // FIXME logout response
@@ -25,8 +23,8 @@ export async function POST(
   const response = {
     success: true,
     code: 0,
-    message: "Success",  
-  } as BaseResponse<null>
+    message: "Success",
+  } as BaseResponse<null>;
 
   const mapped = responseMapper(response);
   const res = NextResponse.json(mapped);

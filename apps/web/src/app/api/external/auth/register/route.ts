@@ -7,14 +7,12 @@ import { responseMapper } from "@/app/api/utils/responseMapper";
 
 const ENDPOINT = API_ENDPOINTS.AUTH;
 
-export async function POST(
-  request: NextRequest,
-) {
+export async function POST(request: NextRequest) {
   const body = await request.json();
   const response = await fetcher(`${ENDPOINT}/register`, {
     method: "POST",
     body: JSON.stringify(body),
   });
 
-  return NextResponse.json(responseMapper(response))
+  return NextResponse.json(responseMapper(response));
 }

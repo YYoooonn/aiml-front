@@ -8,9 +8,7 @@ import { responseMapper } from "@/app/api/utils/responseMapper";
 
 const ENDPOINT = API_ENDPOINTS.AUTH;
 
-export async function POST(
-  request: NextRequest,
-) {
+export async function POST(request: NextRequest) {
   const body = await request.json();
   const response = await fetcher(`${ENDPOINT}/reissue`, {
     method: "POST",
@@ -32,11 +30,10 @@ export async function POST(
     return res;
   }
 
-  const res = NextResponse.redirect(
-    new URL("/login", request.url),
-    {status: 302}
-  )
-  return res
+  const res = NextResponse.redirect(new URL("/login", request.url), {
+    status: 302,
+  });
+  return res;
 
   // 실패 응답?
   // return NextResponse.json(responseMapper(response, "/login"));
