@@ -4,6 +4,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { fetchWithAuth } from "@/lib/api/authFetcher";
 import { API_ENDPOINTS } from "@/app/api/constants/constants";
 import { responseMapper } from "@/app/api/utils/responseMapper";
+import { fetcher } from "@/lib/api/fetcher";
 
 const ENDPOINT = API_ENDPOINTS.PROJECT;
 
