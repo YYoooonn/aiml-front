@@ -3,9 +3,16 @@ import { BaseFrontResponse } from "@/@types/common";
 import { BFF_ENDPOINTS } from "@/constants/endpoints";
 
 const ENDPOINT = BFF_ENDPOINTS.SCENE;
+const ENDPOINT_PUBLIC = BFF_ENDPOINTS.PUBLIC;
 
-export async function getProjectScenes(projectId: string) {
-  const response = await fetch(`${BFF_ENDPOINTS.PROJECT}/${projectId}/scenes`, {
+export async function getProjectScenes(
+  projectId: string,
+  isPublic: boolean = false,
+) {
+  const reqUrl = isPublic
+    ? `${ENDPOINT_PUBLIC}/scene?pId=${projectId}`
+    : `${BFF_ENDPOINTS.PROJECT}/${projectId}/scene`;
+  const response = await fetch(reqUrl, {
     method: "GET",
   });
   const result: BaseFrontResponse<SceneData[]> = await response.json();

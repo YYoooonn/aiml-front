@@ -9,4 +9,5 @@ export const BFF_ENDPOINTS = {
   OBJ3D: "/api/external/object3d",
   TEST: "/test",
   ARCHIVE: "/api/external/archive",
+  PUBLIC: "/api/external/public",
 };

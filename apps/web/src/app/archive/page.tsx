@@ -5,8 +5,7 @@ import { useSearchParams } from "next/navigation";
 import { ArchiveContent, ArchiveCard } from "./_archives";
 import { useModals } from "@/hook/useModals";
 import { ModalType } from "@/store/useModalStore";
-import { getProject } from "@/app/actions/project";
-import { searchArchive } from "@/app/actions/archive";
+import { searchArchive } from "../actions/search";
 
 import { GridLayout } from "@repo/ui/layout";
 import { PageHeader } from "@repo/ui/components/header";
@@ -32,7 +31,7 @@ export default function Archive() {
       pageSize: 21,
     });
     if (res.success) {
-      setArchives(res.data.content);
+      setArchives(res.data.projects);
     }
   };
 
@@ -45,14 +44,19 @@ export default function Archive() {
         ))}
       </GridLayout>
       <Suspense fallback={<div>Loading...</div>}>
-        <ArchiveRouter />
+        <ArchiveRouter archives={archives} />
       </Suspense>
     </>
   );
 }
 
 // FIXME !!
-function ArchiveRouter() {
+function ArchiveRouter({ archives }: { archives: Array<ProjectData> }) {
+  const archiveMap = new Map<string, ProjectData>();
+  archives.forEach((archive) => {
+    archiveMap.set(archive.id, archive);
+  });
+
   const { modals, open, close } = useModals();
   const [id, setId] = useState<string | null>(null);
   const [title, setTitle] = useState<string | null>(null);
@@ -61,17 +65,11 @@ function ArchiveRouter() {
 
   useEffect(() => {
     const param = searchParams.get("from");
-    if (param) {
-      getProject(param).then((r) => {
-        if (r.success) {
-          setTitle(r.data.title);
-          setSubtitle(r.data.subtitle ? r.data.subtitle : "");
-          setId(param);
-        } else {
-          alert(r.error);
-          close();
-        }
-      });
+    const selected = param ? archiveMap.get(param) : null;
+    if (selected) {
+      setTitle(selected.title);
+      setSubtitle(selected.subtitle ? selected.subtitle : "");
+      setId(param);
     }
     return () => {
       setTitle(null);

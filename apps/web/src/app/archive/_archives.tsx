@@ -10,7 +10,7 @@ import {
   BaseLights,
 } from "@/components/three";
 import { ProjectData, SceneData } from "@/@types/api";
-import { getArchiveScenes } from "@/app/actions/archive";
+import { getProjectScenes } from "../actions/scene";
 
 export function ArchiveCard({ props }: { props: ProjectData }) {
   const { id, title, subtitle } = props;
@@ -26,7 +26,7 @@ export function ArchiveCard({ props }: { props: ProjectData }) {
 export function ArchiveContent({ id }: { id: string }) {
   const [scene, setScene] = useState<SceneData>();
   useEffect(() => {
-    getArchiveScenes(id).then((r) => {
+    getProjectScenes(id, true).then((r) => {
       if (r.success) {
         setScene(r.data[0]);
       }
