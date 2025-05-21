@@ -9,8 +9,8 @@ export default function RootLayout({
 }) {
   return (
     <DefaultLayout
-    style={{padding: 0}}
-    // header={<Header/>} footer={<Footer />}
+      style={{ padding: 0 }}
+      // header={<Header/>} footer={<Footer />}
     >
       <WorkspaceAisle />
       <RightAisle />

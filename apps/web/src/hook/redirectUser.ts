@@ -1,4 +1,4 @@
-import { navigate } from "@/app/_actions/navigate";
+import { navigate } from "@/app/actions/navigate";
 
 export default async function redirectUser(username?: string) {
   //console.debug("push user");

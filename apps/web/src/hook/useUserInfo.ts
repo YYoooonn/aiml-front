@@ -1,9 +1,10 @@
 "use client";
 
 import { create } from "zustand";
-import { deleteCookie } from "@/app/_actions/cookie";
-
-import * as user from "@/app/_actions/user";
+import { logout } from "@/app/actions/auth";
+import { getUserInfo, updateUserInfo } from "@/app/actions/user";
+import { getUserProjects } from "@/app/actions/project";
+import { ProjectData, UserData } from "@/@types/api";
 
 interface UserActions {
   // setUser: (user: UserStoreState) => void;
@@ -18,7 +19,7 @@ interface UserActions {
     userInfos,
   }: {
     id?: string;
-    userInfos: User;
+    userInfos: UserData;
   }) => Promise<void>;
   fetchProjects?: () => Promise<void>;
 }
@@ -36,7 +37,7 @@ const DEFAULT: U = {
   firstName: "",
   lastName: "",
   createdAt: "",
-  lastModifiedAt: "",
+  updatedAt: "",
   email: "",
   projects: [],
 };
@@ -48,13 +49,14 @@ export const useUserInfo = create<UserState>()((set, get) => ({
 
   addProject: (project) => set({ projects: [...get().projects, project] }),
   reset: () => set(DEFAULT),
-  logout: () => {
-    deleteCookie();
+  logout: async () => {
+    const res = await logout();
+    console.log(res.error);
     set(DEFAULT);
   },
   fetchUserInfo: async (id) => {
     set(DEFAULT);
-    const res = id ? await user.read(id) : await user.read();
+    const res = await getUserInfo();
     if (res.success) set({ ...res.data });
     // !response.error && response.username === username
     //   ? set(response)
@@ -64,20 +66,17 @@ export const useUserInfo = create<UserState>()((set, get) => ({
     //     });
   },
   fetch: async (uId) => {
-    const res = uId ? await user.read(uId) : await user.read();
+    const res = await getUserInfo();
     if (res.success) {
       set({ ...res.data });
-      const r = await user.readEntity({
-        id: uId ? uId : undefined,
-        entity: "projects",
-      });
-      if (r.success) set({ projects: r.data.projects });
+      const r = await getUserProjects();
+      if (r.success) set({ projects: r.data });
     } else {
       alert(res.error);
     }
   },
   update: async (data) => {
-    const response = await user.update(data);
+    const response = await updateUserInfo(data.userInfos);
     if (!response.success) alert(response.error);
   },
 }));
