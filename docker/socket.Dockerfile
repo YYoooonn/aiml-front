@@ -17,7 +17,7 @@ RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --frozen-lockfile
 FROM base AS builder
 WORKDIR /app
 COPY . .
-COPY ./.env ./apps/socket-server/.env
+COPY .env ./apps/socket-server/.env
 COPY --from=deps /app/node_modules ./node_modules
 COPY --from=deps /app/apps/socket-server/node_modules ./apps/socket-server/node_modules
 RUN pnpm --filter ./apps/socket-server... build
