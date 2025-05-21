@@ -1,4 +1,3 @@
-import { BaseRequest } from "@/@types/api";
 import { headers } from "./header";
 
 type DObj = { [key: string]: unknown | Data | Data[] };
@@ -11,7 +10,7 @@ type ResHandler = (res: Response) => Promise<{
 }>;
 
 type ReqHandler = (
-  req: BaseRequest,
+  req: any,
   auth: boolean,
 ) => Promise<{
   headers: HeadersInit;
