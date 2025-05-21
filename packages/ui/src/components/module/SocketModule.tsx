@@ -11,15 +11,26 @@ export function ProfileImages({ users }: { users: string[] }) {
   );
 }
 
-export function SocketHeader({connected, show, setShow}: {connected: boolean, show: boolean, setShow: (value: boolean) => void}) {
+export function SocketHeader({
+  connected,
+  show,
+  setShow,
+}: {
+  connected: boolean;
+  show: boolean;
+  setShow: (value: boolean) => void;
+}) {
   return (
-    <div className={styles.socketHeaderContainer} onClick={() => setShow(!show)}>
-      <ToggleSmallAnimated show={show}/>
+    <div
+      className={styles.socketHeaderContainer}
+      onClick={() => setShow(!show)}
+    >
+      <ToggleSmallAnimated show={show} />
       <p className={styles.socketHeader}>
         {connected ? "CONNECTED" : "NO CONNECTION"}
       </p>
     </div>
-  )
+  );
 }
 
 export function SocketModule({

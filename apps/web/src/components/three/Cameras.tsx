@@ -6,9 +6,7 @@ import { useEffect, useRef } from "react";
 import CamTracker from "../three/CamTracker";
 
 export function BaseCamera() {
-  return (
-    <CameraControls />
-  );
+  return <CameraControls />;
 }
 
 interface CamProps {

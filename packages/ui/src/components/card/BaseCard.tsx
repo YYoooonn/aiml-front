@@ -17,9 +17,7 @@ export function BaseCard(props: CardProps) {
       />
       <div className={styles.cardTextBlock}>
         {props.title}
-        <div style={{ ...themeVars.textStyle.subtitle2 }}>
-          {props.subtitle}
-        </div>
+        <div style={{ ...themeVars.textStyle.subtitle2 }}>{props.subtitle}</div>
       </div>
     </div>
   );

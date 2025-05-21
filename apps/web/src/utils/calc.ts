@@ -1,14 +1,26 @@
 import * as THREE from "three";
 import { DEFAULT_MATRIX } from "./constants";
+import { TTransform } from "@/@types/api";
 
-export function toMatrix(
-  position: number[],
-  rotation: number[],
-  scale: number[],
-) {
-  const pos = new THREE.Vector3(position[0], position[1], position[2]);
-  const quat = new THREE.Quaternion(rotation[0], rotation[1], rotation[2]);
-  const sc = new THREE.Vector3(scale[0], scale[1], scale[2]);
+export function toMatrix(transform: TTransform) {
+  const pos = new THREE.Vector3(
+    transform.position[0],
+    transform.position[1],
+    transform.position[2],
+  );
+  const quat = new THREE.Quaternion().setFromEuler(
+    new THREE.Euler(
+      transform.rotation[0],
+      transform.rotation[1],
+      transform.rotation[2],
+      "XYZ",
+    ),
+  );
+  const sc = new THREE.Vector3(
+    transform.scale[0],
+    transform.scale[1],
+    transform.scale[2],
+  );
   return new THREE.Matrix4().compose(pos, quat, sc).toArray();
 }
 
@@ -37,9 +49,10 @@ export function toMatrix4decompose(input: number[]): Output {
   const matrix = new THREE.Matrix4().fromArray(input);
   matrix.decompose(pos, quat, scale);
 
+  const euler = new THREE.Euler().setFromQuaternion(quat, "XYZ"); // or 'YXZ', etc.
   return {
     position: [pos.x, pos.y, pos.z],
     scale: [scale.x, scale.y, scale.z],
-    rotation: [quat.x, quat.y, quat.z],
+    rotation: [euler.x, euler.y, euler.z],
   };
 }

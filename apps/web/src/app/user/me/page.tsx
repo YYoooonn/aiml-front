@@ -15,7 +15,7 @@ export default function Page({ params }: { params: { username: string } }) {
 
   return (
     <>
-      <PageHeader title="Workspaces"/>
+      <PageHeader title="Workspaces" />
       <Projects projects={projects} addProject={addProject} />
     </>
   );

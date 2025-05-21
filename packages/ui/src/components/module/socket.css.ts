@@ -36,7 +36,7 @@ export const socketHeaderContainer = style({
     cursor: "pointer",
     color: themeVars.color.primary,
   },
-})
+});
 
 export const socketHeader = style({
   ...themeVars.textStyle.subtitle1,

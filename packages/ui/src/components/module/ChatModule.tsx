@@ -72,15 +72,17 @@ function MessageContainer({ logs }: { logs: string[] }) {
   }, [logs]);
 
   return (
-    <div className={styles.chatMessageContainer}>
+    <>
       <div className={styles.chatMessageHeader}>messages</div>
-      {messages.map((msg, i) => {
-        return (
-          <div key={i} className={styles.chatMessage}>
-            {msg}
-          </div>
-        );
-      })}
-    </div>
+      <div className={styles.chatMessageContainer}>
+        {messages.map((msg, i) => {
+          return (
+            <div key={i} className={styles.chatMessage}>
+              {msg}
+            </div>
+          );
+        })}
+      </div>
+    </>
   );
 }

@@ -21,6 +21,7 @@ export function BaseSideNav({ text, imgUrl, onClick }: SideNavProps) {
 
 interface DropdownSideNavProps extends SideNavProps {
   show: boolean;
+  textSize?: string;
 }
 
 export function DropdownSideNav({
@@ -28,13 +29,18 @@ export function DropdownSideNav({
   onClick,
   children,
   show,
+  textSize,
 }: DropdownSideNavProps) {
-
   return (
     <>
       <div className={styles.leftAisleBlock} onClick={onClick}>
         <ToggleSmallAnimated show={show} />
-        <div className={styles.leftAisleText}>{text}</div>
+        <div
+          className={styles.leftAisleText}
+          style={textSize ? { fontSize: textSize } : {}}
+        >
+          {text}
+        </div>
       </div>
       <div className={styles.dropdownContainer}>{show && children}</div>
     </>

@@ -8,10 +8,7 @@ export default function AboutLayout({
   children: React.ReactNode;
 }) {
   return (
-    <DefaultLayout
-      header={<Header />}
-      footer={<Footer />}
-    >
+    <DefaultLayout header={<Header />} footer={<Footer />}>
       {children}
     </DefaultLayout>
   );

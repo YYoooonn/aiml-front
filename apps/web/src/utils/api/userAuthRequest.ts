@@ -1,8 +1,7 @@
 import { requestHandler, responseHandler } from "./handlers";
 import { userApiRequest } from "./userApiRequest";
-import { BaseRequest } from "@/@types/api";
 
-export async function userAuthRequest(endpoint: string, request: BaseRequest) {
+export async function userAuthRequest(endpoint: string, request: any) {
   // console.debug(`AUTH REQUEST TO ${process.env.BACKEND_API_BASE + endpoint}`);
   const req = await requestHandler(request, true);
   if ("Authorization" in req.headers) {

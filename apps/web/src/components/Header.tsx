@@ -1,9 +1,12 @@
 "use client";
 
-import { navigate } from "@/app/_actions/navigate";
+import { navigate } from "@/app/actions/navigate";
 import redirectUser from "@/hook/redirectUser";
 import { useUserInfo } from "@/hook/useUserInfo";
-import { Header as HeaderLayout, ProfileDropdown } from "@repo/ui/components/header";
+import {
+  Header as HeaderLayout,
+  ProfileDropdown,
+} from "@repo/ui/components/header";
 import useComponentVisible from "@/hook/useComponentVisible";
 
 export function Header() {

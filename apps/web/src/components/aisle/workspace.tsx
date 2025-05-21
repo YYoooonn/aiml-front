@@ -14,12 +14,21 @@ import {
   SelectionHeader,
   WorkspaceHeader,
 } from "@repo/ui/components/aisle";
-import { Layer, SocketModule, ChatModule, SocketHeader } from "@repo/ui/components/module";
+import {
+  Layer,
+  SocketModule,
+  ChatModule,
+  SocketHeader,
+  SceneLayer,
+} from "@repo/ui/components/module";
+import { useSceneStore } from "@/store/useSceneStore";
+import { SceneData, TObject3DData } from "@/@types/api";
 
 const SELECTIONS = ["Layer", "Chat"];
 
 export default function WorkspaceAisle({}: { id?: string }) {
-  const { title, objects, id } = useProjectStore();
+  const { title, id } = useProjectStore();
+  const scenes = useSceneStore((s) => s.scenes);
 
   const username = useUserInfo((s) => s.username);
   const { isConnected, logs, users, sendMessage } = useChat(
@@ -42,7 +51,11 @@ export default function WorkspaceAisle({}: { id?: string }) {
       <AisleModule
         style={{ height: "auto", maxHeight: "180px", flexShrink: 0 }}
         header={
-          <SocketHeader connected={isConnected} show={showSocket} setShow={setShowSocket} />
+          <SocketHeader
+            connected={isConnected}
+            show={showSocket}
+            setShow={setShowSocket}
+          />
         }
         show={showSocket}
       >
@@ -59,7 +72,7 @@ export default function WorkspaceAisle({}: { id?: string }) {
         }
       >
         {tag === "Layer" ? (
-          <LayerModule objects={objects} />
+          <SceneModule scenes={scenes} />
         ) : (
           <ChatModule logs={logs} sendMessage={sendMessage} />
         )}
@@ -68,11 +81,29 @@ export default function WorkspaceAisle({}: { id?: string }) {
   );
 }
 
-function LayerModule({ objects }: { objects: TObjectData[] }) {
+function SceneModule({ scenes }: { scenes: Map<string, SceneData> }) {
+  const { setSelected, selectedScene, children } = useSceneStore();
+  return (
+    <>
+      {Array.from(scenes.values()).map((scene) => (
+        <SceneLayer
+          key={scene.id}
+          scene={scene}
+          selected={selectedScene?.id === scene.id}
+          onSelect={() => setSelected(scene.id)}
+        >
+          <LayerModule objects={children} />
+        </SceneLayer>
+      ))}
+    </>
+  );
+}
+
+function LayerModule({ objects }: { objects: TObject3DData[] }) {
   const { selected, setSelected } = useObjectEditor();
   // memoize the object map to avoid unnecessary re-renders
   const objectMap = useMemo(() => {
-    const map = new Map<number, TObjectData>();
+    const map = new Map<string, TObject3DData>();
     for (const obj of objects) map.set(obj.id, obj);
     return map;
   }, [objects]);
@@ -84,7 +115,7 @@ function LayerModule({ objects }: { objects: TObjectData[] }) {
       const id = target.closest("[data-id]")?.getAttribute("data-id");
       if (!id) return;
 
-      const found = objectMap.get(Number(id));
+      const found = objectMap.get(id);
       if (found) setSelected(found);
     },
     [objectMap, setSelected],

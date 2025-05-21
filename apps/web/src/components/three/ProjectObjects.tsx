@@ -1,18 +1,13 @@
 "use client";
 
+import { TObject3DData } from "@/@types/api";
 import { useObjectEditor } from "@/hook/useObjectEditor";
 
-import { toMatrix4decompose } from "@/utils/calc";
 import { Center } from "@react-three/drei";
 import { useEffect } from "react";
+import { Object3DRenderer } from "./Object3DRenderer";
 
 // const SELECTEDCOLOR = "#FFEA00";
-
-interface MeshProps {
-  obj: TObjectData;
-  selected?: TObjectData;
-  handleSelected?: () => void;
-}
 
 /* 
 
@@ -26,7 +21,7 @@ FIXME
 export function WorkspaceObjects({
   objectInfos,
 }: {
-  objectInfos?: TObjectData[];
+  objectInfos?: TObject3DData[];
 }) {
   const pObjects = objectInfos ? objectInfos : [];
   const { setSelected, resetSelected, selected } = useObjectEditor();
@@ -38,13 +33,14 @@ export function WorkspaceObjects({
 
   return (
     <group>
-      {pObjects.map((obj, i) => {
+      {pObjects.map((obj) => {
         return (
-          <SelectableMesh
-            key={i}
+          <Object3DRenderer
+            key={obj.id}
             obj={obj}
             selected={selected}
-            handleSelected={() => setSelected(obj)}
+            visible={selected?.id !== obj.id}
+            handleSelected={(obj: TObject3DData) => setSelected(obj)}
           />
         );
       })}
@@ -55,62 +51,14 @@ export function WorkspaceObjects({
 export function ArchiveObjects({
   objectInfos,
 }: {
-  objectInfos?: TObjectData[];
+  objectInfos?: TObject3DData[];
 }) {
   const pObjects = objectInfos ? objectInfos : [];
   return (
     <Center>
-      {pObjects.map((obj, i) => {
-        return <MeshObject key={i} obj={obj} />;
-      })}
+      {pObjects.map((obj) => (
+        <Object3DRenderer key={obj.id} obj={obj} />
+      ))}
     </Center>
-  );
-}
-
-function SelectableMesh({ obj, selected, handleSelected }: MeshProps) {
-  const { position, scale, rotation } = toMatrix4decompose(obj.matrix);
-
-  // FIXME temporary for error catch
-  const newRotation = rotation.map((d) => (isNaN(d) ? 0 : d)) as Position;
-
-  return (
-    <group scale={scale} position={position} rotation={newRotation}>
-      <mesh
-        onClick={handleSelected}
-        visible={selected && selected.id !== obj.id}
-      >
-        {obj.geometry === "BoxGeometry" ? (
-          <boxGeometry />
-        ) : obj.geometry === "SphereGeometry" ? (
-          <sphereGeometry />
-        ) : (
-          <coneGeometry />
-        )}
-        <meshStandardMaterial color={obj.material} />
-      </mesh>
-    </group>
-  );
-}
-
-function MeshObject({ obj }: MeshProps) {
-  const { position, scale, rotation } = toMatrix4decompose(obj.matrix);
-
-  // XXX temporary for error catch
-  // projectId 53
-  const newRotation = rotation.map((d) => (isNaN(d) ? 0 : d)) as Position;
-
-  return (
-    <group scale={scale} position={position} rotation={newRotation}>
-      <mesh>
-        {obj.geometry === "BoxGeometry" ? (
-          <boxGeometry />
-        ) : obj.geometry === "SphereGeometry" ? (
-          <sphereGeometry />
-        ) : (
-          <coneGeometry />
-        )}
-        <meshStandardMaterial color={obj.material} />
-      </mesh>
-    </group>
   );
 }

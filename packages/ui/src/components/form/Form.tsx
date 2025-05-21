@@ -83,7 +83,6 @@ export function BoolButtonBlock({
   // caculate width by button counts
   const widthPercentage = (98 / textList.length).toFixed().concat("%");
 
-  console.log("widthPercentage", widthPercentage);
   return (
     <BaseFormBlock title={title ? title : "SELECT"}>
       <div style={{ display: "flex", justifyContent: "space-between" }}>

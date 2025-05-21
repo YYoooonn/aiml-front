@@ -6,8 +6,8 @@ import {
   SampleObjects,
   SampleProject,
   SampleProjects,
-  TProject,
 } from "@/utils/sample";
+import { ProjectData } from "@/@types/api";
 
 const ROOT = "PROJECT";
 
@@ -30,7 +30,7 @@ export async function getProjects(
           },
         );
       }
-      const entity = params[2] as keyof TProject;
+      const entity = params[2] as keyof ProjectData;
       return NextResponse.json(
         { [entity]: SampleProject()[entity] },
         {

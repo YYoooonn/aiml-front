@@ -8,16 +8,15 @@ import ViewportEditor from "./editor/ViewportEditor";
 
 export function RightAisle() {
   const [_, id] = usePathname().split("/").slice(1, 3);
-  const pId = Number(id);
 
   return (
     <RightAisleContainer>
       <AisleModule>
         <ViewportEditor />
         <p style={{ marginBottom: "8px" }} />
-        <Object3DConstructor pId={pId} />
+        <Object3DConstructor pId={id ? id : ""} />
         <p style={{ marginBottom: "8px" }} />
-        <Object3DEditor pId={pId} />
+        <Object3DEditor pId={id ? id : ""} />
       </AisleModule>
     </RightAisleContainer>
   );

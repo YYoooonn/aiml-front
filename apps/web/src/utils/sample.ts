@@ -1,31 +1,37 @@
 /* 백엔드랑 동일 환경 구성 */
 
-export interface TUser extends Omit<UserData, "id"> {
-  userId: number;
-}
+import {
+  ProjectData,
+  UserData,
+  TObject3DData,
+  TGeometry,
+  TMaterial,
+} from "@/@types/api";
+import {
+  DEFAULT_BOX_FACES,
+  DEFAULT_BOX_VERTICIES,
+  DEFAULT_CONE_FACES,
+  DEFAULT_CONE_VERTICIES,
+  DEFAULT_SPHERE_FACES,
+  DEFAULT_SPHERE_VERTICES,
+} from "@/assets/geometry";
+import { DEFAULT_MATERIAL } from "@/assets/material";
+import { Matrix4Tuple } from "three";
 
-export interface TProject extends Omit<ProjectData, "id"> {
-  projectId: number;
-}
-
-export interface TObject extends Omit<TObjectData, "id"> {
-  objectId: number;
-}
-
-export const SampleUser = (id?: number) => {
+export const SampleUser = (id?: string) => {
   return generateRandomUser(id);
 };
 
 export const SampleUsers = (count: number) => {
   return generateRandomUsers(count);
 };
-export const SampleProject = (id?: number) => {
+export const SampleProject = (id?: string) => {
   return generateRandomProject(id);
 };
 export const SampleProjects = (count: number) => {
   return generateRandomProjects(count);
 };
-export const SampleObject = (id?: number) => {
+export const SampleObject = (id?: string) => {
   return generateRandomObject(id);
 };
 export const SampleObjects = (count: number) => {
@@ -36,47 +42,52 @@ export const SampleToken = () => {
   return generateRandomToken();
 };
 
-function generateRandomUser(id?: number): TUser {
+function generateRandomUser(id?: string): UserData {
   return {
-    userId: id ? id : 1,
     username: generateRandomString(),
     firstName: generateRandomString(),
     lastName: generateRandomString(),
     createdAt: "2025-03-17T09:49:16.332093",
-    lastModifiedAt: "2025-03-17T09:49:06.985782",
+    updatedAt: "2025-03-17T09:49:06.985782",
     email: generateRandomString().concat("@gmail.com"),
   };
 }
 
 function generateRandomUsers(count: number) {
-  return Array.from({ length: count }).map((_, i) => generateRandomUser(i + 1));
+  return Array.from({ length: count }).map((_, i) =>
+    generateRandomUser((i + 1).toString()),
+  );
 }
 
-function generateRandomProject(id?: number): TProject {
+function generateRandomProject(id?: string): ProjectData {
   return {
-    projectId: id ? id : 1,
+    id: id ? id : "randomId",
     isPublic: true,
     title: generateRandomString(),
     subtitle: generateRandomString(),
     createdAt: "2025-03-17T09:49:16.332093",
-    lastModifiedAt: "2025-03-17T09:49:06.985782",
+    updatedAt: "2025-03-17T09:49:06.985782",
   };
 }
 
 function generateRandomProjects(count: number) {
   return Array.from({ length: count }).map((_, i) =>
-    generateRandomProject(i + 1),
+    generateRandomProject(`${i + 1}`),
   );
 }
 
-function generateRandomObject(id?: number): TObject {
+function generateRandomObject(id?: string): TObject3DData {
   return {
-    objectId: id ? id : 1,
+    id: id ? id : generateRandomString(),
+    type: "MESH",
+    name: generateRandomString(),
+    visible: true,
+    parentId: null,
     createdAt: "2025-03-17T09:49:16.332093",
-    lastModifiedAt: "2025-03-17T09:49:06.985782",
-    matrix: generateRandomMatrix(),
+    updatedAt: "2025-03-17T09:49:06.985782",
+    transform: generateRandomMatrix(),
     geometry: generateRandomGeometry(),
-    material: generateRandomHexcolor(),
+    material: generateRandomMaterial(),
   };
 }
 
@@ -86,7 +97,7 @@ function generateRandomToken() {
 
 function generateRandomObjects(count: number) {
   return Array.from({ length: count }).map((_, i) =>
-    generateRandomObject(i + 1),
+    generateRandomObject(`${i + 1}`),
   );
 }
 
@@ -95,17 +106,39 @@ function generateRandomString() {
 }
 
 function generateRandomMatrix() {
-  return Array.from({ length: 16 }, () => Math.random() * 10);
+  return Array.from({ length: 16 }, () => Math.random() * 10) as Matrix4Tuple;
 }
 
-function generateRandomGeometry() {
+function generateRandomGeometry(): TGeometry {
   const trigger = Math.floor(Math.random() * 3);
   if (trigger < 1) {
-    return "ConeGeometry";
+    return {
+      type: "BoxGeometry",
+      name: "untitled",
+      vertices: DEFAULT_BOX_VERTICIES,
+      faces: DEFAULT_BOX_FACES,
+    };
   } else if (trigger < 2) {
-    return "SphereGeometry";
+    return {
+      type: "SphereGeometry",
+      name: "untitled",
+      vertices: DEFAULT_SPHERE_VERTICES,
+      faces: DEFAULT_SPHERE_FACES,
+    };
   }
-  return "CubeGeometry";
+  return {
+    type: "ConeGeometry",
+    name: "untitled",
+    vertices: DEFAULT_CONE_VERTICIES,
+    faces: DEFAULT_CONE_FACES,
+  };
+}
+
+function generateRandomMaterial(): TMaterial {
+  return {
+    ...DEFAULT_MATERIAL,
+    color: generateRandomHexcolor(),
+  };
 }
 
 function generateRandomHexcolor() {
