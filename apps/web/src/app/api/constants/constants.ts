@@ -9,6 +9,7 @@ export const API_ENDPOINTS = {
   OBJ3D: `${API_BASE_URL}/api/object3d`,
   TEST: `${API_BASE_URL}/test`,
   ARCHIVE: `${API_BASE_URL}/api/archive`,
+  // SEARCH: `${API_BASE_URL}/api/search`,
 };
 
 export const ABS_ENDPOINTS = {
