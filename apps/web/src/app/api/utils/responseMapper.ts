@@ -1,4 +1,3 @@
-
 import { BaseResponse } from "@/app/api/types/types";
 import { BaseFrontResponse } from "@/@types/common";
 
