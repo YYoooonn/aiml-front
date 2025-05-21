@@ -1,4 +1,3 @@
-
 import { Object3DRequest, TObject3DData } from "@/@types/api";
 import { BaseFrontResponse } from "@/@types/common";
 import { BFF_ENDPOINTS } from "@/constants/endpoints";
@@ -6,13 +5,13 @@ import { BFF_ENDPOINTS } from "@/constants/endpoints";
 const ENDPOINT = BFF_ENDPOINTS.OBJ3D;
 
 export async function createObject3D(props: Object3DRequest) {
-  console.log(props)
+  console.log(props);
   const response = await fetch(`${ENDPOINT}`, {
     method: "POST",
     body: JSON.stringify(props),
   });
   const result: BaseFrontResponse<TObject3DData> = await response.json();
-  console.log(result)
+  console.log(result);
   return result;
 }
 

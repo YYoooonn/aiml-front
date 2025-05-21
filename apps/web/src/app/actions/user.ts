@@ -1,4 +1,3 @@
-
 import { BFF_ENDPOINTS } from "@/constants/endpoints";
 import { BaseFrontResponse } from "@/@types/common";
 import { User, UserData } from "@/@types/api";

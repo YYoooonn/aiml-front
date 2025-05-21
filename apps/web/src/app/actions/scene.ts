@@ -1,4 +1,3 @@
-
 import { SceneData, SceneRequest } from "@/@types/api";
 import { BaseFrontResponse } from "@/@types/common";
 import { BFF_ENDPOINTS } from "@/constants/endpoints";

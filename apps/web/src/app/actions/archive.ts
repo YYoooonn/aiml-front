@@ -19,7 +19,8 @@ export async function searchArchive({
     `${ENDPOINT}/search?query=${keyword}&pageNum=${pageNum}&pageSize=${pageSize}`,
     { method: "GET" },
   );
-  const result: BaseFrontResponse<{content: ProjectData[]}> = await response.json();
+  const result: BaseFrontResponse<{ content: ProjectData[] }> =
+    await response.json();
   return result;
 }
 
