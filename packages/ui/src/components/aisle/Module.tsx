@@ -16,7 +16,12 @@ interface AisleModuleProps {
   show?: boolean;
 }
 
-export function AisleModule({ style, header, children, show=true }: AisleModuleProps) {
+export function AisleModule({
+  style,
+  header,
+  children,
+  show = true,
+}: AisleModuleProps) {
   return (
     <div className={styles.moduleWrapper} style={style}>
       {header}

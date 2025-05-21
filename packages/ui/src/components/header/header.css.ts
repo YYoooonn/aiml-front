@@ -62,4 +62,4 @@ export const pageHeader = style({
   width: "100%",
   height: "32px",
   ...themeVars.textStyle.heading4,
-})
+});

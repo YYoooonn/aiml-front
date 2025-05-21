@@ -15,9 +15,17 @@ export function Header({ signedIn, handleVisible }: HeaderProps) {
         <Logo />
         <Links>
           <HeaderLink href={"/archive"} text="Archive" />
-          <HeaderLink href={"/about"} text="About" />
+          <ExternalHeaderLink
+            href={"https://github.com/YYoooonn/aiml-mono"}
+            text="About"
+          />
+          <ExternalHeaderLink
+            href={"https://github.com/YYoooonn/aiml-mono"}
+            text="Documentation"
+          />
+          {/* 
           <HeaderLink href={"/documentation"} text="Documentation" />
-          <HeaderLink href={"/contact"} text="Contact" />
+          <HeaderLink href={"/contact"} text="Contact" /> */}
           <HeaderProfile signedIn={signedIn} handleVisible={handleVisible}>
             <HeaderLink href={"/register"} text="SignUp" />
             <HeaderLink href={"/login"} text="LogIn" />
@@ -45,5 +53,24 @@ export function HeaderLink({ href, text }: { href: string; text: string }) {
     <Link className={styles.headerLink} href={href}>
       {text}
     </Link>
+  );
+}
+
+export function ExternalHeaderLink({
+  href,
+  text,
+}: {
+  href: string;
+  text: string;
+}) {
+  return (
+    <a
+      className={styles.headerLink}
+      href={href}
+      target="_blank"
+      rel="noopener noreferrer"
+    >
+      {text}
+    </a>
   );
 }

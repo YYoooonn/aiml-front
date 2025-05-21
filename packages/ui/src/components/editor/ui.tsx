@@ -126,21 +126,21 @@ export function DimSelector({ text, dim, setDim, preset }: DimSelectorProps) {
           className={styles.multiSelectorTextInput}
           onChange={(e) => setDim([Number(e.target.value), dim[1], dim[2]])}
           type="number"
-          value={dim[0].toString()}
+          value={dim[0]}
           placeholder={"X"}
         />
         <input
           className={styles.multiSelectorTextInput}
           onChange={(e) => setDim([dim[0], Number(e.target.value), dim[2]])}
           type="number"
-          value={dim[1].toString()}
+          value={dim[1]}
           placeholder={"Y"}
         />
         <input
           className={styles.multiSelectorTextInput}
           onChange={(e) => setDim([dim[0], dim[1], Number(e.target.value)])}
           type="number"
-          value={dim[2].toString()}
+          value={dim[2]}
           placeholder={"Z"}
         />
       </div>
@@ -174,11 +174,9 @@ export interface MatrixConstructorProps {
   position?: Dimension;
   rotation?: Dimension;
   scale?: Dimension;
-  material?: string;
   setPosition: (val: Dimension) => void;
   setRotation: (val: Dimension) => void;
   setScale: (val: Dimension) => void;
-  setMaterial: (val: string) => void;
   onSubmit?: (e: React.MouseEvent) => void;
   onRemove?: (e: React.MouseEvent) => void;
 }
@@ -187,11 +185,9 @@ export function MatrixConstructor({
   position,
   rotation,
   scale,
-  material,
   setPosition,
   setRotation,
   setScale,
-  setMaterial,
   onSubmit,
   onRemove,
 }: MatrixConstructorProps) {
@@ -204,16 +200,8 @@ export function MatrixConstructor({
         <DimSelector text="rot" dim={rotation} setDim={setRotation} />
       )}
       {scale && <DimSelector text="scale" dim={scale} setDim={setScale} />}
-      {material && (
-        <MaterialSelector
-          text="color"
-          val={material}
-          setVal={setMaterial}
-          preset={"#HEXCOLOR"}
-        />
-      )}
-      {onSubmit && <SubmitButton title="SUBMIT" handler={onSubmit} />}
-      {onRemove && <SubmitButton title="REMOVE" handler={onRemove} />}
+      {/* {onSubmit && <SubmitButton title="SUBMIT" handler={onSubmit} />}
+      {onRemove && <SubmitButton title="REMOVE" handler={onRemove} />} */}
     </>
   );
 }
