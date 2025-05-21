@@ -79,7 +79,7 @@ function generateRandomProjects(count: number) {
 function generateRandomObject(id?: string): TObject3DData {
   return {
     id: id ? id : generateRandomString(),
-    type: "mesh",
+    type: "MESH",
     name: generateRandomString(),
     visible: true,
     parentId: null,

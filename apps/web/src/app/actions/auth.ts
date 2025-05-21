@@ -5,7 +5,6 @@ import { BFF_ENDPOINTS } from "@/constants/endpoints";
 const ENDPOINT = BFF_ENDPOINTS.AUTH;
 
 export async function login(props: LoginRequest) {
-  console.log("login route", `${ENDPOINT}/login`);
   const response = await fetch(`${ENDPOINT}/login`, {
     method: "POST",
     headers: {
