@@ -12,7 +12,7 @@ const DEFAULT = {
   },
   background: {
     color: "#d1d5db",
-  }
+  },
 };
 
 interface CanvasProps {
@@ -20,7 +20,10 @@ interface CanvasProps {
   children?: React.ReactNode;
 }
 
-export function BaseCanvas({ background=DEFAULT.background.color, children }: CanvasProps) {
+export function BaseCanvas({
+  background = DEFAULT.background.color,
+  children,
+}: CanvasProps) {
   return (
     <div style={{ width: "100%", height: "100%" }}>
       <Canvas frameloop="demand" shadows>

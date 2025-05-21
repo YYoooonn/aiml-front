@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { create } from "@/app/_actions/user";
+import { registerUser } from "@/app/actions/auth";
 import redirectUser from "@/hook/redirectUser";
 import { useUserInfo } from "@/hook/useUserInfo";
 import {
@@ -34,7 +34,7 @@ function RegisterForm() {
     if (!username || !password) {
       setError("empty username or password");
     } else {
-      const response = await create({
+      const response = await registerUser({
         username: username,
         password: password,
         firstName: firstname,
@@ -45,7 +45,7 @@ function RegisterForm() {
       if (response.success) {
         redirectUser("me");
       } else {
-        setError(response.error);
+        setError(response.error ? response.error : "unknown error");
       }
     }
   };

@@ -1,8 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import { login } from "@/app/_actions/auth";
-import { navigate } from "@/app/_actions/navigate";
+import { login } from "@/app/actions/auth";
+import { navigate } from "@/app/actions/navigate";
 import {
   SubmitButton,
   BaseButton,
@@ -41,12 +41,12 @@ function LoginForm() {
       setError("empty username or password");
     } else {
       const loginData = { username: username, password: password };
-      const data = await login(loginData);
-      if (data.success) {
+      const res = await login(loginData);
+      if (res.success) {
         await navigate("/user/me");
       } else {
-        if (data.error) {
-          setError(data.error);
+        if (res.error) {
+          setError(res.error);
         } else {
           alert("unknown error please try again");
         }

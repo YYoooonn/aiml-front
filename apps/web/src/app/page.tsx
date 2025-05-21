@@ -1,7 +1,11 @@
 "use client";
 
 import { SnapPageScroll } from "@/components/snapscroll/SnapPageScroll";
-import { DefaultLayout, LandingSection, LandingSampleLink } from "@repo/ui/layout";
+import {
+  DefaultLayout,
+  LandingSection,
+  LandingSampleLink,
+} from "@repo/ui/layout";
 import { Header } from "@/components/Header";
 
 export default function Home() {
@@ -13,7 +17,7 @@ export default function Home() {
           <h3>work in progress</h3>
         </LandingSection>
         <LandingSection>
-          <LandingSampleLink href={"/login"} >
+          <LandingSampleLink href={"/login"}>
             <h1>&quot;Click to login&quot;</h1>
           </LandingSampleLink>
         </LandingSection>
@@ -23,7 +27,7 @@ export default function Home() {
           </LandingSampleLink>
         </LandingSection>
         <LandingSection>
-          <LandingSampleLink href={"/archive"} >
+          <LandingSampleLink href={"/archive"}>
             <h1>&quot;Go to Archive&quot;</h1>
           </LandingSampleLink>
         </LandingSection>

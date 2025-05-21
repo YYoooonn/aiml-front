@@ -1,11 +1,12 @@
 "use client";
 
-import { navigateWorkspace } from "@/app/_actions/navigate";
+import { navigateWorkspace } from "@/app/actions/navigate";
 import { BaseCard } from "@repo/ui/components";
 import { useModals } from "@/hook/useModals";
 import { ModalType } from "@/store/useModalStore";
 import NewProjectForm from "./NewProjectForm";
 import { GridLayout } from "@repo/ui/layout";
+import { ProjectData } from "@/@types/api";
 
 export function Projects({
   projects,
@@ -18,7 +19,7 @@ export function Projects({
     return {
       createdAt: p.createdAt,
       isPublic: p.isPublic,
-      lastModifiedAt: p.lastModifiedAt,
+      updatedAt: p.updatedAt,
       id: p.id,
       subtitle: p.subtitle,
       title: p.title,
@@ -28,9 +29,7 @@ export function Projects({
   return (
     <GridLayout>
       {props?.map((p, i) => {
-        return (
-          <WorkspaceCard key={p.id} props={p} />
-        );
+        return <WorkspaceCard key={p.id} props={p} />;
       })}
       <NewCardModule addProject={addProject} valid={true} />
     </GridLayout>

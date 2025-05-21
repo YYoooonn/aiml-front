@@ -7,3 +7,11 @@ export const blackMaterial = new MeshPhysicalMaterial({
 });
 
 export const CAMERAMATERIAL = new MeshPhysicalMaterial();
+
+export const DEFAULT_MATERIAL = {
+  name: "untitled",
+  color: "#575757",
+  opacity: 1,
+  transparent: false,
+  map: null,
+};

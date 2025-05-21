@@ -1,4 +1,3 @@
-
 import { ArrowLeftSmall } from "../icons";
 import * as styles from "./ui.css";
 

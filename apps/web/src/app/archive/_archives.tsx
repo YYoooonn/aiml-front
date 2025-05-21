@@ -3,8 +3,14 @@
 import { useEffect, useState } from "react";
 import { BaseCard } from "@repo/ui/components";
 import { useRouter } from "next/navigation";
-import { read, search } from "@/app/_actions/project";
-import { BaseCanvas, ArchiveObjects, BaseCamera, BaseLights } from "@/components/three";
+import {
+  BaseCanvas,
+  ArchiveObjects,
+  BaseCamera,
+  BaseLights,
+} from "@/components/three";
+import { ProjectData, SceneData } from "@/@types/api";
+import { getArchiveScenes } from "@/app/actions/archive";
 
 export function ArchiveCard({ props }: { props: ProjectData }) {
   const { id, title, subtitle } = props;
@@ -18,18 +24,17 @@ export function ArchiveCard({ props }: { props: ProjectData }) {
 }
 
 export function ArchiveContent({ id }: { id: string }) {
-  const pId = Number(id);
-  const [objts, setObjts] = useState<TObjectData[]>([]);
+  const [scene, setScene] = useState<SceneData>();
   useEffect(() => {
-    read(pId, "objects").then((r) => {
+    getArchiveScenes(id).then((r) => {
       if (r.success) {
-        setObjts(r.data.objects);
+        setScene(r.data[0]);
       }
     });
   }, [id]);
   return (
     <BaseCanvas>
-      <ArchiveObjects objectInfos={objts} />
+      <ArchiveObjects objectInfos={scene?.children} />
       <BaseCamera />
       <BaseLights />
     </BaseCanvas>

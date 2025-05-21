@@ -5,10 +5,12 @@ import { useSearchParams } from "next/navigation";
 import { ArchiveContent, ArchiveCard } from "./_archives";
 import { useModals } from "@/hook/useModals";
 import { ModalType } from "@/store/useModalStore";
-import { read, search } from "@/app/_actions/project";
+import { getProject } from "@/app/actions/project";
+import { searchArchive } from "@/app/actions/archive";
 
 import { GridLayout } from "@repo/ui/layout";
 import { PageHeader } from "@repo/ui/components/header";
+import { ProjectData } from "@/@types/api";
 
 export default function Archive() {
   // const [pageNum, setPageNum] = useState(0);
@@ -24,25 +26,23 @@ export default function Archive() {
   }, []);
 
   const fetchArchive = async () => {
-    const publicPrjt = await search({
-      n: pageNum,
-      k: keyword,
-      s: 21,
+    const res = await searchArchive({
+      pageNum: pageNum,
+      keyword: keyword,
+      pageSize: 21,
     });
-    if (publicPrjt.success) {
-      setArchives(publicPrjt.data.content);
+    if (res.success) {
+      setArchives(res.data.content);
     }
   };
 
   return (
     <>
-      <PageHeader title="Archive"/>
+      <PageHeader title="Archive" />
       <GridLayout>
-        {
-          archives.map((val: ProjectData, i: number) => (
-            <ArchiveCard key={i} props={val} />
-          ))
-        }
+        {archives.map((val: ProjectData, i: number) => (
+          <ArchiveCard key={i} props={val} />
+        ))}
       </GridLayout>
       <Suspense fallback={<div>Loading...</div>}>
         <ArchiveRouter />
@@ -62,18 +62,22 @@ function ArchiveRouter() {
   useEffect(() => {
     const param = searchParams.get("from");
     if (param) {
-      const pId = Number(param);
-      read(pId).then((r) => {
+      getProject(param).then((r) => {
         if (r.success) {
           setTitle(r.data.title);
-          setSubtitle(r.data.subtitle);
+          setSubtitle(r.data.subtitle ? r.data.subtitle : "");
           setId(param);
+        } else {
+          alert(r.error);
+          close();
         }
       });
-    } else {
+    }
+    return () => {
       setTitle(null);
       setSubtitle(null);
-    }
+      setId(null);
+    };
   }, [searchParams]);
 
   useEffect(() => {

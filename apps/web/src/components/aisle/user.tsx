@@ -9,7 +9,7 @@ import {
   LeftAisleContainer,
   AisleModule,
 } from "@repo/ui/components/aisle";
-import { navigateWorkspace } from "@/app/_actions/navigate";
+import { navigateWorkspace } from "@/app/actions/navigate";
 
 export default function UserAisle() {
   const { projects } = useUserInfo();

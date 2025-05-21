@@ -1,5 +1,5 @@
 import { CreatorBlock, EditorBlock } from "./EditorBlock";
-import { MatrixConstructor, MatrixConstructorProps } from "./ui";
+import { MatrixConstructor, MatrixConstructorProps, SubmitButton } from "./ui";
 
 interface ObjectConstructorProps extends MatrixConstructorProps {
   geoTypes: string[];
@@ -22,17 +22,13 @@ export function ObjectConstructor(props: ObjectConstructorProps) {
             position={props.position}
             rotation={props.rotation}
             scale={props.scale}
-            material={props.material}
             setPosition={props.setPosition}
             setRotation={props.setRotation}
             setScale={props.setScale}
-            setMaterial={props.setMaterial}
-            onSubmit={(e) => {
-              e.preventDefault();
-              props.onSubmit?.(e);
-              props.setSelect("");
-            }}
           />
+          {props.onSubmit && (
+            <SubmitButton title="SUBMIT" handler={props.onSubmit} />
+          )}
         </CreatorBlock>
       ))}
     </EditorBlock>

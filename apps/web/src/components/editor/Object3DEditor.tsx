@@ -1,31 +1,46 @@
 import { useObjectEditor } from "@/hook/useObjectEditor";
-import { useProjectStore } from "@/store/useProjectStore";
+import { useSceneStore } from "@/store/useSceneStore";
 import { EditorHeader, ObjectEditor } from "@repo/ui/components/editor";
+import { useEffect, useState } from "react";
 
-export default function Object3DEditor({ pId }: { pId: number }) {
+export default function Object3DEditor({ pId }: { pId: string }) {
   const {
     selected,
-    position,
-    rotation,
-    scale,
-    material,
+    transform,
+    removeSelected,
+    updateSelected,
+
+    name,
+    setName,
+    visible,
+    setVisible,
+
     setScale,
-    resetSelected,
     setPosition,
     setRotation,
-    updateMatrix,
-    removeSelected,
+
+    color,
+    setColor,
     setMaterial,
   } = useObjectEditor();
-  const { updateObject, filterObject } = useProjectStore();
+
+  const { addObject3D, removeObject3D, updateObject3D, selectedScene } =
+    useSceneStore();
+  const [sceneId, setSceneId] = useState(selectedScene?.id);
+
+  useEffect(() => {
+    setSceneId(selectedScene?.id);
+  }, [selectedScene]);
 
   const handleSubmit = async (e: React.MouseEvent) => {
     e.preventDefault();
-    const response = await updateMatrix(pId);
-    if (response.success) {
-      updateObject(response.data);
-    } else {
-      alert(response.error);
+    if (!sceneId) {
+      alert("no object selected");
+      return;
+    }
+    const updated = await updateSelected(sceneId);
+    if (updated) {
+      updateObject3D(updated);
     }
   };
 
@@ -33,12 +48,9 @@ export default function Object3DEditor({ pId }: { pId: number }) {
     e.preventDefault();
     const oId = selected?.id;
     if (oId) {
-      const response = await removeSelected(pId);
-      if (response.success) {
-        filterObject(oId);
-        resetSelected();
-      } else {
-        alert(response.error);
+      const response = await removeSelected(oId);
+      if (response) {
+        removeObject3D(oId);
       }
     } else {
       alert("no object selected");
@@ -50,14 +62,16 @@ export default function Object3DEditor({ pId }: { pId: number }) {
       <EditorHeader text="EDITOR" />
       <ObjectEditor
         disabled={Boolean(!selected)}
-        position={position}
-        rotation={rotation}
-        scale={scale}
-        material={material}
+        name={name}
+        setName={setName}
+        position={transform?.position}
+        rotation={transform?.rotation}
+        scale={transform?.scale}
         setPosition={setPosition}
         setRotation={setRotation}
         setScale={setScale}
-        setMaterial={setMaterial}
+        color={color}
+        setColor={setColor}
         onSubmit={handleSubmit}
         onRemove={handleRemove}
       />

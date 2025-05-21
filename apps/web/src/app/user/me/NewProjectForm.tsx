@@ -8,7 +8,8 @@ import {
   SubmitButton,
   BoolButtonBlock,
 } from "@repo/ui/components";
-import { create } from "@/app/_actions/project";
+import { createProject } from "@/app/actions/project";
+import type { ProjectData } from "@/@types/api";
 
 export default function NewProjectForm({
   addProject,
@@ -26,7 +27,7 @@ export default function NewProjectForm({
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    const response = await create({
+    const response = await createProject({
       title: title,
       subtitle: subtitle,
       isPublic: selected === selections[0],
@@ -36,7 +37,9 @@ export default function NewProjectForm({
       close();
       // alert(error);
     } else {
-      setError(error);
+      setError(
+        response.error ? response.error : "Unknown error, please try again",
+      );
     }
   };
 

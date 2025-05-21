@@ -6,7 +6,7 @@ import { Socket } from "socket.io-client";
 
 export const useSocket = (
   namespace: string,
-  roomId?: string
+  roomId?: string,
 ): { socket: Socket | null; valid: boolean } => {
   const socketRef = useRef<Socket | null>(null);
   const [valid, setValid] = useState(false);

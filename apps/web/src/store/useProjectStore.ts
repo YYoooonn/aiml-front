@@ -1,88 +1,148 @@
 "use client";
 
-import { read } from "@/app/_actions/project";
-import { create } from "@/app/_actions/object";
-import * as z from "zustand";
+import { create } from "zustand";
+import { getProject } from "@/app/actions/project";
+import {
+  addParticipant,
+  deleteParticipant,
+  getProjectParticipants,
+  updateParticipant,
+} from "@/app/actions/participant";
+import { ParticipantData, ProjectData, ParticipantRole } from "@/@types/api";
 
 export interface PAction {
   reset: () => void;
-  fetch: (pId: ProjectData["id"]) => Promise<ProjectData>;
-  getObjects: () => Promise<void>;
-  addtoObjects: (object: TObjectData) => void;
-  createObject: (objectInfo: TObject) => Promise<void>;
-  removeObject?: (oId: number) => Promise<void>;
-  updateObject: (object: TObjectData) => void;
-  filterObject: (oId: number) => void;
+  fetchProject: (pId: string) => Promise<ProjectData | null>;
+
+  // Participant manipulation
+  fetchParticipants: () => Promise<Map<string, ParticipantData> | null>;
+  updateParticipant: (
+    username: string,
+    role: ParticipantRole,
+  ) => Promise<Map<string, ParticipantData> | null>;
+  removeParticipant: (
+    username: string,
+  ) => Promise<Map<string, ParticipantData> | null>;
+  addParticipant: (
+    username: string,
+    role: ParticipantRole,
+  ) => Promise<Map<string, ParticipantData> | null>;
 }
 
-interface P extends Omit<ProjectData, "id"> {
-  id?: number;
+interface ProjectState extends ProjectData, PAction {
+  participants: Map<string, ParticipantData>;
 }
 
-interface ProjectState extends P, PAction {
-  objects: TObjectData[];
-}
+const emptyMap: Map<string, ParticipantData> = new Map();
 
 const DEFAULT = {
-  id: undefined,
+  id: "",
   title: "",
   subtitle: "",
-  objects: [],
-  // TODO not implemented yet
-  lastModifiedAt: "",
   createdAt: "",
-  createdBy: "",
+  updatedAt: "",
   isPublic: true,
-  participants: [],
+
+  participants: emptyMap,
+
+  // TODO not implemented yet
 };
 
-export const useProjectStore = z.create<ProjectState>()((set, get) => ({
+export const useProjectStore = create<ProjectState>()((set, get) => ({
   ...DEFAULT,
   reset: () => set({ ...DEFAULT }),
   // setUser: (user) => set({user}),
-  fetch: async (pId) => {
-    const pInfo = await read(pId);
-    const pObjts = await read(pId, "objects");
-    if (pInfo.success && pObjts.success) {
-      set({ ...pInfo.data, objects: pObjts.data.objects });
-      return pInfo.data;
+  fetchProject: async (pId) => {
+    const response = await getProject(pId);
+    if (response.success) {
+      set({ ...response.data });
+    }
+    if (response.error) alert(response.error);
+    return response.data;
+  },
+  fetchParticipants: async () => {
+    const projectId = get().id;
+    if (!projectId) {
+      alert("Project ID is not set");
+      return null;
+    }
+    const response = await getProjectParticipants(projectId);
+    if (response.success) {
+      const participants = new Map<string, ParticipantData>();
+      response.data.forEach((p) => {
+        participants.set(p.username, p);
+      });
+      set({ participants: participants });
+      return participants;
     } else {
-      return pInfo;
+      alert(response.error);
+      return null;
     }
   },
-  createObject: async (objectInfo) => {
-    const id = get().id;
-    if (id) {
-      const response = await create(id, objectInfo);
-      if (response.success) {
-        set({ objects: [...get().objects, response.data] });
-      }
+  updateParticipant: async (username: string, role: ParticipantRole) => {
+    const projectId = get().id;
+    if (!projectId) {
+      alert("Project ID is not set");
+      return get().participants;
     }
-  },
-  getObjects: async () => {
-    const id = get().id;
-    if (id) {
-      const response = await read(id, "objects");
-      if (response.success) {
-        set({ objects: response.data.objects });
-      }
+    const selected = get().participants.get(username);
+    if (!selected) {
+      alert("Participant not found");
+      return get().participants;
     }
-  },
-  filterObject: (oId: number) => {
-    set({
-      objects: get().objects.filter((o) => o.id !== oId),
+    const response = await updateParticipant(projectId, {
+      username: selected.username,
+      role: role,
     });
+    if (response.success) {
+      const participants = get().participants;
+      participants.set(username, response.data);
+      set({ participants: participants });
+      return participants;
+    } else {
+      alert(response.error);
+      return null;
+    }
   },
-  // removeObject: async (objectId) => {
-  //   await deleteObject(objectId, get().projectId);
-  //   set({ objects: get().objects.filter((o) => o.objectId !== objectId) });
-  // },
-  updateObject: (obj) => {
-    set({
-      objects: get().objects.map((o) => (o.id === obj.id ? obj : o)),
+  removeParticipant: async (username: string) => {
+    const projectId = get().id;
+    if (!projectId) {
+      alert("Project ID is not set");
+      return get().participants;
+    }
+    const selected = get().participants.get(username);
+    if (!selected) {
+      alert("Participant not found");
+      return get().participants;
+    }
+    const response = await deleteParticipant(projectId, username);
+    if (response.success) {
+      const participants = get().participants;
+      participants.delete(username);
+      set({ participants: participants });
+      return participants;
+    }
+    alert(response.error);
+    return null;
+  },
+  addParticipant: async (username: string, role: ParticipantRole) => {
+    const projectId = get().id;
+    if (!projectId) {
+      alert("Project ID is not set");
+      return get().participants;
+    }
+    const response = await addParticipant(projectId, {
+      username: username,
+      role: role,
     });
-  },
-  addtoObjects: (object) => {
-    set({ objects: [...get().objects, object] });
+    if (response.success) {
+      const participants = get().participants;
+      participants.set(username, response.data);
+      set({ participants: participants });
+      return participants;
+    } else {
+      alert(response.error);
+      return null;
+    }
   },
 }));

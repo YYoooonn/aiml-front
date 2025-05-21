@@ -10,7 +10,7 @@ export default function Test() {
     <BaseCanvas>
       <BaseCamera />
       <BaseLights />
-      <SampleObjects id="1"/>
+      <SampleObjects id="1" />
     </BaseCanvas>
   );
 }

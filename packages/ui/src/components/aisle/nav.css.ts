@@ -35,7 +35,7 @@ export const leftAisleText = style({
 
 export const dropdownContainer = style({
   display: "block",
-  marginLeft: "24px",
+  marginLeft: "16px",
 });
 
 export const dropdownSelector = style({

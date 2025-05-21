@@ -19,14 +19,14 @@ const baseAislePageContainer = style({
 export const aislePageContainer = style([
   baseAislePageContainer,
   {
-    marginLeft: `calc(32px + ${constants.AISLEWIDTH})`
+    marginLeft: `calc(32px + ${constants.AISLEWIDTH})`,
   },
 ]);
 
 export const leftAislePageContainer = style([
   baseAislePageContainer,
   {
-    marginLeft: `calc(32px + ${constants.AISLEWIDTH})`
+    marginLeft: `calc(32px + ${constants.AISLEWIDTH})`,
   },
 ]);
 

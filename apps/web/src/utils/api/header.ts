@@ -1,10 +1,6 @@
-import { BaseRequest } from "@/@types/api";
 import { JWT_COOKIE_KEY } from "../constants";
 
-type THeader = (
-  req: BaseRequest,
-  _method: BaseRequest["method"],
-) => HeadersInit;
+type THeader = (req: any, _method: string) => HeadersInit;
 
 export const headers: THeader = (req, _method = "GET") => {
   const token = req.cookies.get(JWT_COOKIE_KEY);

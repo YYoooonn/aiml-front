@@ -10,7 +10,7 @@ export async function navigateArchive(projectId: string) {
   redirect(`/archive/${projectId}`);
 }
 
-export async function navigateWorkspace(projectId: number) {
+export async function navigateWorkspace(projectId: string) {
   // XXX navigate to workspace
   redirect(`/workspace/${projectId}`);
 }

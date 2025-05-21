@@ -1,46 +1,49 @@
 import { useState, useEffect } from "react";
 import { ObjectConstructor, EditorHeader } from "@repo/ui/components/editor";
 import { useObjectCreator } from "@/hook/useObjectCreator";
-import { useProjectStore } from "@/store/useProjectStore";
+import { useSceneStore } from "@/store/useSceneStore";
 
 const OPTIONS = ["BoxGeometry", "SphereGeometry", "ConeGeometry"];
 
-export default function Object3DConstructor({ pId }: { pId: number }) {
+export default function Object3DConstructor({ pId }: { pId: string }) {
   const [selected, setSelected] = useState("");
   const {
-    setNew,
-    reset,
-    update,
-    position,
-    rotation,
-    scale,
-    material,
+    name,
+    transform,
+
     setPosition,
     setRotation,
     setScale,
-    setMaterial,
+
+    reset,
+    setNewMesh,
+    updateObject3D,
   } = useObjectCreator();
-  const addToObjects = useProjectStore((s) => s.addtoObjects);
-  const handleSubmit = (e: React.MouseEvent) => {
+
+  const { addObject3D, selectedScene } = useSceneStore();
+
+  const handleSubmit = async (e: React.MouseEvent) => {
     e.preventDefault();
-    update(pId).then((r) => {
-      if (r) {
+    if (selectedScene) {
+      const updated = await updateObject3D(selectedScene.id);
+      if (updated) {
         reset();
-        addToObjects(r);
+        addObject3D(updated);
         setSelected("");
       }
-    });
+    }
   };
+
   const onSetSelect = (val: string) => {
-    setSelected(val);
     reset();
+    setSelected(val);
   };
 
   useEffect(() => {
     if (selected) {
-      setNew(selected);
+      setNewMesh(selected);
     }
-  }, [selected, setNew]);
+  }, [selected]);
 
   return (
     <div>
@@ -49,14 +52,12 @@ export default function Object3DConstructor({ pId }: { pId: number }) {
         geoTypes={OPTIONS}
         selected={selected}
         setSelect={onSetSelect}
-        position={position}
-        rotation={rotation}
-        scale={scale}
-        material={material}
+        position={transform?.position}
+        rotation={transform?.rotation}
+        scale={transform?.scale}
         setPosition={setPosition}
         setRotation={setRotation}
         setScale={setScale}
-        setMaterial={setMaterial}
         onSubmit={handleSubmit}
       />
     </div>

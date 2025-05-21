@@ -8,6 +8,7 @@ export const layerTag = style({
   ...themeVars.textStyle.subtitle2,
   padding: "4px",
   userSelect: "none",
+  color: themeVars.color.text,
   ":hover": {
     cursor: "pointer",
     color: themeVars.color.primary,
@@ -19,5 +20,13 @@ export const layerTagSelected = style([
   {
     fontWeight: "700",
     color: themeVars.color.primary,
+  },
+]);
+
+export const sceneTagSelected = style([
+  layerTag,
+  {
+    fontWeight: "700",
+    color: themeVars.color.text,
   },
 ]);
