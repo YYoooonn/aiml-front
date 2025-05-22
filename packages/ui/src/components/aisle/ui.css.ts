@@ -16,19 +16,32 @@ export const aisleTopHeader = style({
   alignItems: "center",
 });
 
-export const returnIcon = style({
+const icon = style({
   width: "16px",
   height: "16px",
-  marginRight: "4px",
   display: "inline-flex",
   alignItems: "center",
   justifyContent: "center",
   borderRadius: "100px",
-  // backgroundColor: themeVars.color.primary,
   ":hover": {
     cursor: "pointer",
   },
 });
+
+export const returnIcon = style([
+  icon,
+  {
+    marginRight: "4px",
+  },
+]);
+
+export const editIcon = style([
+  icon,
+  {
+    marginLeft: "auto",
+    marginRight: "4px",
+  },
+]);
 
 export const projectTitle = style({
   display: "flex",

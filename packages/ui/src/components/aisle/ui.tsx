@@ -1,4 +1,4 @@
-import { ArrowLeftSmall } from "../icons";
+import { ArrowLeftSmall, SettingSmallAnimated } from "../icons";
 import * as styles from "./ui.css";
 
 export function SelectionHeader({
@@ -47,18 +47,25 @@ function SelectionTag({
 
 export function WorkspaceHeader({
   title,
-  onClick,
+  show,
+  handleExit,
+  handleToggle,
 }: {
   title?: string;
-  onClick?: () => void;
+  show: boolean;
+  handleExit?: () => void;
+  handleToggle?: () => void;
 }) {
   return (
     <div className={styles.aisleTopHeader}>
-      <div className={styles.returnIcon} onClick={onClick}>
+      <div className={styles.returnIcon} onClick={handleExit}>
         <ArrowLeftSmall />
       </div>
       <div className={styles.projectTitle}>
         {title ? title : "PROJECT NAME"}
+      </div>
+      <div className={styles.editIcon} onClick={handleToggle}>
+        <SettingSmallAnimated show={show} />
       </div>
     </div>
   );

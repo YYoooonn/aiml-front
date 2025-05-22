@@ -16,7 +16,6 @@ export function responseMapper<T>(
       data: response.data as T,
       success: response.success,
       error: errorMessage,
-      redirectLink: redirectLink,
     };
   }
 }

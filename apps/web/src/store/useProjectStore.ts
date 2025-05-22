@@ -1,18 +1,24 @@
 "use client";
 
 import { create } from "zustand";
-import { getProject } from "@/app/actions/project";
+import { getProject, updateProject } from "@/app/actions/project";
 import {
   addParticipant,
   deleteParticipant,
   getProjectParticipants,
   updateParticipant,
 } from "@/app/actions/participant";
-import { ParticipantData, ProjectData, ParticipantRole } from "@/@types/api";
+import {
+  ParticipantData,
+  ProjectData,
+  ParticipantRole,
+  Project,
+} from "@/@types/api";
 
 export interface PAction {
   reset: () => void;
-  fetchProject: (pId: string) => Promise<ProjectData | null>;
+  fetchProject: (pId?: string) => Promise<ProjectData | null>;
+  updateProject: (project: Project) => Promise<Project | null>;
 
   // Participant manipulation
   fetchParticipants: () => Promise<Map<string, ParticipantData> | null>;
@@ -26,7 +32,7 @@ export interface PAction {
   addParticipant: (
     username: string,
     role: ParticipantRole,
-  ) => Promise<Map<string, ParticipantData> | null>;
+  ) => Promise<ParticipantData | null>;
 }
 
 interface ProjectState extends ProjectData, PAction {
@@ -53,7 +59,11 @@ export const useProjectStore = create<ProjectState>()((set, get) => ({
   reset: () => set({ ...DEFAULT }),
   // setUser: (user) => set({user}),
   fetchProject: async (pId) => {
-    const response = await getProject(pId);
+    const projectId = pId || get().id;
+    if (!projectId) {
+      return null;
+    }
+    const response = await getProject(projectId);
     if (response.success) {
       set({ ...response.data });
     }
@@ -129,7 +139,7 @@ export const useProjectStore = create<ProjectState>()((set, get) => ({
     const projectId = get().id;
     if (!projectId) {
       alert("Project ID is not set");
-      return get().participants;
+      return null;
     }
     const response = await addParticipant(projectId, {
       username: username,
@@ -139,10 +149,23 @@ export const useProjectStore = create<ProjectState>()((set, get) => ({
       const participants = get().participants;
       participants.set(username, response.data);
       set({ participants: participants });
-      return participants;
+      return response.data;
     } else {
       alert(response.error);
       return null;
     }
+  },
+  updateProject: async (project: Project) => {
+    const projectId = get().id;
+    if (!projectId) {
+      return null;
+    }
+    const res = await updateProject({ id: projectId, ...project });
+    if (res.success) {
+      set({ ...res.data });
+      return res.data;
+    }
+    alert(res.error);
+    return null;
   },
 }));

@@ -1,3 +1,4 @@
+import { Children } from "react";
 import { SelectorButton } from "../button/Button";
 import { PasswordInput, TextInput } from "../input/Input";
 import * as styles from "./form.css";
@@ -30,7 +31,7 @@ interface FormBlockProps {
   children?: React.ReactNode;
 }
 
-function BaseFormBlock({ title, children }: FormBlockProps) {
+export function BaseFormBlock({ title, children }: FormBlockProps) {
   return (
     <div className={styles.formInputBlock}>
       <div className={styles.formTag}>{title}</div>
@@ -39,20 +40,45 @@ function BaseFormBlock({ title, children }: FormBlockProps) {
   );
 }
 
+export function FormBlockTag({ title }: { title: string }) {
+  return <div className={styles.formTag}>{title}</div>;
+}
+
+export function SearchFormBlock({
+  title,
+  placeholder,
+  onChange,
+}: {
+  title: string;
+  placeholder?: string;
+  onChange: (value: string) => void;
+}) {
+  return (
+    <BaseFormBlock title={title}>
+      <TextInput
+        onChange={onChange}
+        placeholder={placeholder ? placeholder : "Search..."}
+      />
+    </BaseFormBlock>
+  );
+}
+
 interface TextFormBlockProps extends FormBlockProps {
   title: string;
   placeholder?: string;
   onChange: (value: string) => void;
+  value?: string;
 }
 
 export function TextFormBlock({
   title,
   placeholder,
+  value,
   onChange,
 }: TextFormBlockProps) {
   return (
     <BaseFormBlock title={title}>
-      <TextInput onChange={onChange} placeholder={placeholder} />
+      <TextInput onChange={onChange} placeholder={placeholder} value={value} />
     </BaseFormBlock>
   );
 }

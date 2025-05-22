@@ -48,6 +48,7 @@ export const modalInWrapper = style({
 export const modalContent = style({
   paddingTop: globalTheme.spacing.s8,
   flex: 1,
+  overflowY: "auto",
 });
 
 export const modalHeader = style({

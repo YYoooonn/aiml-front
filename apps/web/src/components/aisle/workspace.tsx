@@ -7,7 +7,6 @@ import { useChat } from "@/hook/useChat";
 import { useUserInfo } from "@/hook/useUserInfo";
 import { useObjectEditor } from "@/hook/useObjectEditor";
 import { useProjectStore } from "@/store/useProjectStore";
-
 import {
   LeftAisleContainer,
   AisleModule,
@@ -20,15 +19,21 @@ import {
   ChatModule,
   SocketHeader,
   SceneLayer,
+  InfoBlock,
 } from "@repo/ui/components/module";
+import { SubmitButton } from "@repo/ui/components/editor";
 import { useSceneStore } from "@/store/useSceneStore";
 import { SceneData, TObject3DData } from "@/@types/api";
+import { useModals } from "@/hook/useModals";
+import { ModalType } from "@/store/useModalStore";
+import { ProjectEditForm } from "../form/ProjectEditForm";
 
 const SELECTIONS = ["Layer", "Chat"];
 
 export default function WorkspaceAisle({}: { id?: string }) {
-  const { title, id } = useProjectStore();
+  const { title, subtitle, id, createdAt, updatedAt } = useProjectStore();
   const scenes = useSceneStore((s) => s.scenes);
+  const { open, close } = useModals();
 
   const username = useUserInfo((s) => s.username);
   const { isConnected, logs, users, sendMessage } = useChat(
@@ -38,15 +43,35 @@ export default function WorkspaceAisle({}: { id?: string }) {
 
   const [tag, setTag] = useState(SELECTIONS[0]!!);
   const [showSocket, setShowSocket] = useState(true);
+  const [showProjectInfo, setShowProjectInfo] = useState(false);
+
+  const handleSettings = () => {
+    open(ProjectEditForm, {}, ModalType.FORM);
+  };
 
   return (
     <LeftAisleContainer>
       <AisleModule
         style={{ height: "auto", flexShrink: 0 }}
         header={
-          <WorkspaceHeader title={title} onClick={() => redirectUser()} />
+          <WorkspaceHeader
+            title={title}
+            handleExit={() => redirectUser()}
+            show={showProjectInfo}
+            handleToggle={() => setShowProjectInfo(!showProjectInfo)}
+          />
         }
-      />
+      >
+        {showProjectInfo && (
+          <ProjectInfoModule
+            title={title}
+            subtitle={subtitle}
+            createdAt={createdAt}
+            updatedAt={updatedAt}
+            onEdit={handleSettings}
+          />
+        )}
+      </AisleModule>
       <div style={{ marginBottom: "12px" }} />
       <AisleModule
         style={{ height: "auto", maxHeight: "180px", flexShrink: 0 }}
@@ -126,5 +151,31 @@ function LayerModule({ objects }: { objects: TObject3DData[] }) {
         return <Layer key={o.id} object={o} selected={selected?.id === o.id} />;
       })}
     </div>
+  );
+}
+
+interface ProjectInfoProps {
+  title: string;
+  subtitle?: string;
+  createdAt: string;
+  updatedAt: string;
+  onEdit?: () => void;
+}
+
+function ProjectInfoModule(props: ProjectInfoProps) {
+  const created = new Date(props.createdAt);
+  created.setHours(created.getHours() + 9);
+  const updated = new Date(props.updatedAt);
+  updated.setHours(updated.getHours() + 9);
+  return (
+    <>
+      {/* <InfoBlock title="TITLE" info={props.title} /> */}
+      {props.subtitle && <InfoBlock title="SUBTITLE" info={props.subtitle} />}
+      <InfoBlock title="CREATED AT" info={created.toLocaleString()} />
+      <InfoBlock title="UPDATED AT" info={updated.toLocaleString()} />
+      {props.onEdit && (
+        <SubmitButton title="EDIT PROJECT" handler={props.onEdit} />
+      )}
+    </>
   );
 }

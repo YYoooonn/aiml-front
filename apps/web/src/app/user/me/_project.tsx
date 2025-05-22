@@ -4,7 +4,7 @@ import { navigateWorkspace } from "@/app/actions/navigate";
 import { BaseCard } from "@repo/ui/components";
 import { useModals } from "@/hook/useModals";
 import { ModalType } from "@/store/useModalStore";
-import NewProjectForm from "./NewProjectForm";
+import { NewProjectForm } from "@/components/Form";
 import { GridLayout } from "@repo/ui/layout";
 import { ProjectData } from "@/@types/api";
 

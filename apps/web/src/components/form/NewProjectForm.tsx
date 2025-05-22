@@ -8,10 +8,10 @@ import {
   SubmitButton,
   BoolButtonBlock,
 } from "@repo/ui/components";
-import { createProject } from "@/app/actions/project";
+import { createProject } from "@/lib/api/project";
 import type { ProjectData } from "@/@types/api";
 
-export default function NewProjectForm({
+export function NewProjectForm({
   addProject,
 }: {
   addProject: (project: ProjectData) => void;
