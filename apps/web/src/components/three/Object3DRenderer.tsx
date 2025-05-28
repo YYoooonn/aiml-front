@@ -70,7 +70,7 @@ function MeshObject({
     <mesh onClick={() => handleSelected?.(obj)}>
       <primitive object={geometry} attach="geometry" />
       <meshStandardMaterial
-        color={temp? SELECTED_COLOR : obj.material.color}
+        color={temp ? SELECTED_COLOR : obj.material.color}
         transparent
         opacity={temp || selected ? 0.5 : 1}
       />

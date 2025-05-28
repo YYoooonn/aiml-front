@@ -13,11 +13,19 @@ const DEFAULT_TRANSFORM: TTransform = {
 };
 
 export default function Object3DEditor({ pId }: { pId: string }) {
-  const { selected, object3DInfo, setObject3DInfo, saveSelected, removeSelected } = useObject3D();
+  const {
+    selected,
+    object3DInfo,
+    setObject3DInfo,
+    saveSelected,
+    removeSelected,
+  } = useObject3D();
 
   const [visible, setVisible] = useState(object3DInfo.visible ?? true);
   const [name, setName] = useState(object3DInfo.name ?? "");
-  const [transform, setTransform] = useState(toMatrix4decompose(object3DInfo.transform));
+  const [transform, setTransform] = useState(
+    toMatrix4decompose(object3DInfo.transform),
+  );
   const [material, setMaterial] = useState<TMaterial>();
 
   useEffect(() => {
@@ -27,13 +35,13 @@ export default function Object3DEditor({ pId }: { pId: string }) {
   }, [selected]);
 
   useEffect(() => {
-    setObject3DInfo({transform : toMatrix(transform)})
-  }, [material, transform])
+    setObject3DInfo({ transform: toMatrix(transform) });
+  }, [material, transform]);
 
   const handleSubmit = async (e: React.MouseEvent) => {
     e.preventDefault();
 
-    const response = await saveSelected()
+    const response = await saveSelected();
     if (!response.success) {
       alert(`Error: ${response.error}`);
     } else {

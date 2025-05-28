@@ -6,7 +6,6 @@ import { WorkspaceObjects } from "@/components/three/ProjectObjects";
 import {
   BaseCanvas,
   WorkspaceCamera,
-  EditorObjects,
   UserCams,
   BaseLights,
   Lights,

@@ -4,10 +4,10 @@ import { DEFAULT_MATRIX } from "@/utils/constants";
 import { create } from "zustand";
 
 type Object3DStore = {
-  object3DInfo: Partial<TObject3DBase> & {transform : typeof DEFAULT_MATRIX};
+  object3DInfo: Partial<TObject3DBase> & { transform: typeof DEFAULT_MATRIX };
   selected: Record<string, TObject3DData>;
   setSelected: (data: Record<string, TObject3DData>) => void;
-  setObject3DInfo: (data: Partial<TObject3DBase> ) => void;
+  setObject3DInfo: (data: Partial<TObject3DBase>) => void;
   clearSelected: () => void;
 };
 
@@ -26,12 +26,12 @@ const object3DStore = create<Object3DStore>()((set, get) => ({
   setSelected: (updated) => {
     const { setObject3DInfo } = get();
 
-    const val = Object.values(updated)
-    if (val.length === 0) setObject3DInfo({...DEFAULT, type: undefined});
-    else if (val.length === 1) setObject3DInfo({...val[0]!!})
-    else setObject3DInfo({...DEFAULT, type: "GROUP"})
+    const val = Object.values(updated);
+    if (val.length === 0) setObject3DInfo({ ...DEFAULT, type: undefined });
+    else if (val.length === 1) setObject3DInfo({ ...val[0]!! });
+    else setObject3DInfo({ ...DEFAULT, type: "GROUP" });
 
-    set({selected: updated})
+    set({ selected: updated });
   },
   setObject3DInfo: (data) => {
     // const { name, visible, transform, type, parentId } = data;
@@ -41,7 +41,8 @@ const object3DStore = create<Object3DStore>()((set, get) => ({
         ...object3DInfo,
         ...data,
         transform: data.transform || DEFAULT_MATRIX,
-    }})
+      },
+    });
   },
   clearSelected: () => set({ object3DInfo: DEFAULT, selected: {} }),
 }));

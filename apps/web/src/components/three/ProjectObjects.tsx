@@ -22,10 +22,7 @@ export function WorkspaceObjects() {
   return (
     <>
       {Object.entries(sceneMap).map(([id, scene]) => (
-        <group
-          key={id}
-          onClick={() => setSceneId(id)}
-        >
+        <group key={id} onClick={() => setSceneId(id)}>
           <SelectableRenderer parentId={null} children={scene.children} />
         </group>
       ))}

@@ -7,8 +7,7 @@ import { useMemo, useState, useEffect } from "react";
 
 export const useScene = () => {
   const { id: projectId, scenes, setScenes } = projectStore();
-  const { selectedSceneId, setSelectedSceneId } =
-    sceneStore();
+  const { selectedSceneId, setSelectedSceneId } = sceneStore();
 
   const [sceneMap, setSceneMap] = useState<Record<string, SceneData>>({});
 
@@ -23,7 +22,7 @@ export const useScene = () => {
 
   const selectedScene = useMemo(() => {
     if (!selectedSceneId) return undefined;
-    return sceneMap[selectedSceneId]
+    return sceneMap[selectedSceneId];
   }, [selectedSceneId]);
 
   const upsertChildren = (data: TObject3DData[]) => {
@@ -50,11 +49,11 @@ export const useScene = () => {
 
     const updatedScene = {
       ...currentScene,
-      children: newChildren
-    }
+      children: newChildren,
+    };
 
-    const newScenes = {...sceneMap}
-    newScenes[selectedSceneId] = updatedScene
+    const newScenes = { ...sceneMap };
+    newScenes[selectedSceneId] = updatedScene;
 
     setScenes(Object.values(newScenes));
   };
@@ -71,18 +70,20 @@ export const useScene = () => {
       return;
     }
 
-    const newChildren = currentScene.children.filter((c) => !ids.includes(c.id));
+    const newChildren = currentScene.children.filter(
+      (c) => !ids.includes(c.id),
+    );
 
     const updatedScene = {
       ...currentScene,
-      children: newChildren
-    }
+      children: newChildren,
+    };
 
-    const newScenes = {...sceneMap}
-    newScenes[selectedSceneId] = updatedScene
+    const newScenes = { ...sceneMap };
+    newScenes[selectedSceneId] = updatedScene;
 
     setScenes(Object.values(newScenes));
-  }
+  };
 
   return {
     sceneMap,

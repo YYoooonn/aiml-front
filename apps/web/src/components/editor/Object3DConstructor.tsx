@@ -3,7 +3,12 @@ import { ObjectConstructor, EditorHeader } from "@repo/ui/components/editor";
 import { useObject3D } from "@/hook/useObject3D";
 import { DEFAULT_GEOMETRY, DEFAULT_TRANSFORM } from "@/assets/geometry";
 import { DEFAULT_MATERIAL } from "@/assets/material";
-import { Object3DType, TGeometry, TMaterial, TObject3D, TObject3DData } from "@/@types/api";
+import {
+  Object3DType,
+  TGeometry,
+  TMaterial,
+  TObject3DData,
+} from "@/@types/api";
 import { toMatrix } from "@/utils/calc";
 
 type GEOMETRY_TYPE = "BoxGeometry" | "SphereGeometry" | "ConeGeometry";
@@ -29,10 +34,10 @@ export default function Object3DConstructor({ pId }: { pId: string }) {
       return;
     }
     const base = createNewObject3D(
-      "MESH", 
-      transform, 
-      DEFAULT_GEOMETRY(geoType), 
-      material
+      "MESH",
+      transform,
+      DEFAULT_GEOMETRY(geoType),
+      material,
     );
     if (!base) return;
     const obj = {
@@ -41,7 +46,7 @@ export default function Object3DConstructor({ pId }: { pId: string }) {
       id: "created-object",
       createdAt: "",
       updatedAt: "",
-    }
+    };
     selectObject3D(obj, true);
   }, [geoType, transform]);
 
@@ -58,8 +63,8 @@ export default function Object3DConstructor({ pId }: { pId: string }) {
       transform,
       DEFAULT_GEOMETRY(geoType),
       material,
-    )
-    if (!object3D)  return;
+    );
+    if (!object3D) return;
 
     const response = await saveObject3D(object3D);
     if (response.success) {
@@ -100,13 +105,13 @@ function createNewObject3D(
   transform: typeof DEFAULT_TRANSFORM,
   geometry?: TGeometry,
   material?: TMaterial,
-  children?: TObject3DData[]
-){
+  children?: TObject3DData[],
+) {
   switch (type) {
     case "MESH":
       if (!geometry || !material) {
         alert("Geometry && Material is required for MESH type");
-        return null
+        return null;
       }
       return {
         type: "MESH" as "MESH",
@@ -121,9 +126,7 @@ function createNewObject3D(
       alert("not implemented yet");
       return null;
     default:
-      alert("Invalid object type"); 
+      alert("Invalid object type");
       return null;
-    }
+  }
 }
-  
-  
