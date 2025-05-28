@@ -15,16 +15,18 @@ export const baseFormContainer = style({
   ...themeVars.textStyle.subtitle1,
 });
 
-export const formInputBlock = style({
+export const formBlockContainer = style({
   display: "flex",
   flexDirection: "column",
-  justifyContent: "space-between",
+  // justifyContent: "space-between",
   width: "100%",
-  height: "60px",
+  minHeight: "60px",
+  marginBottom: "1rem",
 });
 
 export const formTag = style({
   display: "block",
   width: "100%",
+  marginBottom: "1rem",
   ...themeVars.textStyle.heading5,
 });

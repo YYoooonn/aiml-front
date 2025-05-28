@@ -4,43 +4,9 @@ import { getProjectScenes } from "@/app/actions/scene";
 import projectStore from "@/store/projectStore";
 
 export const useProject = () => {
-  const {
-    id: projectId,
-    title,
-    subtitle,
-    isPublic,
-    createdAt,
-    updatedAt,
-    setProject,
-  } = projectStore();
+  const { id: projectId, setProject, clearProject } = projectStore();
 
-  const projectInfo = {
-    id: projectId,
-    title: title,
-    subtitle: subtitle,
-    isPublic: isPublic,
-    createdAt: createdAt,
-    updatedAt: updatedAt,
-  };
-
-  const fetchProjectInfo = async (pId?: string) => {
-    const id = pId ?? projectId;
-    if (!id) {
-      alert("Project Id not provided");
-      return false;
-    }
-
-    const projectResponse = await getProject(id);
-    if (projectResponse.error) {
-      alert(projectResponse.error);
-      return false;
-    }
-
-    setProject(projectResponse.data);
-    return true;
-  };
-
-  const fetchAllProjectInfo = async (pId?: string) => {
+  const fetchAllProjectData = async (pId?: string) => {
     const id = pId ?? projectId;
     if (!id) {
       alert("Project Id not provided");
@@ -78,9 +44,7 @@ export const useProject = () => {
 
   return {
     projectId,
-    projectInfo,
-    setProjectInfo: setProject,
-    fetchProjectInfo,
-    fetchAllProjectInfo,
+    fetchAllProjectData,
+    clearProject,
   };
 };

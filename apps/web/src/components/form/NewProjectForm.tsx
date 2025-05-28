@@ -8,39 +8,39 @@ import {
   SubmitButton,
   BoolButtonBlock,
 } from "@repo/ui/components";
-import { createProject } from "@/lib/api/project";
-import type { ProjectData } from "@/@types/api";
+import { createProject } from "@/app/actions/project";
+import { useProjectInfo } from "@/hook/useProjectInfo";
 
-export function NewProjectForm({
-  addProject,
-}: {
-  addProject: (project: ProjectData) => void;
-}) {
-  const selections: string[] = ["Public", "Private"];
-
+export function NewProjectForm() {
   const { close } = useModals();
   const [title, setTitle] = useState("");
   const [subtitle, setSubtitle] = useState("");
-  const [selected, setSelected] = useState("Public");
-  const [error, setError] = useState("");
+  const [isPublic, setIsPublic] = useState(true);
+  const [error, setError] = useState<string>();
+
+  const { saveProjectInfo } = useProjectInfo();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    const response = await createProject({
+    if (!title) {
+      setError("Please fill in title");
+      return;
+    }
+
+    const response = await saveProjectInfo({
       title: title,
       subtitle: subtitle,
-      isPublic: selected === selections[0],
+      isPublic: isPublic,
     });
+
     if (response.success) {
-      addProject(response.data);
       close();
-      // alert(error);
-    } else {
-      setError(
-        response.error ? response.error : "Unknown error, please try again",
-      );
+      return;
     }
+
+    // console.log(response.error)
+    setError(response.error);
   };
 
   return (
@@ -50,20 +50,17 @@ export function NewProjectForm({
         onChange={setTitle}
         placeholder="Enter project title"
       />
-      <p style={{ marginTop: "24px" }} />
       <TextFormBlock
         title="SUBTITLE"
         onChange={setSubtitle}
         placeholder="Enter project subtitle"
       />
-      <p style={{ marginTop: "24px" }} />
       <BoolButtonBlock
         title="PUBLIC"
-        textList={selections}
-        selected={selected}
-        setSelected={setSelected}
+        textList={["Public", "Private"]}
+        selected={isPublic ? "Public" : "Private"}
+        setSelected={(value) => setIsPublic(value === "Public")}
       />
-      <p style={{ marginTop: "24px" }} />
       <SubmitButton text={"CREATE"} />
     </BaseForm>
   );

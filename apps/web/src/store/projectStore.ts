@@ -3,18 +3,18 @@
 import { create } from "zustand";
 import { ParticipantData, ProjectData, SceneData } from "@/@types/api";
 
-type ProjectInfo = ProjectData & {
+type ProjectState = ProjectData & {
   scenes: SceneData[];
   participants: ParticipantData[];
 };
 
-interface ProjectStore extends Partial<ProjectInfo> {
+interface ProjectStore extends Partial<ProjectState> {
   title: string;
   isPublic: boolean;
   participants: ParticipantData[];
   scenes: SceneData[];
 
-  setProject: (data: Partial<ProjectInfo>) => void;
+  setProject: (data: Partial<ProjectState>) => void;
   setParticipants: (data: ParticipantData[]) => void;
   setScenes: (data: SceneData[]) => void;
   clearProject: () => void;

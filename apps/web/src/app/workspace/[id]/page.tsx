@@ -1,9 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
-import { useUserInfo } from "@/hook/useUserInfo";
 import { useEditor } from "@/hook/useEditor";
-import { useSceneStore } from "@/store/useSceneStore";
 import { WorkspaceObjects } from "@/components/three/ProjectObjects";
 import {
   BaseCanvas,
@@ -13,12 +11,11 @@ import {
   BaseLights,
   Lights,
 } from "@/components/three";
-import { useProjectStore } from "@/store/useProjectStore";
+import { useProject } from "@/hook/useProject";
 
 export default function Page({ params }: { params: { id: string } }) {
-  const fetchUser = useUserInfo((state) => state.fetchUserInfo);
-  const fetchProject = useProjectStore((s) => s.fetchProject);
-  const { scenes, reset, fetchScenes, selectedScene } = useSceneStore();
+  // const fetchUser = useUserInfo((state) => state.fetchUserInfo);
+  const { fetchAllProjectData, clearProject } = useProject();
 
   const {
     cam,
@@ -30,10 +27,9 @@ export default function Page({ params }: { params: { id: string } }) {
   } = useEditor();
 
   useEffect(() => {
-    fetchUser();
-    fetchProject(params.id);
-    fetchScenes(params.id);
-    return () => reset();
+    // fetchUser();
+    fetchAllProjectData(params.id);
+    // return () => clearProject();
   }, []);
 
   // useEffect(() => {
@@ -52,8 +48,8 @@ export default function Page({ params }: { params: { id: string } }) {
         setPosition={setCameraPosition}
       />
 
-      <EditorObjects />
-      <WorkspaceObjects objectInfos={selectedScene?.children} />
+      {/* <EditorObjects /> */}
+      <WorkspaceObjects />
 
       <UserCams />
     </BaseCanvas>

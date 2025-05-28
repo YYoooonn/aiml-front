@@ -23,8 +23,8 @@ const border = {
   bDouble: "1px double",
   bGroove: "1px groove",
   bRidge: "1px ridge",
-  bInset: "1px inset",
-  bOutset: "1px outset",
+  bInset: "0.1rem inset",
+  bOutset: "0.1rem outset",
 };
 
 const globalTheme = createGlobalTheme(":root", {

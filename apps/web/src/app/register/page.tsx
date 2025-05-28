@@ -57,27 +57,22 @@ function RegisterForm() {
         onChange={setUsername}
         placeholder="Enter username"
       />
-      <p style={{ marginTop: "12px" }} />
       <PasswordFormBlock title={"PASSWORD"} onChange={setPassword} />
-      <p style={{ marginTop: "12px" }} />
       <TextFormBlock
         title={"FIRST NAME"}
         onChange={setFirstName}
         placeholder=""
       />
-      <p style={{ marginTop: "12px" }} />
       <TextFormBlock
         title={"LAST NAME"}
         onChange={setLastName}
         placeholder=""
       />
-      <p style={{ marginTop: "12px" }} />
       <TextFormBlock
         title={"EMAIL"}
         onChange={setEmail}
         placeholder="Enter email"
       />
-      <p style={{ marginTop: "24px" }} />
       <SubmitButton text={"SUBMIT"} />
     </BaseForm>
   );

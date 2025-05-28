@@ -5,8 +5,6 @@ import { useState, useMemo, useCallback } from "react";
 import redirectUser from "@/hook/redirectUser";
 import { useChat } from "@/hook/useChat";
 import { useUserInfo } from "@/hook/useUserInfo";
-import { useObjectEditor } from "@/hook/useObjectEditor";
-import { useProjectStore } from "@/store/useProjectStore";
 import {
   LeftAisleContainer,
   AisleModule,
@@ -22,23 +20,24 @@ import {
   InfoBlock,
 } from "@repo/ui/components/module";
 import { SubmitButton } from "@repo/ui/components/editor";
-import { useSceneStore } from "@/store/useSceneStore";
-import { SceneData, TObject3DData } from "@/@types/api";
+import { TObject3DData } from "@/@types/api";
 import { useModals } from "@/hook/useModals";
 import { ModalType } from "@/store/useModalStore";
-import { ProjectEditForm } from "../form/ProjectEditForm";
+import { useProjectInfo } from "@/hook/useProjectInfo";
+import { useScene } from "@/hook/useScene";
+import { ProjectEditor } from "../editor/ProjectEditor";
+import { useObject3D } from "@/hook/useObject3D";
 
 const SELECTIONS = ["Layer", "Chat"];
 
 export default function WorkspaceAisle({}: { id?: string }) {
-  const { title, subtitle, id, createdAt, updatedAt } = useProjectStore();
-  const scenes = useSceneStore((s) => s.scenes);
-  const { open, close } = useModals();
+  const { projectInfo, projectId } = useProjectInfo();
+  const { open } = useModals();
 
   const username = useUserInfo((s) => s.username);
   const { isConnected, logs, users, sendMessage } = useChat(
     username,
-    id ? id.toString() : undefined,
+    projectId,
   );
 
   const [tag, setTag] = useState(SELECTIONS[0]!!);
@@ -46,7 +45,7 @@ export default function WorkspaceAisle({}: { id?: string }) {
   const [showProjectInfo, setShowProjectInfo] = useState(false);
 
   const handleSettings = () => {
-    open(ProjectEditForm, {}, ModalType.FORM);
+    open(ProjectEditor, {}, ModalType.FORM);
   };
 
   return (
@@ -55,7 +54,7 @@ export default function WorkspaceAisle({}: { id?: string }) {
         style={{ height: "auto", flexShrink: 0 }}
         header={
           <WorkspaceHeader
-            title={title}
+            title={projectInfo.title}
             handleExit={() => redirectUser()}
             show={showProjectInfo}
             handleToggle={() => setShowProjectInfo(!showProjectInfo)}
@@ -64,10 +63,10 @@ export default function WorkspaceAisle({}: { id?: string }) {
       >
         {showProjectInfo && (
           <ProjectInfoModule
-            title={title}
-            subtitle={subtitle}
-            createdAt={createdAt}
-            updatedAt={updatedAt}
+            title={projectInfo.title}
+            subtitle={projectInfo.subtitle}
+            createdAt={projectInfo.createdAt ?? ""}
+            updatedAt={projectInfo.updatedAt ?? ""}
             onEdit={handleSettings}
           />
         )}
@@ -97,7 +96,7 @@ export default function WorkspaceAisle({}: { id?: string }) {
         }
       >
         {tag === "Layer" ? (
-          <SceneModule scenes={scenes} />
+          <SceneModule />
         ) : (
           <ChatModule logs={logs} sendMessage={sendMessage} />
         )}
@@ -106,26 +105,26 @@ export default function WorkspaceAisle({}: { id?: string }) {
   );
 }
 
-function SceneModule({ scenes }: { scenes: Map<string, SceneData> }) {
-  const { setSelected, selectedScene, children } = useSceneStore();
+function SceneModule() {
+  const { sceneId, setSceneId, sceneMap } = useScene();
   return (
-    <>
-      {Array.from(scenes.values()).map((scene) => (
+    <div>
+      {Object.entries(sceneMap).map(([id, scene]) => (
         <SceneLayer
-          key={scene.id}
+          key={id}
           scene={scene}
-          selected={selectedScene?.id === scene.id}
-          onSelect={() => setSelected(scene.id)}
+          selected={sceneId === id}
+          onSelect={() => setSceneId(id)}
         >
-          <LayerModule objects={children} />
+          <LayerModule objects={scene.children} />
         </SceneLayer>
       ))}
-    </>
+    </div>
   );
 }
 
 function LayerModule({ objects }: { objects: TObject3DData[] }) {
-  const { selected, setSelected } = useObjectEditor();
+  const { selected, selectObject3D } = useObject3D();
   // memoize the object map to avoid unnecessary re-renders
   const objectMap = useMemo(() => {
     const map = new Map<string, TObject3DData>();
@@ -141,14 +140,20 @@ function LayerModule({ objects }: { objects: TObject3DData[] }) {
       if (!id) return;
 
       const found = objectMap.get(id);
-      if (found) setSelected(found);
+      if (found) selectObject3D(found);
     },
-    [objectMap, setSelected],
+    [objectMap, selectObject3D],
   );
   return (
     <div onClickCapture={handleClickCapture}>
-      {objects?.map((o, i) => {
-        return <Layer key={o.id} object={o} selected={selected?.id === o.id} />;
+      {objects.map((o, i) => {
+        return (
+          <Layer
+            key={o.id}
+            object={o}
+            selected={selected[o.id] ? true : false}
+          />
+        );
       })}
     </div>
   );

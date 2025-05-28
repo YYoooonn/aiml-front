@@ -33,6 +33,13 @@ export const leftAisleText = style({
   fontWeight: "500",
 });
 
+export const leftAisleTextSelected = style([
+  leftAisleText,
+  {
+    fontWeight: "700",
+  },
+]);
+
 export const dropdownContainer = style({
   display: "block",
   marginLeft: "16px",

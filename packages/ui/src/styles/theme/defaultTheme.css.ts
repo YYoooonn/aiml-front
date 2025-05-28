@@ -11,9 +11,9 @@ const defaultTheme = createTheme(themeVars, {
     background: globalTheme.palette.white,
     backgroundDark: globalTheme.palette.gray300,
 
-    border: globalTheme.palette.gray500,
-    borderLight: globalTheme.palette.gray100,
-    borderDark: globalTheme.palette.gray500,
+    border: globalTheme.palette.gray700,
+    borderLight: globalTheme.palette.gray500,
+    borderDark: globalTheme.palette.gray900,
 
     text: globalTheme.palette.black,
     textLight: globalTheme.palette.gray500,

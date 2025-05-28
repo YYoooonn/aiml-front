@@ -9,7 +9,7 @@ import type {
   TObject3DData,
 } from "@/@types/api";
 import { createObject3D } from "@/app/actions/object3d";
-import { getVerticesAndFaces } from "@/assets/geometry";
+import { DEFAULT_GEOMETRY, DEFAULT_TRANSFORM } from "@/assets/geometry";
 import { DEFAULT_MATERIAL } from "@/assets/material";
 import { toMatrix } from "@/utils/calc";
 import { create } from "zustand";
@@ -202,26 +202,3 @@ export const useObjectCreator = create<
     return null;
   },
 }));
-
-const DEFAULT_TRANSFORM: TTransform = {
-  position: [0, 0, 0],
-  rotation: [0, 0, 0],
-  scale: [1, 1, 1],
-};
-
-// const DEFAULT_GEOMETRY: MeshConstructor["geometry"] = {
-//   name: "untitled",
-//   vertices: [],
-//   faces: [],
-//   type: "box",
-// };
-
-const DEFAULT_GEOMETRY = (type: string) => {
-  const { v, f } = getVerticesAndFaces(type);
-  return {
-    name: "untitled",
-    vertices: v,
-    faces: f,
-    type: type,
-  };
-};
