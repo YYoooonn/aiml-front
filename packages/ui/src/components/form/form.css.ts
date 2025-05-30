@@ -3,7 +3,7 @@ import { themeVars } from "../../styles";
 
 export const baseFormContainer = style({
   padding: themeVars.spacing.medium,
-  width: "90vw",
+  width: "100%",
   maxWidth: "780px",
   position: "relative",
   display: "block",

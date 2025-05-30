@@ -8,17 +8,19 @@ import {
   SubmitButton,
   BoolButtonBlock,
 } from "@repo/ui/components";
-import { createProject } from "@/app/actions/project";
-import { useProjectInfo } from "@/hook/useProjectInfo";
+import { ProjectData } from "@/@types/api";
+import { BaseFrontResponse } from "@/@types/common";
 
-export function NewProjectForm() {
+export function NewProjectForm({
+  addProject,
+}: {
+  addProject: (project: Partial<ProjectData>) => Promise<BaseFrontResponse>;
+}) {
   const { close } = useModals();
   const [title, setTitle] = useState("");
   const [subtitle, setSubtitle] = useState("");
   const [isPublic, setIsPublic] = useState(true);
   const [error, setError] = useState<string>();
-
-  const { saveProjectInfo } = useProjectInfo();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -28,7 +30,7 @@ export function NewProjectForm() {
       return;
     }
 
-    const response = await saveProjectInfo({
+    const response = await addProject({
       title: title,
       subtitle: subtitle,
       isPublic: isPublic,

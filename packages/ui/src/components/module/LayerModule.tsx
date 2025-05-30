@@ -197,7 +197,7 @@ export function ParticipantEditBlock({
   }, [participants]);
 
   return (
-    <div>
+    <>
       {participants.map((p) => {
         const isUser = pInfo?.user === p.user;
         return (
@@ -247,7 +247,7 @@ export function ParticipantEditBlock({
           </div>
         );
       })}
-    </div>
+    </>
   );
 }
 

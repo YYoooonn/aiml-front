@@ -5,7 +5,7 @@ import {
   createObject3D,
   deleteObject3D,
   updateObject3D,
-} from "@/app/actions/object3d";
+} from "@/services/object3d";
 import { DEFAULT_TRANSFORM } from "@/assets/geometry";
 import object3DStore from "@/store/object3DStore";
 import { toMatrix4decompose } from "@/utils/calc";

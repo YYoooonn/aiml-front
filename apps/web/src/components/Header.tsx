@@ -2,20 +2,19 @@
 
 import { navigate } from "@/app/actions/navigate";
 import redirectUser from "@/hook/redirectUser";
-import { useUserInfo } from "@/hook/useUserInfo";
 import {
   Header as HeaderLayout,
   ProfileDropdown,
 } from "@repo/ui/components/header";
 import useComponentVisible from "@/hook/useComponentVisible";
+import { useUser } from "@/hook/useUser";
 
 export function Header() {
-  const username = useUserInfo((state) => state.username);
-  const logout = useUserInfo((state) => state.logout);
+  const { userInfo, logoutUser } = useUser();
   const { ref, isComponentVisible, setIsComponentVisible } =
     useComponentVisible();
   const handleLogout = () => {
-    logout();
+    logoutUser();
     setIsComponentVisible(false);
     navigate("/");
   };
@@ -28,13 +27,13 @@ export function Header() {
   return (
     <>
       <HeaderLayout
-        signedIn={username !== ""}
+        signedIn={userInfo.username !== ""}
         handleVisible={() => setIsComponentVisible(!isComponentVisible)}
       />
       {isComponentVisible ? (
         <ProfileDropdown
           ref={ref}
-          username={username}
+          username={userInfo.username}
           handleLogout={handleLogout}
           handleNavigate={handleNavigate}
         />

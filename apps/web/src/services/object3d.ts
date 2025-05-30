@@ -10,7 +10,6 @@ export async function createObject3D(props: Object3DRequest) {
     body: JSON.stringify(props),
   });
   const result: BaseFrontResponse<TObject3DData> = await response.json();
-  console.log(result);
   return result;
 }
 

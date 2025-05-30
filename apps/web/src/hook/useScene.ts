@@ -66,7 +66,7 @@ export const useScene = () => {
 
     const currentScene = sceneMap[selectedSceneId];
     if (!currentScene) {
-      console.error("Current scene not found in sceneMap");
+      console.error("Current scene not found, try refreshing the page");
       return;
     }
 

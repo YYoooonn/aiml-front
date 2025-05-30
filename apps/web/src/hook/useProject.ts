@@ -1,6 +1,7 @@
-import { getProjectParticipants } from "@/app/actions/participant";
-import { getProject } from "@/app/actions/project";
-import { getProjectScenes } from "@/app/actions/scene";
+import { navigate } from "@/app/actions/navigate";
+import { getProjectParticipants } from "@/services/participant";
+import { deleteProject, getProject } from "@/services/project";
+import { getProjectScenes } from "@/services/scene";
 import projectStore from "@/store/projectStore";
 
 export const useProject = () => {
@@ -10,6 +11,7 @@ export const useProject = () => {
     const id = pId ?? projectId;
     if (!id) {
       alert("Project Id not provided");
+      navigate("/user/me");
       return false;
     }
 
@@ -17,6 +19,7 @@ export const useProject = () => {
     const projectResponse = await getProject(id);
     if (!projectResponse.success) {
       alert(projectResponse.error);
+      projectResponse.redirectLink && navigate(projectResponse.redirectLink);
       return false;
     }
 
@@ -42,9 +45,29 @@ export const useProject = () => {
     return true;
   };
 
+  const removeProject = async (pId?: string) => {
+    const id = pId ?? projectId;
+    if (!id) {
+      alert("Project Id not provided");
+      navigate("/user/me");
+      return false;
+    }
+
+    const res = await deleteProject(id);
+    if (!res.success) {
+      alert(res.error);
+      res.redirectLink && navigate(res.redirectLink);
+      return false;
+    }
+
+    clearProject();
+    return true;
+  };
+
   return {
     projectId,
     fetchAllProjectData,
     clearProject,
+    removeProject,
   };
 };

@@ -14,8 +14,6 @@ export async function fetchWithAuth<T>(
   options: RequestInit = {},
 ): Promise<BaseResponse<T>> {
   let accessToken = getAccessTokenFromCookie();
-  const refreshToken = getRefreshTokenFromCookie();
-
   let revalidate = false;
 
   // 1차 요청
@@ -36,8 +34,8 @@ export async function fetchWithAuth<T>(
   }
 
   // accessToken이 없거나 revalidate가 true → reissue 필요
-  if ((!accessToken || revalidate) && refreshToken !== null) {
-    accessToken = await getRefreshedToken(refreshToken);
+  if (!accessToken || revalidate) {
+    accessToken = await getRefreshedToken();
 
     if (accessToken) {
       const retryHeaders = {
@@ -63,9 +61,14 @@ export async function fetchWithAuth<T>(
 }
 
 // refresh 중복 방지 Promise
-async function getRefreshedToken(refreshToken: string): Promise<string | null> {
+async function getRefreshedToken(): Promise<string | null> {
   if (!refreshing) {
-    refreshing = refreshAccessToken(refreshToken).finally(() => {
+    refreshing = (async () => {
+      const latestRefreshToken = getRefreshTokenFromCookie();
+      console.log("Refreshing access token with:", latestRefreshToken);
+      if (!latestRefreshToken) return null;
+      return await refreshAccessToken(latestRefreshToken);
+    })().finally(() => {
       refreshing = null;
     });
   }

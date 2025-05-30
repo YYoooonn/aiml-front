@@ -6,9 +6,10 @@ export default function ProtectedLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const token = cookies().get("auth-token");
+  const token = cookies().get("accessToken");
+  const refreshToken = cookies().get("refreshToken");
 
-  if (!token) redirect("/login");
+  if (!token && !refreshToken) redirect("/login");
 
   return <>{children}</>;
 }

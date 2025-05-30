@@ -4,31 +4,29 @@ import {
   deleteParticipant,
   getProjectParticipants,
   updateParticipant,
-} from "@/app/actions/participant";
+} from "@/services/participant";
 import projectStore from "@/store/projectStore";
 import { useMemo, useState } from "react";
-
-export type ParticipantMap = Map<ParticipantRole, ParticipantData[]>;
-
-function fromListToMap<K, T>(list: T[], key: (item: T) => K) {
-  const map = new Map<K, T[]>();
-  list.forEach((item) => {
-    const k = key(item);
-    if (!map.has(k)) {
-      map.set(k, []);
-    }
-    map.get(k)?.push(item);
-  });
-  return map;
-}
 
 export const useParticipant = () => {
   const { id: projectId, participants, setParticipants } = projectStore();
 
-  const participantMap = useMemo(
-    () => fromListToMap(participants, (p) => p.role),
-    [participants],
-  );
+  const participantMap = useMemo(() => {
+    // 순서 보장을 위함
+    const map: Record<string, ParticipantData[]> = {
+      OWNER: [],
+      EDITOR: [],
+      VIEWER: [],
+    };
+    participants.forEach((participant) => {
+      if (map[participant.role]) {
+        map[participant.role]?.push(participant);
+      } else {
+        map[participant.role] = [participant];
+      }
+    });
+    return map;
+  }, [participants]);
 
   const fetchParticipants = async (pId?: string) => {
     const id = pId ?? projectId;
@@ -54,8 +52,7 @@ export const useParticipant = () => {
       return false;
     }
 
-    const existingParticipants = participantMap.get(participant.role) ?? [];
-    const isExisting = existingParticipants.some(
+    const isExisting = participants.some(
       (p) => p.username === participant.username,
     );
 
@@ -70,10 +67,8 @@ export const useParticipant = () => {
 
     const data = response.data;
     const updatedParticipants = isExisting
-      ? existingParticipants.map((p) =>
-          p.username === data.username ? data : p,
-        )
-      : [...existingParticipants, data];
+      ? participants.map((p) => (p.username === data.username ? data : p))
+      : [...participants, data];
 
     setParticipants(updatedParticipants);
 
@@ -96,8 +91,9 @@ export const useParticipant = () => {
     const p = participants.find((p) => p.username === username);
     if (!p) return true;
 
-    const updatedParticipants =
-      participantMap.get(p.role)?.filter((p) => p.username !== username) ?? [];
+    const updatedParticipants = participants.filter(
+      (p) => p.username !== username,
+    );
 
     setParticipants(updatedParticipants);
     return true;

@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { useUserInfo } from "@/hook/useUserInfo";
 import {
   BaseSideNav,
   DropdownSideNav,
@@ -10,9 +9,10 @@ import {
   AisleModule,
 } from "@repo/ui/components/aisle";
 import { navigateWorkspace } from "@/app/actions/navigate";
+import { useUser } from "@/hook/useUser";
 
 export default function UserAisle() {
-  const { projects } = useUserInfo();
+  const { projects } = useUser();
   const [showList, setShowList] = useState(true);
   // // FIXME -  implement on user
   // const handleClick = (e: MouseEvent) => {

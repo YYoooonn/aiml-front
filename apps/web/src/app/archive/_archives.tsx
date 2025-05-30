@@ -10,7 +10,7 @@ import {
   BaseLights,
 } from "@/components/three";
 import { ProjectData, SceneData } from "@/@types/api";
-import { getProjectScenes } from "../actions/scene";
+import { getProjectScenes } from "../../services/scene";
 
 export function ArchiveCard({ props }: { props: ProjectData }) {
   const { id, title, subtitle } = props;

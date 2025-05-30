@@ -1,15 +1,13 @@
 "use client";
 
 import { useMemo } from "react";
-import {
-  createProject,
-  updateProject,
-  getProject,
-} from "@/app/actions/project";
+import { createProject, updateProject, getProject } from "@/services/project";
 import projectStore from "@/store/projectStore";
 import { ProjectData } from "@/@types/api";
+import { useUser } from "./useUser";
 
 export const useProjectInfo = () => {
+  const { projects, addToProjects } = useUser();
   const { id, title, subtitle, isPublic, updatedAt, createdAt, setProject } =
     projectStore();
 
@@ -30,6 +28,12 @@ export const useProjectInfo = () => {
     if (!projectId)
       return { success: false, error: "Project ID is not defined" };
 
+    const selected = projects.find((p) => p.id === projectId);
+    if (selected) {
+      setProject(selected);
+      return { success: true, data: selected };
+    }
+
     const projectResponse = await getProject(projectId);
     if (projectResponse.error) return projectResponse;
 
@@ -48,7 +52,10 @@ export const useProjectInfo = () => {
       ? await updateProject({ ...request, id: data.id })
       : await createProject(request);
 
-    if (response.success) setProject(response.data);
+    if (response.success) {
+      setProject(response.data);
+      addToProjects(response.data);
+    }
 
     return response;
   };

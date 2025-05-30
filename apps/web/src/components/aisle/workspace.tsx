@@ -4,7 +4,6 @@ import { useState, useMemo, useCallback } from "react";
 
 import redirectUser from "@/hook/redirectUser";
 import { useChat } from "@/hook/useChat";
-import { useUserInfo } from "@/hook/useUserInfo";
 import {
   LeftAisleContainer,
   AisleModule,
@@ -27,6 +26,7 @@ import { useProjectInfo } from "@/hook/useProjectInfo";
 import { useScene } from "@/hook/useScene";
 import { ProjectEditor } from "../editor/ProjectEditor";
 import { useObject3D } from "@/hook/useObject3D";
+import { useUser } from "@/hook/useUser";
 
 const SELECTIONS = ["Layer", "Chat"];
 
@@ -34,9 +34,9 @@ export default function WorkspaceAisle({}: { id?: string }) {
   const { projectInfo, projectId } = useProjectInfo();
   const { open } = useModals();
 
-  const username = useUserInfo((s) => s.username);
+  const { userInfo } = useUser();
   const { isConnected, logs, users, sendMessage } = useChat(
-    username,
+    userInfo.username,
     projectId,
   );
 

@@ -4,17 +4,18 @@ import {
   BaseForm,
   SubmitButton,
   BoolButtonBlock,
-  BaseFormBlock,
-  BaseTextInput,
   TextFormBlock,
 } from "@repo/ui/components";
 import { useProjectInfo } from "@/hook/useProjectInfo";
 import { useModals } from "@/hook/useModals";
 import { useState } from "react";
+import { useProject } from "@/hook/useProject";
+import { navigate } from "@/app/actions/navigate";
 
 export function ProjectEditForm() {
   const { close } = useModals();
   const { projectInfo, saveProjectInfo } = useProjectInfo();
+  const { removeProject } = useProject();
 
   const [title, setTitle] = useState(projectInfo.title);
   const [subtitle, setSubtitle] = useState(projectInfo.subtitle);
@@ -49,6 +50,15 @@ export function ProjectEditForm() {
     }
   };
 
+  const onDelete = async (e: React.MouseEvent) => {
+    e.preventDefault();
+    const res = await removeProject(projectInfo.id);
+    if (res) {
+      close();
+      navigate("/user/me");
+    }
+  };
+
   return (
     <BaseForm onSubmit={onSubmit} error={error}>
       <TextFormBlock
@@ -71,7 +81,8 @@ export function ProjectEditForm() {
         selected={isPublic ? "Public" : "Private"}
         setSelected={(value) => setIsPublic(value === "Public")}
       />
-      <SubmitButton text={"SAVE"} />
+      <SubmitButton text={"SAVE"} style={{ marginBottom: "1rem" }} />
+      <SubmitButton text={"DELETE PROJECT"} handler={onDelete} />
     </BaseForm>
   );
 }

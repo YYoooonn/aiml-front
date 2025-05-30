@@ -1,7 +1,7 @@
 "use client";
 
 import { BaseForm, SubmitButton, BaseFormBlock } from "@repo/ui/components";
-import { ParticipantMap, useParticipant } from "@/hook/useParticipant";
+import { useParticipant } from "@/hook/useParticipant";
 import { ParticipantRole } from "@/@types/api";
 import { useState } from "react";
 import {
@@ -10,11 +10,6 @@ import {
 } from "@repo/ui/components/module";
 import { searchUser } from "@/app/actions/search";
 import { SearchInput } from "../input/SearchInput";
-
-interface ParticipantModuleProps {
-  map: ParticipantMap;
-  handleUpdate: (val: { user: string; role: ParticipantRole | null }) => void;
-}
 
 export function ParticipantEditor() {
   const { participants, participantMap, saveParticipant, removeParticipant } =
@@ -50,24 +45,18 @@ export function ParticipantEditor() {
     }
   };
   return (
-    <BaseForm>
+    <BaseForm onSubmit={(e) => e.preventDefault()}>
       <BaseFormBlock title="PARTICIPANT">
-        {Array.from(participantMap.keys()).map((role) => {
-          const p = participantMap.get(role);
-          if (p) {
-            return (
-              <ParticipantEditBlock
-                key={role}
-                participants={p.map((p) => ({
-                  user: p.username,
-                  role: p.role,
-                }))}
-                handleParticipant={handleUpdate}
-              />
-            );
-          }
-          return null;
-        })}
+        {Object.entries(participantMap).map(([role, participants]) => (
+          <ParticipantEditBlock
+            key={role}
+            participants={participants.map((p) => ({
+              user: p.username,
+              role: p.role,
+            }))}
+            handleParticipant={handleUpdate}
+          />
+        ))}
       </BaseFormBlock>
       <p style={{ marginTop: "24px" }} />
       <BaseFormBlock title="SEARCH USER">
@@ -78,7 +67,7 @@ export function ParticipantEditor() {
         handleParticipant={handleUpdate}
       />
       <p style={{ marginTop: "24px" }} />
-      <SubmitButton text={"SAVE"} />
+      {/* <SubmitButton text={"SAVE"} /> */}
     </BaseForm>
   );
 }

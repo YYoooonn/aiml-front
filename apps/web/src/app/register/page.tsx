@@ -1,15 +1,15 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { registerUser } from "@/app/actions/auth";
+import { useState } from "react";
+import { login, registerUser } from "@/services/auth";
 import redirectUser from "@/hook/redirectUser";
-import { useUserInfo } from "@/hook/useUserInfo";
 import {
   BaseForm,
   PasswordFormBlock,
   SubmitButton,
   TextFormBlock,
 } from "@repo/ui/components";
+import { navigate } from "../actions/navigate";
 
 export default function Register() {
   return <RegisterForm />;
@@ -22,32 +22,35 @@ function RegisterForm() {
   const [lastname, setLastName] = useState("");
   const [error, setError] = useState("");
   const [email, setEmail] = useState("");
-  const resetInfo = useUserInfo((state) => state.reset);
-
-  useEffect(() => {
-    resetInfo();
-  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     if (!username || !password) {
       setError("empty username or password");
-    } else {
-      const response = await registerUser({
-        username: username,
-        password: password,
-        firstName: firstname,
-        lastName: lastname,
-        email: email,
-      });
-
-      if (response.success) {
-        redirectUser("me");
-      } else {
-        setError(response.error ? response.error : "unknown error");
-      }
+      return;
     }
+    const response = await registerUser({
+      username: username,
+      password: password,
+      firstName: firstname,
+      lastName: lastname,
+      email: email,
+    });
+
+    if (!response.success) {
+      setError(response.error ? response.error : "unknown error");
+      return;
+    }
+
+    const res = await login({ username, password });
+    if (!res.success) {
+      setError(res.error ? res.error : "unknown error");
+      res.redirectLink && navigate(res.redirectLink);
+      return;
+    }
+
+    redirectUser("me");
   };
 
   return (

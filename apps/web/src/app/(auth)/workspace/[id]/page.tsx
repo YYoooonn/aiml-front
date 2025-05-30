@@ -11,9 +11,10 @@ import {
   Lights,
 } from "@/components/three";
 import { useProject } from "@/hook/useProject";
+import { useUser } from "@/hook/useUser";
 
 export default function Page({ params }: { params: { id: string } }) {
-  // const fetchUser = useUserInfo((state) => state.fetchUserInfo);
+  const { fetchUserInfo } = useUser();
   const { fetchAllProjectData, clearProject } = useProject();
 
   const {
@@ -26,15 +27,14 @@ export default function Page({ params }: { params: { id: string } }) {
   } = useEditor();
 
   useEffect(() => {
-    // fetchUser();
-    fetchAllProjectData(params.id);
-    // return () => clearProject();
-  }, []);
+    fetch(params.id);
+    return () => clearProject();
+  }, [params.id]);
 
-  // useEffect(() => {
-  //   console.log("scenes", scenes);
-  //   console.log("selectedScene", selectedScene);
-  // }, [scenes, selectedScene]);
+  const fetch = async (id: string) => {
+    await fetchUserInfo();
+    await fetchAllProjectData(id);
+  };
 
   return (
     <BaseCanvas background={background.color}>
