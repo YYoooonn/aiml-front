@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { login } from "@/app/actions/auth";
+import { login } from "@/services/auth";
 import { navigate } from "@/app/actions/navigate";
 import {
   SubmitButton,

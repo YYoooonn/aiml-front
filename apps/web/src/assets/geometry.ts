@@ -1,7 +1,23 @@
 import { mergeVertices } from "three/examples/jsm/utils/BufferGeometryUtils.js";
 import * as THREE from "three";
 import { extractVerticesAndFaces } from "@/utils/three";
-import { TVector3 } from "@/@types/api";
+import { TGeometry, TVector3 } from "@/@types/api";
+
+export const DEFAULT_GEOMETRY = (geoType: string, name?: string) => {
+  const { v, f } = getVerticesAndFaces(geoType);
+  return {
+    name: name ?? geoType,
+    type: geoType,
+    vertices: v,
+    faces: f,
+  } as TGeometry;
+};
+
+export const DEFAULT_TRANSFORM = {
+  position: [0, 0, 0] as TVector3,
+  rotation: [0, 0, 0] as TVector3,
+  scale: [1, 1, 1] as TVector3,
+};
 
 export const sampleBoxGeometry = mergeVertices(new THREE.BoxGeometry(1, 1, 1));
 export const sampleSphereGeometry = new THREE.SphereGeometry(4);
@@ -19,7 +35,7 @@ export const {
   faces: DEFAULT_SPHERE_FACES,
 } = extractVerticesAndFaces(new THREE.SphereGeometry());
 
-export function getVerticesAndFaces(geoType: string): {
+function getVerticesAndFaces(geoType: string): {
   v: TVector3[];
   f: number[][];
 } {

@@ -1,18 +1,21 @@
 "use client";
 
-import { TObject3D, TObject3DData } from "@/@types/api";
+import { TGeometry, TMaterial, TObject3DData } from "@/@types/api";
 import { toMatrix4decompose } from "@/utils/calc";
 import { createBufferGeometry } from "@/utils/three";
 import { useMemo } from "react";
 
+const SELECTED_COLOR = "#FFEA00";
+
 interface ThreeObjectProps {
   obj: TObject3DData;
-  visible?: boolean;
-  selected?: TObject3DData;
+  selectable?: boolean;
+  selected?: boolean;
+  temp?: boolean;
   handleSelected?: (obj: TObject3DData) => void;
 }
 
-const typeToRenderer: Record<
+export const typeToRenderer: Record<
   TObject3DData["type"],
   (props: ThreeObjectProps) => JSX.Element | null
 > = {
@@ -22,31 +25,30 @@ const typeToRenderer: Record<
 
 export function Object3DRenderer(props: ThreeObjectProps) {
   const Component = typeToRenderer[props.obj.type];
-  return Component ? <Component {...props} /> : null;
+  const { position, scale, rotation } = toMatrix4decompose(props.obj.transform);
+  return (
+    <group position={position} scale={scale} rotation={rotation}>
+      <Component {...props} />
+    </group>
+  );
 }
 
 function GroupObject({
   obj,
-  selected,
   handleSelected,
-  visible = true,
+  selected = false,
+  temp = false,
 }: ThreeObjectProps) {
-  const { position, scale, rotation } = toMatrix4decompose(obj.transform);
   if (obj.type !== "GROUP") return null;
   return (
-    <group
-      scale={scale}
-      position={position}
-      rotation={rotation}
-      onClick={handleSelected ? () => handleSelected(obj) : undefined}
-      visible={visible}
-    >
+    <group>
       {obj.children.map((child) => (
         <Object3DRenderer
           key={obj.id}
           obj={child}
           handleSelected={handleSelected}
           selected={selected}
+          temp={temp}
         />
       ))}
     </group>
@@ -55,29 +57,46 @@ function GroupObject({
 
 function MeshObject({
   obj,
-  selected,
   handleSelected,
-  visible = true,
+  selected = false,
+  temp = false,
 }: ThreeObjectProps) {
-  const { position, scale, rotation } = toMatrix4decompose(obj.transform);
   if (obj.type !== "MESH") return null;
   const geometry = useMemo(() => {
     return createBufferGeometry(obj.geometry.vertices, obj.geometry.faces);
   }, [obj.geometry]);
 
-  // FIXME temporary for error catch
-  const newRotation = rotation.map((d) => (isNaN(d) ? 0 : d)) as Position;
-
   return (
-    <mesh
-      scale={scale}
-      position={position}
-      rotation={newRotation}
-      onClick={handleSelected ? () => handleSelected(obj) : undefined}
-      visible={visible}
-    >
+    <mesh onClick={() => handleSelected?.(obj)}>
       <primitive object={geometry} attach="geometry" />
-      <meshStandardMaterial color={obj.material.color} />
+      <meshStandardMaterial
+        color={temp ? SELECTED_COLOR : obj.material.color}
+        transparent
+        opacity={temp || selected ? 0.5 : 1}
+      />
+    </mesh>
+  );
+}
+
+interface MeshProps {
+  geometry: TGeometry;
+  material: TMaterial;
+  selected?: boolean;
+}
+
+function Mesh(props: MeshProps) {
+  const geometry = useMemo(() => {
+    const { vertices, faces } = props.geometry;
+    return createBufferGeometry(vertices, faces);
+  }, [props.geometry]);
+  return (
+    <mesh>
+      <primitive object={geometry} attach="geometry" />
+      <meshStandardMaterial
+        color={props.material.color}
+        transparent
+        opacity={props.selected ? 0.5 : 1}
+      />
     </mesh>
   );
 }

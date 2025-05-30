@@ -36,7 +36,7 @@ export function DropdownSideNav({
       <div className={styles.leftAisleBlock} onClick={onClick}>
         <ToggleSmallAnimated show={show} />
         <div
-          className={styles.leftAisleText}
+          className={show ? styles.leftAisleTextSelected : styles.leftAisleText}
           style={textSize ? { fontSize: textSize } : {}}
         >
           {text}

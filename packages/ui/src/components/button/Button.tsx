@@ -46,13 +46,14 @@ export function SelectorButton({
   selected,
   handler,
   widthPercentage,
+  style,
 }: SelectorButtonProps) {
   return (
     <button
       type="button"
       value={text}
-      style={{ width: widthPercentage }}
-      className={selected ? styles.selectedButton : styles.baseButton}
+      style={{ height: "32px", ...style, width: widthPercentage }}
+      className={selected ? styles.selectedButton : styles.selectorButton}
       onClick={handler}
     >
       {text}

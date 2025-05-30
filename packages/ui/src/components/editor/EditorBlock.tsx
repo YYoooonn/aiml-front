@@ -22,24 +22,24 @@ export function EditorBlock({
     </ToggleBlock>
   );
 }
-type CreatorBlockProps = {
-  selector: string;
+type CreatorBlockProps<T> = {
+  selector: T;
   selected: boolean;
-  setSelect: (val: string) => void;
+  setSelect: (val: T | null) => void;
   children?: React.ReactNode;
 };
 
-export function CreatorBlock({
+export function CreatorBlock<T>({
   selector,
   selected,
   setSelect,
   children,
-}: CreatorBlockProps) {
+}: CreatorBlockProps<T>) {
   return (
     <ToggleBlock
-      title={selector}
+      title={selector as string}
       selected={selected}
-      onToggle={() => setSelect(selected ? "" : selector)}
+      onToggle={() => setSelect(selected ? null : selector)}
     >
       {children}
     </ToggleBlock>

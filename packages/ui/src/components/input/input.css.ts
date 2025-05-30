@@ -10,16 +10,16 @@ export const formTag = style({
 export const textInput = style({
   width: "100%",
   display: "block",
-  marginTop: "auto",
-  height: "32px",
-  marginBottom: 0,
+  padding: "0 8px",
+  height: "2rem",
   overflow: "hidden",
-  border: "none",
-  borderBottom: globalTheme.border.bDashed,
+  border: globalTheme.border.bInset,
   background: themeVars.color.background,
 
   ":focus": {
+    outline: "none",
     border: globalTheme.border.bSolid,
+    borderColor: themeVars.color.borderDark,
     background: themeVars.color.backgroundDark,
   },
 });

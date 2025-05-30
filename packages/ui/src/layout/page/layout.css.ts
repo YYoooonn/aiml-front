@@ -83,3 +83,53 @@ export const mainContentContainer = style({
     [breakpoints.lowTablet]: { paddingLeft: "16px", paddingRight: "16px" },
   },
 });
+
+export const editorPageContainer = style({
+  width: "100%",
+  height: "100%",
+  display: "flex",
+  flexDirection: "row",
+  overflow: "hidden",
+  "@media": {
+    [breakpoints.lowTablet]: {
+      flexDirection: "column",
+    },
+  },
+});
+
+export const edtiorContent = style({
+  flex: 1,
+  display: "flex",
+  overflowY: "auto",
+});
+
+export const editorNavigationContainer = style({
+  // height: "100%",
+  minWidth: "240px",
+  display: "flex",
+  flexDirection: "column",
+  "@media": {
+    [breakpoints.lowTablet]: {
+      flexDirection: "row",
+    },
+  },
+});
+
+export const navigationItem = style({
+  padding: "8px 16px",
+  cursor: "pointer",
+  selectors: {
+    "&:hover": {
+      backgroundColor: themeVars.color.backgroundDark,
+    },
+  },
+});
+
+export const navigationSelected = style([
+  navigationItem,
+  {
+    backgroundColor: themeVars.color.backgroundDark,
+    color: themeVars.color.textDark,
+    fontWeight: 700,
+  },
+]);

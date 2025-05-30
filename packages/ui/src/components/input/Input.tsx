@@ -1,29 +1,74 @@
 import * as styles from "./input.css";
 
-interface TextInputProps {
-  title?: string;
-  onChange: (value: string) => void;
+export interface TextInputProps {
+  name?: string;
+  value?: string;
+  type?: string;
   placeholder?: string;
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
-export function TextInput({ onChange, placeholder }: TextInputProps) {
+interface InputProps {
+  name?: string;
+  value?: string;
+  type: string;
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  placeholder: string;
+}
+
+export function BaseTextInput({
+  value,
+  onChange,
+  name = "textInput",
+  type = "text",
+  placeholder = "Enter text",
+}: TextInputProps) {
+  if (value)
+    return <BaseInput {...{ value, onChange, name, type, placeholder }} />;
+  else
+    return <BaseInputWithoutValue {...{ name, type, onChange, placeholder }} />;
+}
+
+function BaseInput({ name, value, type, onChange, placeholder }: InputProps) {
   return (
     <input
       className={styles.textInput}
-      type="text"
-      onChange={(e) => onChange(e.target.value)}
+      type={type ? type : "text"}
+      value={value}
+      name={name}
+      onChange={onChange}
       placeholder={placeholder ? placeholder : "Enter text"}
     />
   );
 }
 
-export function PasswordInput({ onChange, placeholder }: TextInputProps) {
+function BaseInputWithoutValue({
+  name,
+  type,
+  onChange,
+  placeholder,
+}: Omit<InputProps, "value">) {
+  return (
+    <input
+      className={styles.textInput}
+      name={name ? name : "textInput"}
+      type={type ? type : "text"}
+      onChange={onChange}
+      placeholder={placeholder ? placeholder : "Enter text"}
+    />
+  );
+}
+
+export function PasswordInput({
+  onChange,
+  placeholder,
+}: Omit<TextInputProps, "value">) {
   return (
     <input
       className={styles.textInput}
       type="password"
       autoComplete="on"
-      onChange={(e) => onChange(e.target.value)}
+      onChange={onChange}
       placeholder={placeholder ? placeholder : "Enter password"}
     />
   );

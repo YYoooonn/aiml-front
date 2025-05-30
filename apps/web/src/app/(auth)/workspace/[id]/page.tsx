@@ -1,24 +1,21 @@
 "use client";
 
 import { useEffect } from "react";
-import { useUserInfo } from "@/hook/useUserInfo";
 import { useEditor } from "@/hook/useEditor";
-import { useSceneStore } from "@/store/useSceneStore";
 import { WorkspaceObjects } from "@/components/three/ProjectObjects";
 import {
   BaseCanvas,
   WorkspaceCamera,
-  EditorObjects,
   UserCams,
   BaseLights,
   Lights,
 } from "@/components/three";
-import { useProjectStore } from "@/store/useProjectStore";
+import { useProject } from "@/hook/useProject";
+import { useUser } from "@/hook/useUser";
 
 export default function Page({ params }: { params: { id: string } }) {
-  const fetchUser = useUserInfo((state) => state.fetchUserInfo);
-  const fetchProject = useProjectStore((s) => s.fetchProject);
-  const { scenes, reset, fetchScenes, selectedScene } = useSceneStore();
+  const { fetchUserInfo } = useUser();
+  const { fetchAllProjectData, clearProject } = useProject();
 
   const {
     cam,
@@ -30,16 +27,14 @@ export default function Page({ params }: { params: { id: string } }) {
   } = useEditor();
 
   useEffect(() => {
-    fetchUser();
-    fetchProject(params.id);
-    fetchScenes(params.id);
-    return () => reset();
-  }, []);
+    fetch(params.id);
+    return () => clearProject();
+  }, [params.id]);
 
-  // useEffect(() => {
-  //   console.log("scenes", scenes);
-  //   console.log("selectedScene", selectedScene);
-  // }, [scenes, selectedScene]);
+  const fetch = async (id: string) => {
+    await fetchUserInfo();
+    await fetchAllProjectData(id);
+  };
 
   return (
     <BaseCanvas background={background.color}>
@@ -52,8 +47,8 @@ export default function Page({ params }: { params: { id: string } }) {
         setPosition={setCameraPosition}
       />
 
-      <EditorObjects />
-      <WorkspaceObjects objectInfos={selectedScene?.children} />
+      {/* <EditorObjects /> */}
+      <WorkspaceObjects />
 
       <UserCams />
     </BaseCanvas>
