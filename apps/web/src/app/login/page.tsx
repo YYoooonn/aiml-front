@@ -58,6 +58,8 @@ function LoginForm() {
     <BaseForm onSubmit={handleSubmit} error={error}>
       <TextFormBlock
         title={"USERNAME"}
+        value={username}
+        name="username"
         onChange={setUsername}
         placeholder="Enter username"
       />

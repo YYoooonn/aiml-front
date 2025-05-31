@@ -8,8 +8,9 @@ import {
   LeftAisleContainer,
   AisleModule,
 } from "@repo/ui/components/aisle";
-import { navigateWorkspace } from "@/app/actions/navigate";
+import { navigate, navigateWorkspace } from "@/app/actions/navigate";
 import { useUser } from "@/hook/useUser";
+import redirectUser from "@/hook/redirectUser";
 
 export default function UserAisle() {
   const { projects } = useUser();
@@ -29,7 +30,7 @@ export default function UserAisle() {
       <AisleModule>
         <BaseSideNav
           text="Profile"
-          onClick={() => console.log("profile clicked")}
+          onClick={() => redirectUser("me/profile")}
         />
         <div style={{ margin: "4px" }} />
         <BaseSideNav
@@ -42,6 +43,7 @@ export default function UserAisle() {
           onClick={() => console.log("upload clicked")}
         />
         <div style={{ margin: "4px" }} />
+        <BaseSideNav text="Projects" onClick={() => redirectUser("me")} />
         <DropdownSideNav
           text="Projects"
           onClick={handleProjectClick}

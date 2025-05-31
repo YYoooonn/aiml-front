@@ -8,11 +8,19 @@ import {
 } from "@repo/ui/components/header";
 import useComponentVisible from "@/hook/useComponentVisible";
 import { useUser } from "@/hook/useUser";
+import { useEffect } from "react";
 
 export function Header() {
-  const { userInfo, logoutUser } = useUser();
+  const { userInfo, logoutUser, fetchUserInfo } = useUser();
   const { ref, isComponentVisible, setIsComponentVisible } =
     useComponentVisible();
+
+  useEffect(() => {
+    if (!userInfo.username) {
+      fetchUserInfo();
+    }
+  }, [userInfo]);
+
   const handleLogout = () => {
     logoutUser();
     setIsComponentVisible(false);
@@ -27,7 +35,8 @@ export function Header() {
   return (
     <>
       <HeaderLayout
-        signedIn={userInfo.username !== ""}
+        username={userInfo.username}
+        profileImg={userInfo.imageUrl || "/image/defaultProfile.jpg"}
         handleVisible={() => setIsComponentVisible(!isComponentVisible)}
       />
       {isComponentVisible ? (

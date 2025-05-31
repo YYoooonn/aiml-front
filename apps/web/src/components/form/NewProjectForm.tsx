@@ -50,11 +50,15 @@ export function NewProjectForm({
       <TextFormBlock
         title="TITLE"
         onChange={setTitle}
+        value={title}
+        name="title"
         placeholder="Enter project title"
       />
       <TextFormBlock
         title="SUBTITLE"
         onChange={setSubtitle}
+        value={subtitle}
+        name="subtitle"
         placeholder="Enter project subtitle"
       />
       <BoolButtonBlock

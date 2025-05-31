@@ -4,17 +4,12 @@ import { forwardRef } from "react";
 import * as styles from "./profile.css";
 
 interface HeaderProfileProps {
-  signedIn: boolean;
-  handleVisible: () => void;
+  handleVisible?: () => void;
   children?: React.ReactNode;
 }
 
-export function HeaderProfile({
-  signedIn,
-  children,
-  handleVisible,
-}: HeaderProfileProps) {
-  return <>{signedIn ? <Profile onClick={handleVisible} /> : children}</>;
+export function HeaderProfile({ children }: HeaderProfileProps) {
+  return <div className={styles.profileLink}>{children}</div>;
 }
 
 function Profile({ onClick }: { onClick: () => void }) {

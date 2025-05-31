@@ -19,6 +19,7 @@ const DEFAULT = {
   createdAt: "",
   updatedAt: "",
   email: "",
+  bio: "",
 };
 
 export const userStore = create<UserStoreState>()((set, get) => ({
