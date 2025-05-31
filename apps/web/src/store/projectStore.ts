@@ -50,7 +50,7 @@ const projectStore = create<ProjectStore>()((set, get) => ({
     ) as Partial<ProjectData>;
     set({ ...get(), ...safeInput });
   },
-  setScenes: (data) => set({ scenes: data }),
+  setScenes: (data) => set({ scenes: [...data] }),
   setParticipants: (data) => {
     set({ participants: data });
   },

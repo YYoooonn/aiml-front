@@ -7,7 +7,7 @@ export const initNS = <T = unknown>(
   name: string,
   activeUsers: Map<string, Socket>,
   roomUsers: Map<string, Map<string, string>>,
-  events?: string[],
+  events?: Record<string, string[]>,
 ) => {
   if (activeNamespaces.has(name)) {
     console.log(`namespace ${name} already exists`);
@@ -66,7 +66,7 @@ export const initNS = <T = unknown>(
     });
 
     // Custom events
-    events?.forEach((event) => {
+    events?.["default"]?.forEach((event) => {
       socket.on(event, (input: T) => {
         namespace.to(roomId).emit(event, input);
       });

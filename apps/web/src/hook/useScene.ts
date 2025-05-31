@@ -9,29 +9,34 @@ export const useScene = () => {
   const { id: projectId, scenes, setScenes } = projectStore();
   const { selectedSceneId, setSelectedSceneId } = sceneStore();
 
-  const [sceneMap, setSceneMap] = useState<Record<string, SceneData>>({});
-
-  useEffect(() => {
+  const sceneMap = useMemo(() => {
     const map: Record<string, SceneData> = {};
-    setSelectedSceneId(scenes[0]?.id);
     scenes.forEach((scene) => {
       map[scene.id] = scene;
-    });
-    setSceneMap(map);
+    }
+    );
+    return map;
   }, [scenes]);
+
+  useEffect(() => {
+    if (scenes.length > 0 && !selectedSceneId) {
+      setSelectedSceneId(scenes[0]?.id);
+    }
+  }, [scenes, selectedSceneId, setSelectedSceneId]);
 
   const selectedScene = useMemo(() => {
     if (!selectedSceneId) return undefined;
     return sceneMap[selectedSceneId];
-  }, [selectedSceneId]);
+  }, [selectedSceneId, sceneMap]);
 
-  const upsertChildren = (data: TObject3DData[]) => {
-    if (!selectedSceneId) {
+  const upsertChildren = (data: TObject3DData[], sceneId? : string) => {
+    const id = sceneId ?? selectedSceneId;
+    if (!id) {
       console.log("No scene selected");
       return;
     }
 
-    const currentScene = sceneMap[selectedSceneId];
+    const currentScene = sceneMap[id];
     if (!currentScene) {
       console.error("Current scene not found in sceneMap");
       return;
@@ -39,11 +44,8 @@ export const useScene = () => {
 
     const newChildren = [...currentScene.children];
     data.forEach((obj) => {
-      const existingIndex = newChildren.findIndex((c) => c.id === obj.id);
-      if (existingIndex !== -1) {
-        newChildren[existingIndex] = obj; // Update existing object
-      } else {
-        newChildren.push(obj); // Add new object
+      if (!findAndInsert(newChildren, obj)) {
+        console.error(`Failed to insert or update object with id ${obj.id}`);
       }
     });
 
@@ -53,18 +55,19 @@ export const useScene = () => {
     };
 
     const newScenes = { ...sceneMap };
-    newScenes[selectedSceneId] = updatedScene;
+    newScenes[id] = updatedScene;
 
     setScenes(Object.values(newScenes));
   };
 
-  const removeChildren = (ids: string[]) => {
-    if (!selectedSceneId) {
+  const removeChildren = (ids: string[], sceneId? : string) => {
+    const id = sceneId ?? selectedSceneId;
+    if (!id) {
       console.log("No scene selected");
       return;
     }
 
-    const currentScene = sceneMap[selectedSceneId];
+    const currentScene = sceneMap[id];
     if (!currentScene) {
       console.error("Current scene not found, try refreshing the page");
       return;
@@ -80,12 +83,13 @@ export const useScene = () => {
     };
 
     const newScenes = { ...sceneMap };
-    newScenes[selectedSceneId] = updatedScene;
+    newScenes[id] = updatedScene;
 
     setScenes(Object.values(newScenes));
   };
 
   return {
+    projectId,
     sceneMap,
     sceneId: selectedSceneId,
     setSceneId: setSelectedSceneId,
@@ -96,22 +100,40 @@ export const useScene = () => {
   };
 };
 
-//   const fetchScenes = async (pId?: string) => {
-//     const id = pId ?? projectId;
-//     if (!id) {
-//       alert("Project Id not provided");
-//       return false;
-//     }
+function findAndInsert<T>(
+  nodes: TObject3DData[],
+  obj: TObject3DData
+): boolean {
+  if(obj.parentId === null) {
+    // 최상위 객체인 경우
+    const existingIndex = nodes.findIndex((node) => node.id === obj.id);
+    if (existingIndex !== -1) {
+      nodes[existingIndex] = obj; // update
+    } else {
+      nodes.push(obj); // insert
+    }
+    return true; // 성공적으로 삽입
+  }
 
-//     const sceneResponse = await getProjectScenes(id);
-//     if (sceneResponse.error) {
-//       alert(sceneResponse.error);
-//       return false;
-//     }
-
-//     setScenes(sceneResponse.data);
-
-//     // to default
-//     setSceneId(sceneResponse.data[0]?.id);
-//     return true;
-//   };
+  for (let node of nodes) {
+    if (node.type === "GROUP") {
+      if (node.id === obj.parentId) {
+        const existingIndex = node.children.findIndex(
+          (child: any) => child.id === obj.id
+        );
+        if (existingIndex !== -1) {
+          node.children[existingIndex] = obj; // update
+        } else {
+          node.children.push(obj); // insert
+        }
+        return true; // 성공적으로 삽입
+      } else {
+        // 자식들 안에서 탐색 계속
+        if (findAndInsert(node.children, obj)) {
+          return true;
+        }
+      }
+    }
+  }
+  return false; // 못 찾음
+}

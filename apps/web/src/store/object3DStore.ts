@@ -1,5 +1,4 @@
-import { TMesh, TObject3D, TObject3DBase, TObject3DData } from "@/@types/api";
-import { DEFAULT_TRANSFORM } from "@/assets/geometry";
+import { TObject3DBase, TObject3DData } from "@/@types/api";
 import { DEFAULT_MATRIX } from "@/utils/constants";
 import { create } from "zustand";
 

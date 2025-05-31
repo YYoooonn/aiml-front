@@ -2,6 +2,8 @@
 
 import { TMaterial, TTransform } from "@/@types/api";
 import { useObject3D } from "@/hook/useObject3D";
+import { useProjectSocket } from "@/hook/useProjectSocket";
+import { useUser } from "@/hook/useUser";
 import { toMatrix, toMatrix4, toMatrix4decompose } from "@/utils/calc";
 import { EditorHeader, ObjectEditor } from "@repo/ui/components/editor";
 import { useEffect, useMemo, useState } from "react";
@@ -12,13 +14,14 @@ const DEFAULT_TRANSFORM: TTransform = {
   scale: [1, 1, 1],
 };
 
-export default function Object3DEditor({ pId }: { pId: string }) {
+export default function Object3DEditor({ pId, socketUpdate }: { pId?: string, socketUpdate?: (data: any) => void }) {
   const {
     selected,
     object3DInfo,
     setObject3DInfo,
     saveSelected,
     removeSelected,
+    sceneId,
   } = useObject3D();
 
   const [visible, setVisible] = useState(object3DInfo.visible ?? true);
@@ -41,7 +44,7 @@ export default function Object3DEditor({ pId }: { pId: string }) {
   const handleSubmit = async (e: React.MouseEvent) => {
     e.preventDefault();
 
-    const response = await saveSelected();
+    const response = await saveSelected({name: name, visible: visible});
     if (!response.success) {
       alert(`Error: ${response.error}`);
     } else {
@@ -49,11 +52,19 @@ export default function Object3DEditor({ pId }: { pId: string }) {
       setVisible(true);
       setTransform(DEFAULT_TRANSFORM);
       setMaterial(undefined);
-    }
-  };
+      if (sceneId && response.data && socketUpdate) {
+        socketUpdate({
+          objectId: response.data.id,
+          sceneId: sceneId,
+          type: "update"
+        });
+      }
+    };
+  }
 
   const handleRemove = async (e: React.MouseEvent) => {
     e.preventDefault();
+    const selectedIds = Object.keys(selected);
 
     const response = await removeSelected();
     if (!response.success) {
@@ -63,6 +74,15 @@ export default function Object3DEditor({ pId }: { pId: string }) {
       setVisible(true);
       setTransform(DEFAULT_TRANSFORM);
       setMaterial(undefined);
+      if (sceneId && socketUpdate) {
+        selectedIds.forEach((id) => {
+            socketUpdate({
+              objectId: id,
+              sceneId: sceneId,
+              type: "delete"
+            });
+        })
+      }
     }
   };
 

@@ -11,10 +11,8 @@ export async function GET(
   request: NextRequest,
   { params }: { params: { id: string } },
 ) {
-  const body = await request.json();
   const response = await fetchWithAuth(`${ENDPOINT}/${params.id}`, {
-    method: "POST",
-    body: JSON.stringify(body),
+    method: "GET",
   });
 
   const mapped = responseMapper(response);

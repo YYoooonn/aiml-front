@@ -4,6 +4,7 @@ import { SmallIcon } from "./base";
 export function ArrowLeftIcon() {
   return (
     <Image
+      placeholder="empty"
       src={`/icons/arrowLeft.svg`}
       alt={`arrow left icon`}
       width={24}
@@ -15,6 +16,7 @@ export function ArrowLeftIcon() {
 export function ArrowLeftSmall() {
   return (
     <Image
+      placeholder="empty"
       src={`/icons/arrowLeft.svg`}
       alt={`arrow left icon`}
       width={16}

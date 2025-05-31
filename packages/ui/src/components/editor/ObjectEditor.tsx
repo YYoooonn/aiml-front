@@ -16,19 +16,15 @@ interface ObjectEditorProps extends MatrixConstructorProps {
 }
 
 export function ObjectEditor(props: ObjectEditorProps) {
-  const [name, setName] = useState(props.name);
   const [color, setColor] = useState(props.color);
-  useEffect(() => {
-    setName(props.name);
-  }, [props.name]);
 
   useEffect(() => {
     setColor(props.color);
   }, [props.color]);
 
   const handleSubmit = (e: React.MouseEvent) => {
-    props.setName(name);
-    if (props.setColor) props.setColor(color ? color : "#575757");
+    e.preventDefault();
+    props.setColor?.(color ? color : "#575757");
     if (props.onSubmit) props.onSubmit(e);
   };
 
@@ -36,9 +32,9 @@ export function ObjectEditor(props: ObjectEditorProps) {
     <EditorBlock text="EDIT" disabled={props.disabled}>
       <TextSelector
         text="name"
-        val={name}
-        preset={name ? name : "untitled"}
-        setVal={setName}
+        val={props.name}
+        preset={props.name ? props.name : "untitled"}
+        setVal={props.setName}
       />
       <MatrixConstructor
         position={props.position}
