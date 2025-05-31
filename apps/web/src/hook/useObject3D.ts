@@ -1,4 +1,9 @@
-import { TObject3D, TObject3DBase, TObject3DData, TTransform } from "@/@types/api";
+import {
+  TObject3D,
+  TObject3DBase,
+  TObject3DData,
+  TTransform,
+} from "@/@types/api";
 import { useScene } from "./useScene";
 import { useEffect, useMemo, useState } from "react";
 import {
@@ -44,7 +49,8 @@ export const useObject3D = () => {
   };
 
   const saveObject3D = async (data: TObject3D & { id?: string }) => {
-    if (!selectedScene) return { success: false, error: "Scene not set", data: null };
+    if (!selectedScene)
+      return { success: false, error: "Scene not set", data: null };
 
     const isPresent =
       data.id && selectedScene.children.some((child) => child.id === data.id);
@@ -60,8 +66,9 @@ export const useObject3D = () => {
     return response;
   };
 
-  const saveSelected = async (input? : Partial<TObject3DBase>) => {
-    if (!selectedScene) return { success: false, error: "Scene not set", data: null };
+  const saveSelected = async (input?: Partial<TObject3DBase>) => {
+    if (!selectedScene)
+      return { success: false, error: "Scene not set", data: null };
 
     // 여러개인 경우, group or transform sum
     const selectedData = Object.values(selected);
@@ -69,7 +76,8 @@ export const useObject3D = () => {
       return { success: false, error: "not implemented yet", data: null };
 
     const current = selectedData.pop();
-    if (!current) return { success: false, error: "No object selected", data: null };
+    if (!current)
+      return { success: false, error: "No object selected", data: null };
 
     const updated = {
       ...current,
@@ -93,7 +101,7 @@ export const useObject3D = () => {
 
     const response = await deleteObject3D(current.id);
     if (response.success) clearSelected();
-  
+
     return response;
   };
 

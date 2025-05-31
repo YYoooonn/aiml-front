@@ -8,8 +8,8 @@ import { useProjectInfo } from "@/hook/useProjectInfo";
 import { useProjectSocket } from "@/hook/useProjectSocket";
 
 export function RightAisle() {
-  const { projectId } = useProjectInfo()
-  const { emitObjectUpdate : socketUpdate } = useProjectSocket()
+  const { projectId } = useProjectInfo();
+  const { emitObjectUpdate: socketUpdate } = useProjectSocket();
 
   return (
     <RightAisleContainer>

@@ -20,7 +20,9 @@ const NAME = "project";
 
 export const ProjectSocket = (io: Server) => {
   // add custom events
-  const customEvents = {default: ["objectUpdate", "sceneUpdate", "projectUpdate"]};
+  const customEvents = {
+    default: ["objectUpdate", "sceneUpdate", "projectUpdate"],
+  };
 
   // init namespace
   const project = initNS(io, NAME, activeUsers, roomUsers, customEvents);

@@ -14,7 +14,13 @@ const DEFAULT_TRANSFORM: TTransform = {
   scale: [1, 1, 1],
 };
 
-export default function Object3DEditor({ pId, socketUpdate }: { pId?: string, socketUpdate?: (data: any) => void }) {
+export default function Object3DEditor({
+  pId,
+  socketUpdate,
+}: {
+  pId?: string;
+  socketUpdate?: (data: any) => void;
+}) {
   const {
     selected,
     object3DInfo,
@@ -44,7 +50,7 @@ export default function Object3DEditor({ pId, socketUpdate }: { pId?: string, so
   const handleSubmit = async (e: React.MouseEvent) => {
     e.preventDefault();
 
-    const response = await saveSelected({name: name, visible: visible});
+    const response = await saveSelected({ name: name, visible: visible });
     if (!response.success) {
       alert(`Error: ${response.error}`);
     } else {
@@ -56,11 +62,11 @@ export default function Object3DEditor({ pId, socketUpdate }: { pId?: string, so
         socketUpdate({
           objectId: response.data.id,
           sceneId: sceneId,
-          type: "update"
+          type: "update",
         });
       }
-    };
-  }
+    }
+  };
 
   const handleRemove = async (e: React.MouseEvent) => {
     e.preventDefault();
@@ -76,12 +82,12 @@ export default function Object3DEditor({ pId, socketUpdate }: { pId?: string, so
       setMaterial(undefined);
       if (sceneId && socketUpdate) {
         selectedIds.forEach((id) => {
-            socketUpdate({
-              objectId: id,
-              sceneId: sceneId,
-              type: "delete"
-            });
-        })
+          socketUpdate({
+            objectId: id,
+            sceneId: sceneId,
+            type: "delete",
+          });
+        });
       }
     }
   };

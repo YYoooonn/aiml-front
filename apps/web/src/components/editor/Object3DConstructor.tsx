@@ -19,8 +19,15 @@ const GEOMETRY_OPTIONS: GEOMETRY_TYPE[] = [
   "ConeGeometry",
 ];
 
-export default function Object3DConstructor({ pId, socketUpdate }: { pId?: string, socketUpdate?: (data: any) => void }) {
-  const { sceneId, selectObject3D, clearSelected, saveObject3D } = useObject3D();
+export default function Object3DConstructor({
+  pId,
+  socketUpdate,
+}: {
+  pId?: string;
+  socketUpdate?: (data: any) => void;
+}) {
+  const { sceneId, selectObject3D, clearSelected, saveObject3D } =
+    useObject3D();
 
   const [objectType, setObjectType] = useState<Object3DType | null>("MESH");
   const [geoType, setGeoType] = useState<GEOMETRY_TYPE | null>(null);
@@ -74,7 +81,7 @@ export default function Object3DConstructor({ pId, socketUpdate }: { pId?: strin
         type: "create",
         objectId: response.data.id,
         sceneId: sceneId,
-      })
+      });
     } else {
       alert(`Error: ${response.error}`);
     }

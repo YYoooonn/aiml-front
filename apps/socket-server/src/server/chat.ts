@@ -20,7 +20,7 @@ const NAME = "chat";
 
 export const ChatSocket = (io: Server) => {
   // add custom events
-  const customEvents = {default: ["chatMessage"]};
+  const customEvents = { default: ["chatMessage"] };
 
   // init namespace
   const chat = initNS(io, NAME, activeUsers, roomUsers, customEvents);

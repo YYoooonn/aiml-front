@@ -35,13 +35,13 @@ export const useParticipant = () => {
         success: false,
         error: "Project Id not provided",
         data: null,
-      }
+      };
     }
 
     const response = await getProjectParticipants(id);
     if (response.success) setParticipants(response.data);
-    
-    return response
+
+    return response;
   };
 
   const saveParticipant = async (participant: Participant, pId?: string) => {

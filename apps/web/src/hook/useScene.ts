@@ -13,8 +13,7 @@ export const useScene = () => {
     const map: Record<string, SceneData> = {};
     scenes.forEach((scene) => {
       map[scene.id] = scene;
-    }
-    );
+    });
     return map;
   }, [scenes]);
 
@@ -29,7 +28,7 @@ export const useScene = () => {
     return sceneMap[selectedSceneId];
   }, [selectedSceneId, sceneMap]);
 
-  const upsertChildren = (data: TObject3DData[], sceneId? : string) => {
+  const upsertChildren = (data: TObject3DData[], sceneId?: string) => {
     const id = sceneId ?? selectedSceneId;
     if (!id) {
       console.log("No scene selected");
@@ -60,7 +59,7 @@ export const useScene = () => {
     setScenes(Object.values(newScenes));
   };
 
-  const removeChildren = (ids: string[], sceneId? : string) => {
+  const removeChildren = (ids: string[], sceneId?: string) => {
     const id = sceneId ?? selectedSceneId;
     if (!id) {
       console.log("No scene selected");
@@ -100,11 +99,8 @@ export const useScene = () => {
   };
 };
 
-function findAndInsert<T>(
-  nodes: TObject3DData[],
-  obj: TObject3DData
-): boolean {
-  if(obj.parentId === null) {
+function findAndInsert<T>(nodes: TObject3DData[], obj: TObject3DData): boolean {
+  if (obj.parentId === null) {
     // 최상위 객체인 경우
     const existingIndex = nodes.findIndex((node) => node.id === obj.id);
     if (existingIndex !== -1) {
@@ -119,7 +115,7 @@ function findAndInsert<T>(
     if (node.type === "GROUP") {
       if (node.id === obj.parentId) {
         const existingIndex = node.children.findIndex(
-          (child: any) => child.id === obj.id
+          (child: any) => child.id === obj.id,
         );
         if (existingIndex !== -1) {
           node.children[existingIndex] = obj; // update

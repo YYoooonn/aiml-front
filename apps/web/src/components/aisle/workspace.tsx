@@ -33,7 +33,7 @@ const SELECTIONS = ["Layer", "Chat"];
 
 export default function WorkspaceAisle({}: { id?: string }) {
   const { projectInfo, projectId } = useProjectInfo();
-  const { fetchParticipants } = useParticipant()
+  const { fetchParticipants } = useParticipant();
   const { open } = useModals();
 
   const { userInfo } = useUser();

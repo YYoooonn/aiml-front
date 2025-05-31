@@ -30,7 +30,7 @@ const io = new Server(httpServer, {
 });
 
 // socket 핸들러 등록
-ChatSocket(io); 
+ChatSocket(io);
 
 ProjectSocket(io);
 
