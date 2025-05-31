@@ -7,10 +7,10 @@ const baseAisleBlock = style({
   alignContent: "center",
   alignItems: "center",
   height: "24px",
-  ":hover": {
-    cursor: "pointer",
-    color: themeVars.color.primary,
-  },
+  // ":hover": {
+  //   cursor: "pointer",
+  //   color: themeVars.color.primary,
+  // },
 });
 
 export const leftAisleBlock = style([baseAisleBlock]);
@@ -23,6 +23,9 @@ export const leftAisleIcon = style({
   display: "inline-flex",
   alignItems: "center",
   justifyContent: "center",
+  ":hover": {
+    cursor: "pointer",
+  },
 });
 
 export const leftAisleText = style({
@@ -31,12 +34,16 @@ export const leftAisleText = style({
   alignItems: "center",
   ...themeVars.textStyle.subtitle1,
   fontWeight: "500",
+  ":hover": {
+    cursor: "pointer",
+    color: themeVars.color.primary,
+  },
 });
 
 export const leftAisleTextSelected = style([
   leftAisleText,
   {
-    fontWeight: "700",
+    fontWeight: "600",
   },
 ]);
 

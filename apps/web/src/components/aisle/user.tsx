@@ -8,51 +8,58 @@ import {
   LeftAisleContainer,
   AisleModule,
 } from "@repo/ui/components/aisle";
-import { navigate, navigateWorkspace } from "@/app/actions/navigate";
+import { navigateWorkspace } from "@/app/actions/navigate";
 import { useUser } from "@/hook/useUser";
 import redirectUser from "@/hook/redirectUser";
+
+
+const NAV = [
+  { text: "Profile", action: () => redirectUser("me/profile") },
+  { text: "Create", action: () => console.log("create clicked") },
+  { text: "Upload", action: () => console.log("upload clicked") },
+];
 
 export default function UserAisle() {
   const { projects } = useUser();
   const [showList, setShowList] = useState(true);
-  // // FIXME -  implement on user
-  // const handleClick = (e: MouseEvent) => {
-  //   e.preventDefault();
-  //   redirectUser(username.concat("/edit"));
-  // };
-
-  const handleProjectClick = () => {
-    setShowList(!showList);
-  };
+  const [selected, setSelected] = useState<string>("Projects");
 
   return (
     <LeftAisleContainer>
       <AisleModule>
-        <BaseSideNav
-          text="Profile"
-          onClick={() => redirectUser("me/profile")}
-        />
-        <div style={{ margin: "4px" }} />
-        <BaseSideNav
-          text="Create"
-          onClick={() => console.log("create clicked")}
-        />
-        <div style={{ margin: "4px" }} />
-        <BaseSideNav
-          text="Upload"
-          onClick={() => console.log("upload clicked")}
-        />
-        <div style={{ margin: "4px" }} />
-        <BaseSideNav text="Projects" onClick={() => redirectUser("me")} />
+        {
+          NAV.map((nav, index) => {
+            const handleClick = () => {
+              nav.action();
+              setSelected(nav.text);
+            }
+            return (
+            <div key={index} style={{ marginBottom: "8px" }}>
+              <BaseSideNav
+                text={nav.text}
+                onClick={handleClick}
+                selected={selected === nav.text}
+              />
+            </div>
+            )
+            }
+          )
+        }
         <DropdownSideNav
           text="Projects"
-          onClick={handleProjectClick}
+          selected={selected === "Projects"}
+          onClick={() => {
+            redirectUser("me");
+            setShowList(true)
+            setSelected("Projects")
+          }}
+          onToggle={() => setShowList(!showList)}
           show={showList}
         >
           {projects.map((p, i) => {
             return (
               <DropdownSelector
-                key={i}
+                key={p.id}
                 text={p.title}
                 onClick={() => navigateWorkspace(p.id)}
               />
