@@ -12,9 +12,12 @@ export const textInput = style({
   display: "block",
   padding: "0 8px",
   height: "2rem",
+  minHeight: "2rem",
   overflow: "hidden",
   border: globalTheme.border.bInset,
   background: themeVars.color.background,
+  fontSize: "0.9rem",
+  alignContent: "center",
 
   ":focus": {
     outline: "none",

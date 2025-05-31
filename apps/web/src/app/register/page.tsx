@@ -57,22 +57,30 @@ function RegisterForm() {
     <BaseForm onSubmit={handleSubmit} error={error}>
       <TextFormBlock
         title={"USERNAME"}
+        value={username}
+        name="username"
         onChange={setUsername}
         placeholder="Enter username"
       />
       <PasswordFormBlock title={"PASSWORD"} onChange={setPassword} />
       <TextFormBlock
         title={"FIRST NAME"}
+        value={firstname}
+        name="first-name"
         onChange={setFirstName}
         placeholder=""
       />
       <TextFormBlock
         title={"LAST NAME"}
+        value={lastname}
+        name="last-name"
         onChange={setLastName}
         placeholder=""
       />
       <TextFormBlock
         title={"EMAIL"}
+        value={email}
+        name="email"
         onChange={setEmail}
         placeholder="Enter email"
       />

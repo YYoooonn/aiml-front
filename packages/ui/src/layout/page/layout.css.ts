@@ -101,6 +101,7 @@ export const edtiorContent = style({
   flex: 1,
   display: "flex",
   overflowY: "auto",
+  flexDirection: "column",
 });
 
 export const editorNavigationContainer = style({

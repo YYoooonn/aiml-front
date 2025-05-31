@@ -50,12 +50,12 @@ export function SceneLayer({
   return (
     <div
       className={selected ? styles.sceneTagSelected : styles.layerTag}
-      onClick={() => onSelect(scene.id)}
     >
       <DropdownSideNav
         text={`${scene.name ? scene.name : "untitled"} - SCENE`}
         show={show}
-        onClick={() => setShow(!show)}
+        onClick={() => onSelect(scene.id)}
+        onToggle={() => setShow(!show)}
         textSize="0.8rem"
       >
         {children}

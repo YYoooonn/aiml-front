@@ -35,7 +35,7 @@ export function ParticipantEditor() {
   const handleSearch = async (username: string) => {
     const response = await searchUser({ username: username });
     if (response.success) {
-      const users = response.data
+      const users = response.data.content
         .map((user) => user.username)
         .filter((val) => !participants.some((p) => p.username === val))
         .slice(0, 5);
@@ -60,7 +60,10 @@ export function ParticipantEditor() {
       </BaseFormBlock>
       <p style={{ marginTop: "24px" }} />
       <BaseFormBlock title="SEARCH USER">
-        <SearchInput handleSearch={handleSearch} />
+        <SearchInput
+          handleSearch={handleSearch}
+          placeholder="Search username"
+        />
       </BaseFormBlock>
       <ParticipantCreateBlock
         users={searched}

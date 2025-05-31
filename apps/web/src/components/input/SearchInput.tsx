@@ -1,11 +1,15 @@
 import { BaseTextInput } from "@repo/ui/components";
 import { useEffect, useState } from "react";
 
+interface SearchInputProps {
+  handleSearch: (val: string) => Promise<void>;
+  placeholder?: string;
+}
+
 export const SearchInput = ({
   handleSearch,
-}: {
-  handleSearch: (val: string) => Promise<void>;
-}) => {
+  placeholder,
+}: SearchInputProps) => {
   const [query, setQuery] = useState("");
   const [debouncedQuery, setDebouncedQuery] = useState("");
 
@@ -24,6 +28,10 @@ export const SearchInput = ({
   }, [debouncedQuery]);
 
   return (
-    <BaseTextInput value={query} onChange={(e) => setQuery(e.target.value)} />
+    <BaseTextInput
+      value={query}
+      onChange={(e) => setQuery(e.target.value)}
+      placeholder={placeholder}
+    />
   );
 };

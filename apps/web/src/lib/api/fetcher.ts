@@ -7,9 +7,11 @@ export async function fetcher<T>(
   options: RequestInit = {},
 ): Promise<BaseResponse<T>> {
   const headers: Record<string, string> = {
-    "Content-Type": "application/json",
     ...parseHeaders(options.headers),
   };
+  if (!(options.body instanceof FormData)) {
+    headers["Content-Type"] = "application/json";
+  }
 
   const res = await fetch(`${url}`, {
     ...options,

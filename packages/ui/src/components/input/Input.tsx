@@ -6,6 +6,7 @@ export interface TextInputProps {
   type?: string;
   placeholder?: string;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  disabled?: boolean;
 }
 
 interface InputProps {
@@ -22,11 +23,16 @@ export function BaseTextInput({
   name = "textInput",
   type = "text",
   placeholder = "Enter text",
+  disabled = false,
 }: TextInputProps) {
-  if (value)
-    return <BaseInput {...{ value, onChange, name, type, placeholder }} />;
-  else
-    return <BaseInputWithoutValue {...{ name, type, onChange, placeholder }} />;
+  if (disabled) {
+    return (
+      <div className={styles.textInput} style={{ justifyContent: "center" }}>
+        {value}
+      </div>
+    );
+  }
+  return <BaseInput {...{ value, onChange, name, type, placeholder }} />;
 }
 
 function BaseInput({ name, value, type, onChange, placeholder }: InputProps) {

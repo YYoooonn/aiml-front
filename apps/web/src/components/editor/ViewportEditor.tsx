@@ -8,7 +8,7 @@ import {
 import { useEditor } from "@/hook/useEditor";
 
 export default function ViewportEditor() {
-  const { background, setBackground, cam, setCameraPosition, setCameraZoom } =
+  const { background, setBackground, cam, setCameraPosition, setCameraZoom, ambientLight, setAmbientLight } =
     useEditor();
 
   const [color, setColor] = useState(background.color);
@@ -33,7 +33,7 @@ export default function ViewportEditor() {
         zoom={cam.zoom}
         setZoom={setCameraZoom}
       />
-      <LightEditor />
+      <LightEditor intensity={ambientLight.intensity} setIntensity={(val) => setAmbientLight({...ambientLight, intensity: val})} />
     </>
   );
 }

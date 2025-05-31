@@ -44,7 +44,8 @@ export function FormBlockTag({ title }: { title: string }) {
 interface TextFormBlockProps
   extends FormBlockProps,
     Omit<TextInputProps, "onChange"> {
-  onChange: (value: string) => void;
+  onChange?: (value: string) => void;
+  disabled?: boolean;
 }
 
 export function TextFormBlock({
@@ -53,14 +54,16 @@ export function TextFormBlock({
   placeholder,
   onChange,
   value,
+  disabled = false,
 }: TextFormBlockProps) {
   return (
     <BaseFormBlock title={title}>
       <BaseTextInput
         name={name}
         placeholder={placeholder}
-        onChange={(e) => onChange(e.target.value)}
+        onChange={(e) => onChange?.(e.target.value)}
         value={value}
+        disabled={disabled}
       />
     </BaseFormBlock>
   );
@@ -74,7 +77,7 @@ export function PasswordFormBlock({
   return (
     <BaseFormBlock title={title}>
       <PasswordInput
-        onChange={(e) => onChange(e.target.value)}
+        onChange={(e) => onChange?.(e.target.value)}
         placeholder={placeholder}
       />
     </BaseFormBlock>

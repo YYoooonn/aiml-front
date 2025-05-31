@@ -5,16 +5,18 @@ import { getUserProjects } from "@/services/project";
 import { getUserInfo } from "@/services/user";
 import { userStore } from "@/store/userStore";
 import { logout } from "@/services/auth";
-import { ProjectData } from "@/@types/api";
+import { ProjectData, UserData } from "@/@types/api";
 
 export const useUser = () => {
   const { userInfo, projects, reset, setUser, setProjects } = userStore();
 
+  const setUserInfo = (data: Partial<UserData>) => {
+    setUser({ ...userInfo, ...data });
+  };
+
   const fetchUserInfo = async () => {
     const res = await getUserInfo();
     if (!res.success) {
-      alert(res.error);
-      res.redirectLink && navigate(res.redirectLink);
       return res;
     }
 
@@ -51,10 +53,12 @@ export const useUser = () => {
 
   return {
     userInfo,
+    setUserInfo,
     projects,
     logoutUser,
     fetchUserInfo,
     fetchUserWithProjects,
+    fetchUserProjects,
     addToProjects,
   };
 };
