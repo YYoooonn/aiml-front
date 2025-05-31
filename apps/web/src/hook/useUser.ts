@@ -58,6 +58,7 @@ export const useUser = () => {
     logoutUser,
     fetchUserInfo,
     fetchUserWithProjects,
+    fetchUserProjects,
     addToProjects,
   };
 };

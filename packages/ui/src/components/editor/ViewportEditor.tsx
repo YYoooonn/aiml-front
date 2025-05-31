@@ -51,10 +51,19 @@ export function CameraEditor({
   );
 }
 
-export function LightEditor() {
+type LightEditorProps = {
+  // Define any props needed for the LightEditor
+  intensity: number;
+  setIntensity: (val: number) => void;
+};
+
+export function LightEditor({
+  intensity,
+  setIntensity,
+}: LightEditorProps) {
   return (
     <EditorBlock text={"Light"}>
-      <div>NOT IMPLEMENTED YET</div>
+      <NumSelector text="intensity" val={intensity} setVal={setIntensity} />
     </EditorBlock>
   );
 }

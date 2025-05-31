@@ -7,10 +7,10 @@ import { PageHeader } from "@repo/ui/components/header";
 import { useUser } from "@/hook/useUser";
 
 export default function Page() {
-  const { fetchUserWithProjects, projects } = useUser();
+  const { fetchUserProjects, projects } = useUser();
 
   useEffect(() => {
-    fetchUserWithProjects();
+    fetchUserProjects();
   }, []);
 
   return (

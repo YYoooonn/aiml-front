@@ -16,15 +16,10 @@ interface ObjectEditorProps extends MatrixConstructorProps {
 }
 
 export function ObjectEditor(props: ObjectEditorProps) {
-  const [color, setColor] = useState(props.color);
-
-  useEffect(() => {
-    setColor(props.color);
-  }, [props.color]);
 
   const handleSubmit = (e: React.MouseEvent) => {
     e.preventDefault();
-    props.setColor?.(color ? color : "#575757");
+
     if (props.onSubmit) props.onSubmit(e);
   };
 
@@ -46,12 +41,12 @@ export function ObjectEditor(props: ObjectEditorProps) {
         onSubmit={props.onSubmit}
         onRemove={props.onRemove}
       />
-      {color && (
+      {props.color && props.setColor && (
         <TextSelector
           text="color"
-          val={color}
-          preset={color}
-          setVal={setColor}
+          val={props.color}
+          preset={props.color}
+          setVal={props.setColor}
         />
       )}
       {props.onSubmit && <SubmitButton title="SUBMIT" handler={handleSubmit} />}

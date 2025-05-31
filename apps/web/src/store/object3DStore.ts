@@ -1,12 +1,12 @@
-import { TObject3DBase, TObject3DData } from "@/@types/api";
+import { TMaterial, TObject3DBase, TObject3DData } from "@/@types/api";
 import { DEFAULT_MATRIX } from "@/utils/constants";
 import { create } from "zustand";
 
 type Object3DStore = {
-  object3DInfo: Partial<TObject3DBase> & { transform: typeof DEFAULT_MATRIX };
+  object3DInfo: Partial<TObject3DBase> & { transform: typeof DEFAULT_MATRIX, material: TMaterial | null };
   selected: Record<string, TObject3DData>;
   setSelected: (data: Record<string, TObject3DData>) => void;
-  setObject3DInfo: (data: Partial<TObject3DBase>) => void;
+  setObject3DInfo: (data: Partial<typeof DEFAULT>) => void;
   clearSelected: () => void;
 };
 
@@ -16,7 +16,8 @@ const DEFAULT = {
   transform: DEFAULT_MATRIX,
   type: undefined as TObject3DData["type"] | undefined,
   parentId: null as string | null,
-};
+  material: null as TMaterial | null,
+} as Partial<TObject3DBase> & { transform: typeof DEFAULT_MATRIX, material: TMaterial | null }
 
 const object3DStore = create<Object3DStore>()((set, get) => ({
   object3DInfo: DEFAULT,

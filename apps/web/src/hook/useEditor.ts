@@ -30,7 +30,7 @@ const DEFAULT = <EditorProps>{
     color: "#d1d5db",
   },
   cam: {
-    position: [5, 10, 10] as Position,
+    position: [5, 3, 5] as Position,
     zoom: 1,
     fov: 60,
   },

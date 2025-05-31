@@ -2,8 +2,6 @@
 
 import { TMaterial, TTransform } from "@/@types/api";
 import { useObject3D } from "@/hook/useObject3D";
-import { useProjectSocket } from "@/hook/useProjectSocket";
-import { useUser } from "@/hook/useUser";
 import { toMatrix, toMatrix4, toMatrix4decompose } from "@/utils/calc";
 import { EditorHeader, ObjectEditor } from "@repo/ui/components/editor";
 import { useEffect, useMemo, useState } from "react";
@@ -35,16 +33,17 @@ export default function Object3DEditor({
   const [transform, setTransform] = useState(
     toMatrix4decompose(object3DInfo.transform),
   );
-  const [material, setMaterial] = useState<TMaterial>();
+  const [material, setMaterial] = useState<TMaterial | null>(null);
 
   useEffect(() => {
     setName(object3DInfo.name ?? "");
     setVisible(object3DInfo.visible ?? true);
     setTransform(toMatrix4decompose(object3DInfo.transform));
+    setMaterial(object3DInfo.material);
   }, [selected]);
 
   useEffect(() => {
-    setObject3DInfo({ transform: toMatrix(transform) });
+    setObject3DInfo({ transform: toMatrix(transform), material: material });
   }, [material, transform]);
 
   const handleSubmit = async (e: React.MouseEvent) => {
@@ -57,7 +56,7 @@ export default function Object3DEditor({
       setName("");
       setVisible(true);
       setTransform(DEFAULT_TRANSFORM);
-      setMaterial(undefined);
+      setMaterial(null);
       if (sceneId && response.data && socketUpdate) {
         socketUpdate({
           objectId: response.data.id,
@@ -79,7 +78,7 @@ export default function Object3DEditor({
       setName("");
       setVisible(true);
       setTransform(DEFAULT_TRANSFORM);
-      setMaterial(undefined);
+      setMaterial(null);
       if (sceneId && socketUpdate) {
         selectedIds.forEach((id) => {
           socketUpdate({
@@ -109,8 +108,8 @@ export default function Object3DEditor({
         }
         scale={transform?.scale}
         setScale={(val) => setTransform((prev) => ({ ...prev, scale: val }))}
-        // color={color}
-        // setColor={setColor}
+        color={material?.color}
+        setColor={material ? (val) => setMaterial({ ...material, color: val }) : undefined}
         onSubmit={handleSubmit}
         onRemove={handleRemove}
       />
