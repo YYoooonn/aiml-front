@@ -1,6 +1,11 @@
-import { TObject3D, TObject3DData, TTransform } from "@/@types/api";
+import {
+  TObject3D,
+  TObject3DBase,
+  TObject3DData,
+  TTransform,
+} from "@/@types/api";
 import { useScene } from "./useScene";
-import { useEffect, useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import {
   createObject3D,
   deleteObject3D,
@@ -11,7 +16,7 @@ import object3DStore from "@/store/object3DStore";
 import { toMatrix4decompose } from "@/utils/calc";
 
 export const useObject3D = () => {
-  const { sceneId, selectedScene, upsertChildren, removeChildren } = useScene();
+  const { sceneId, selectedScene } = useScene();
   const {
     object3DInfo,
     selected,
@@ -44,7 +49,8 @@ export const useObject3D = () => {
   };
 
   const saveObject3D = async (data: TObject3D & { id?: string }) => {
-    if (!selectedScene) return { success: false, error: "Scene not set" };
+    if (!selectedScene)
+      return { success: false, error: "Scene not set", data: null };
 
     const isPresent =
       data.id && selectedScene.children.some((child) => child.id === data.id);
@@ -56,27 +62,27 @@ export const useObject3D = () => {
           id: undefined,
         });
 
-    if (response.success) {
-      upsertChildren([response.data]);
-      clearSelected();
-    }
+    if (response.success) clearSelected();
     return response;
   };
 
-  const saveSelected = async () => {
-    if (!selectedScene) return { success: false, error: "Scene not set" };
+  const saveSelected = async (input?: Partial<TObject3DBase>) => {
+    if (!selectedScene)
+      return { success: false, error: "Scene not set", data: null };
 
     // 여러개인 경우, group or transform sum
     const selectedData = Object.values(selected);
     if (selectedData.length !== 1)
-      return { success: false, error: "not implemented yet" };
+      return { success: false, error: "not implemented yet", data: null };
 
     const current = selectedData.pop();
-    if (!current) return { success: false, error: "No object selected" };
+    if (!current)
+      return { success: false, error: "No object selected", data: null };
 
     const updated = {
       ...current,
       ...object3DInfo,
+      ...input,
       type: current.type,
     } as typeof current;
 
@@ -94,14 +100,13 @@ export const useObject3D = () => {
     if (!current) return { success: false, error: "No object selected" };
 
     const response = await deleteObject3D(current.id);
-    if (response.success) {
-      removeChildren([current.id]);
-      clearSelected();
-    }
+    if (response.success) clearSelected();
+
     return response;
   };
 
   return {
+    sceneId,
     selected,
     selectObject3D,
     object3DInfo,

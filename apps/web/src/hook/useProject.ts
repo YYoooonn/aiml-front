@@ -30,17 +30,9 @@ export const useProject = () => {
       return false;
     }
 
-    // 3. fetch participants
-    const participantResponse = await getProjectParticipants(id);
-    if (!participantResponse.success) {
-      alert(participantResponse.error);
-      return false;
-    }
-
     setProject({
       ...projectResponse.data,
       scenes: sceneResponse.data,
-      participants: participantResponse.data,
     });
     return true;
   };

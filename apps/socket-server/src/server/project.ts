@@ -16,22 +16,24 @@ restricts to single user per room
 const activeUsers = new Map<string, Socket>();
 const roomUsers = new Map<string, Map<string, string>>();
 
-const NAME = "chat";
+const NAME = "project";
 
-export const ChatSocket = (io: Server) => {
+export const ProjectSocket = (io: Server) => {
   // add custom events
-  const customEvents = { default: ["chatMessage"] };
+  const customEvents = {
+    default: ["objectUpdate", "sceneUpdate", "projectUpdate"],
+  };
 
   // init namespace
-  const chat = initNS(io, NAME, activeUsers, roomUsers, customEvents);
+  const project = initNS(io, NAME, activeUsers, roomUsers, customEvents);
 
   // error catch
-  chat?.once("error", (err) => {
+  project?.once("error", (err) => {
     console.error(`Error in ${NAME} namespace:`, err);
     process.exit(1);
   });
 
-  return chat;
+  return project;
 };
 
 // TODO 적정 시간 지나면 disable되고 connection 생기면 다시 열리는 구조로 변경 해보자

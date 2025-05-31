@@ -31,18 +31,17 @@ export const useParticipant = () => {
   const fetchParticipants = async (pId?: string) => {
     const id = pId ?? projectId;
     if (!id) {
-      alert("Project Id not provided");
-      return false;
+      return {
+        success: false,
+        error: "Project Id not provided",
+        data: null,
+      };
     }
 
-    const participantResponse = await getProjectParticipants(id);
-    if (!participantResponse.success) {
-      alert(participantResponse.error);
-      return false;
-    }
+    const response = await getProjectParticipants(id);
+    if (response.success) setParticipants(response.data);
 
-    setParticipants(participantResponse.data);
-    return true;
+    return response;
   };
 
   const saveParticipant = async (participant: Participant, pId?: string) => {

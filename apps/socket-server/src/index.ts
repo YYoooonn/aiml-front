@@ -2,6 +2,7 @@ import express from "express";
 import { Server } from "socket.io";
 import { createServer } from "node:http";
 import { ChatSocket } from "./server/chat";
+import { ProjectSocket } from "./server/project";
 
 const dev = process.env.NODE_ENV !== "production";
 
@@ -28,7 +29,10 @@ const io = new Server(httpServer, {
   },
 });
 
-ChatSocket(io); // socket 핸들러 등록
+// socket 핸들러 등록
+ChatSocket(io);
+
+ProjectSocket(io);
 
 httpServer.listen(port, () => {
   console.log(`✅ Socket.IO server is running on http://localhost:${port}`);

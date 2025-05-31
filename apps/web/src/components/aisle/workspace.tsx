@@ -27,11 +27,13 @@ import { useScene } from "@/hook/useScene";
 import { ProjectEditor } from "../editor/ProjectEditor";
 import { useObject3D } from "@/hook/useObject3D";
 import { useUser } from "@/hook/useUser";
+import { useParticipant } from "@/hook/useParticipant";
 
 const SELECTIONS = ["Layer", "Chat"];
 
 export default function WorkspaceAisle({}: { id?: string }) {
   const { projectInfo, projectId } = useProjectInfo();
+  const { fetchParticipants } = useParticipant();
   const { open } = useModals();
 
   const { userInfo } = useUser();
@@ -44,7 +46,12 @@ export default function WorkspaceAisle({}: { id?: string }) {
   const [showSocket, setShowSocket] = useState(true);
   const [showProjectInfo, setShowProjectInfo] = useState(false);
 
-  const handleSettings = () => {
+  const handleSettings = async () => {
+    const response = await fetchParticipants();
+    if (!response.success) {
+      alert(`Not allowed to edit project : ${response.error}`);
+      return;
+    }
     open(ProjectEditor, {}, ModalType.FORM);
   };
 
