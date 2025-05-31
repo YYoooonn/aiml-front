@@ -6,15 +6,16 @@ import * as styles from "./nav.css";
 interface SideNavProps {
   text: string;
   onClick: () => void;
+  selected?: boolean;
   imgUrl?: string;
   children?: React.ReactNode;
 }
 
-export function BaseSideNav({ text, imgUrl, onClick }: SideNavProps) {
+export function BaseSideNav({ text, imgUrl, selected, onClick }: SideNavProps) {
   return (
     <div className={styles.leftAisleBlock} onClick={onClick}>
       <SmallIcon />
-      <div className={styles.leftAisleText}>{text}</div>
+      <div className={selected? styles.leftAisleTextSelected : styles.leftAisleText}>{text}</div>
     </div>
   );
 }
@@ -22,22 +23,26 @@ export function BaseSideNav({ text, imgUrl, onClick }: SideNavProps) {
 interface DropdownSideNavProps extends SideNavProps {
   show: boolean;
   textSize?: string;
+  onToggle?: () => void;
 }
 
 export function DropdownSideNav({
   text,
   onClick,
+  onToggle,
   children,
   show,
+  selected,
   textSize,
 }: DropdownSideNavProps) {
   return (
     <>
-      <div className={styles.leftAisleBlock} onClick={onClick}>
-        <ToggleSmallAnimated show={show} />
+      <div className={styles.leftAisleBlock} >
+        <ToggleSmallAnimated show={show} onClick={onToggle}/>
         <div
-          className={styles.leftAisleText}
+          className={selected? styles.leftAisleTextSelected : styles.leftAisleText}
           style={textSize ? { fontSize: textSize } : {}}
+          onClick={onClick}
         >
           {text}
         </div>

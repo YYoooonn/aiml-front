@@ -30,11 +30,13 @@ export async function POST(request: NextRequest) {
     return res;
   }
 
-  const res = NextResponse.redirect(new URL("/login", request.url), {
-    status: 302,
+  const res = NextResponse.json({
+    success: false,
+    message: response.message || "Reissue failed",
+    code: response.code || 500,
+    data: null,
   });
+  res.cookies.delete("accessToken");
+  res.cookies.delete("refreshToken");
   return res;
-
-  // 실패 응답?
-  // return NextResponse.json(responseMapper(response, "/login"));
 }

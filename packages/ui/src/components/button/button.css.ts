@@ -9,15 +9,17 @@ export const baseButton = style({
   textAlign: "center",
   cursor: "pointer",
   color: themeVars.color.text,
-  fontFamily: themeVars.font.primary,
-  borderRadius: themeVars.spacing.xsmall,
-  borderColor: themeVars.color.border,
-  border: globalTheme.border.bDashed,
+  // borderRadius: themeVars.spacing.xsmall,
+  border: globalTheme.border.bSolid,
+  borderColor: themeVars.color.borderLight,
+  backgroundColor: themeVars.color.background,
   ...themeVars.textStyle.subtitle2,
   ":hover": {
     color: themeVars.color.textDarkest,
     backgroundColor: themeVars.color.primary,
+    borderColor: themeVars.color.borderDark,
     border: globalTheme.border.bSolid,
+    fontWeight: "600",
   },
 });
 
@@ -26,18 +28,25 @@ export const submitButton = style([
   {
     ":hover": {
       cursor: "pointer",
-      color: themeVars.color.textDarkest,
       backgroundColor: themeVars.color.primary,
       border: globalTheme.border.bSolid,
-      fontWeight: "600",
+    },
+  },
+]);
+
+export const selectorButton = style([
+  baseButton,
+  {
+    ":hover": {
+      backgroundColor: themeVars.color.tertiary,
     },
   },
 ]);
 
 export const selectedButton = style([
-  baseButton,
+  selectorButton,
   {
-    backgroundColor: themeVars.color.primary,
+    backgroundColor: themeVars.color.tertiary,
     color: themeVars.color.textDarkest,
     border: globalTheme.border.bSolid,
     fontWeight: "600",

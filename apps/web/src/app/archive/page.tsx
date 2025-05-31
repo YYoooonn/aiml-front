@@ -31,7 +31,7 @@ export default function Archive() {
       pageSize: 21,
     });
     if (res.success) {
-      setArchives(res.data.projects);
+      setArchives(res.data.content);
     }
   };
 

@@ -4,17 +4,12 @@ import { navigateWorkspace } from "@/app/actions/navigate";
 import { BaseCard } from "@repo/ui/components";
 import { useModals } from "@/hook/useModals";
 import { ModalType } from "@/store/useModalStore";
-import NewProjectForm from "./NewProjectForm";
+import { NewProjectForm } from "@/components/Form";
 import { GridLayout } from "@repo/ui/layout";
 import { ProjectData } from "@/@types/api";
+import { useProjectInfo } from "@/hook/useProjectInfo";
 
-export function Projects({
-  projects,
-  addProject,
-}: {
-  projects: ProjectData[];
-  addProject: (project: ProjectData) => void;
-}) {
+export function Projects({ projects }: { projects: ProjectData[] }) {
   const props = projects.map((p) => {
     return {
       createdAt: p.createdAt,
@@ -31,7 +26,7 @@ export function Projects({
       {props?.map((p, i) => {
         return <WorkspaceCard key={p.id} props={p} />;
       })}
-      <NewCardModule addProject={addProject} valid={true} />
+      <NewCardModule valid={true} />
     </GridLayout>
   );
 }
@@ -50,18 +45,13 @@ function WorkspaceCard({ props }: { props: ProjectData }) {
   );
 }
 
-function NewCardModule({
-  addProject,
-  valid,
-}: {
-  addProject: (project: ProjectData) => void;
-  valid: boolean;
-}) {
+function NewCardModule({ valid }: { valid: boolean }) {
   const { open } = useModals();
+  const { saveProjectInfo } = useProjectInfo();
 
   const handleClick = () => {
     if (valid) {
-      open(NewProjectForm, { addProject: addProject }, ModalType.FORM);
+      open(NewProjectForm, { addProject: saveProjectInfo }, ModalType.FORM);
     } else {
       // project limitation 4
       alert("Currently Project Limited to 4");

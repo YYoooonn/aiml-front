@@ -14,18 +14,15 @@ export async function fetchWithAuth<T>(
   options: RequestInit = {},
 ): Promise<BaseResponse<T>> {
   let accessToken = getAccessTokenFromCookie();
-  const refreshToken = getRefreshTokenFromCookie();
-
   let revalidate = false;
+
+  const headers = {
+    ...options.headers,
+    Authorization: `Bearer ${accessToken}`,
+  };
 
   // 1차 요청
   if (accessToken) {
-    const headers = {
-      ...options.headers,
-      Authorization: `Bearer ${accessToken}`,
-      "Content-Type": "application/json",
-    };
-
     const response = await fetcher<T>(url, {
       ...options,
       headers: headers,
@@ -36,14 +33,12 @@ export async function fetchWithAuth<T>(
   }
 
   // accessToken이 없거나 revalidate가 true → reissue 필요
-  if ((!accessToken || revalidate) && refreshToken !== null) {
-    accessToken = await getRefreshedToken(refreshToken);
-
+  if (!accessToken || revalidate) {
+    accessToken = await getRefreshedToken();
     if (accessToken) {
       const retryHeaders = {
-        ...options.headers,
+        ...headers,
         Authorization: `Bearer ${accessToken}`,
-        "Content-Type": "application/json",
       };
 
       return await fetcher<T>(url, {
@@ -63,30 +58,26 @@ export async function fetchWithAuth<T>(
 }
 
 // refresh 중복 방지 Promise
-async function getRefreshedToken(refreshToken: string): Promise<string | null> {
+async function getRefreshedToken(): Promise<string | null> {
   if (!refreshing) {
-    refreshing = refreshAccessToken(refreshToken).finally(() => {
+    refreshing = (async () => {
+      const refreshToken = getRefreshTokenFromCookie();
+      if (!refreshToken) return null;
+
+      const res = await fetch(`${ABS_ENDPOINTS.AUTH}/reissue`, {
+        method: "POST",
+        credentials: "include",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ refreshToken }),
+      });
+
+      const response: RevalidateResponse = await res.json();
+      if (!response.success) return null;
+
+      return response.data.accessToken;
+    })().finally(() => {
       refreshing = null;
     });
   }
   return refreshing;
-}
-
-async function refreshAccessToken(
-  refreshToken?: string,
-): Promise<string | null> {
-  if (!refreshToken) return null;
-
-  const res = await fetch(`${ABS_ENDPOINTS.AUTH}/reissue`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({ refreshToken: refreshToken }),
-  });
-
-  const response: RevalidateResponse = await res.json();
-  if (!response.success) return null;
-  // ex: { accessToken: 'new-token' }
-  return response.data.accessToken;
 }

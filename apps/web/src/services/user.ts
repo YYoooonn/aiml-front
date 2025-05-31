@@ -1,6 +1,6 @@
 import { BFF_ENDPOINTS } from "@/constants/endpoints";
 import { BaseFrontResponse } from "@/@types/common";
-import { User, UserData } from "@/@types/api";
+import { User, UserData, UserProfile } from "@/@types/api";
 
 const ENDPOINT = BFF_ENDPOINTS.USER;
 

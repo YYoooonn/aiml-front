@@ -1,18 +1,15 @@
 "use client";
 
-// import { CAMERAMATERIAL } from "@/assets/material";
-// import { urlCam } from "@/assets/models";
-import { useParticipants } from "@/store/useParticipants";
+import { useParticipant } from "@/hook/useParticipant";
 import { getRandomHexColor } from "@/utils/radom";
-// import { Instance, Instances, useGLTF } from "@react-three/drei";
 
 export function UserCams() {
   // const { nodes } = useGLTF(urlCam);
-  const cameras = useParticipants((state) => state.cameras);
+  const { participants } = useParticipant();
 
   return (
     <group>
-      {cameras.map((cam, i) => {
+      {/* {cameras.map((cam, i) => {
         const randColor = getRandomHexColor();
         return (
           <group key={i} position={cam.position}>
@@ -24,7 +21,7 @@ export function UserCams() {
             </pointLight>
           </group>
         );
-      })}
+      })} */}
     </group>
   );
 }

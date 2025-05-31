@@ -3,7 +3,7 @@ import { themeVars } from "../../styles";
 import { globalTheme } from "../../styles/global";
 
 export const selectorTitle = style({
-  minWidth: "25%",
+  minWidth: "30%",
   ...themeVars.textStyle.subtitle2,
 });
 

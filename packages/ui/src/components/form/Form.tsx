@@ -1,5 +1,6 @@
+import { Children } from "react";
 import { SelectorButton } from "../button/Button";
-import { PasswordInput, TextInput } from "../input/Input";
+import { BaseTextInput, PasswordInput, TextInputProps } from "../input/Input";
 import * as styles from "./form.css";
 
 interface FormProps {
@@ -12,13 +13,11 @@ export function BaseForm({ children, onSubmit, error }: FormProps) {
   return (
     <form className={styles.baseFormContainer} onSubmit={onSubmit}>
       {children}
-      {error ? (
+      {error && (
         <>
           <p style={{ marginTop: "12px" }} />
           <div style={{ textAlign: "center", color: "red" }}>{error}</div>
         </>
-      ) : (
-        <></>
       )}
     </form>
   );
@@ -26,33 +25,46 @@ export function BaseForm({ children, onSubmit, error }: FormProps) {
 
 interface FormBlockProps {
   title: string;
-  placeholder?: string;
   children?: React.ReactNode;
 }
 
-function BaseFormBlock({ title, children }: FormBlockProps) {
+export function BaseFormBlock({ title, children }: FormBlockProps) {
   return (
-    <div className={styles.formInputBlock}>
+    <div className={styles.formBlockContainer}>
       <div className={styles.formTag}>{title}</div>
       {children}
     </div>
   );
 }
 
-interface TextFormBlockProps extends FormBlockProps {
-  title: string;
-  placeholder?: string;
-  onChange: (value: string) => void;
+export function FormBlockTag({ title }: { title: string }) {
+  return <div className={styles.formTag}>{title}</div>;
+}
+
+interface TextFormBlockProps
+  extends FormBlockProps,
+    Omit<TextInputProps, "onChange"> {
+  onChange?: (value: string) => void;
+  disabled?: boolean;
 }
 
 export function TextFormBlock({
+  name,
   title,
   placeholder,
   onChange,
+  value,
+  disabled = false,
 }: TextFormBlockProps) {
   return (
     <BaseFormBlock title={title}>
-      <TextInput onChange={onChange} placeholder={placeholder} />
+      <BaseTextInput
+        name={name}
+        placeholder={placeholder}
+        onChange={(e) => onChange?.(e.target.value)}
+        value={value}
+        disabled={disabled}
+      />
     </BaseFormBlock>
   );
 }
@@ -64,7 +76,10 @@ export function PasswordFormBlock({
 }: TextFormBlockProps) {
   return (
     <BaseFormBlock title={title}>
-      <PasswordInput onChange={onChange} placeholder={placeholder} />
+      <PasswordInput
+        onChange={(e) => onChange?.(e.target.value)}
+        placeholder={placeholder}
+      />
     </BaseFormBlock>
   );
 }

@@ -25,13 +25,13 @@ export function ToggleSmall() {
   );
 }
 
-export function ToggleSmallAnimated({ show }: { show: boolean }) {
+export function ToggleSmallAnimated({ show, onClick }: { show: boolean, onClick?: () => void }) {
   const toggleSpring = useSpring({
     transform: show ? "rotate(90deg)" : "rotate(0deg)",
     config: { tension: 500, friction: 20 },
   });
   return (
-    <animated.div className={styles.smallIcon} style={toggleSpring}>
+    <animated.div className={styles.smallIcon} style={toggleSpring} onClick={onClick}>
       <ToggleSmall />
     </animated.div>
   );

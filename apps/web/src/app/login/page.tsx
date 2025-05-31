@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { login } from "@/app/actions/auth";
+import { login } from "@/services/auth";
 import { navigate } from "@/app/actions/navigate";
 import {
   SubmitButton,
@@ -58,6 +58,8 @@ function LoginForm() {
     <BaseForm onSubmit={handleSubmit} error={error}>
       <TextFormBlock
         title={"USERNAME"}
+        value={username}
+        name="username"
         onChange={setUsername}
         placeholder="Enter username"
       />

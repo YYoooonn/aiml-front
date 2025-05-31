@@ -5,6 +5,8 @@ export type TObject3DData = Entity<TObject3D>;
 
 export type TObject3D = TMesh | TGroup;
 
+export type Object3DType = "MESH" | "GROUP";
+
 export interface TGroup extends TObject3DBase {
   type: "GROUP";
   children: TObject3DData[];
@@ -21,6 +23,7 @@ export interface TObject3DBase {
   transform: TMatrix;
   visible: boolean;
   parentId: string | null;
+  type: Object3DType;
 }
 
 export type TMatrix = Matrix4Tuple;

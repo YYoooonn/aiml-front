@@ -1,24 +1,24 @@
 import { CreatorBlock, EditorBlock } from "./EditorBlock";
 import { MatrixConstructor, MatrixConstructorProps, SubmitButton } from "./ui";
 
-interface ObjectConstructorProps extends MatrixConstructorProps {
-  geoTypes: string[];
-  selected: string;
-  setSelect: (val: string) => void;
+interface ObjectConstructorProps<T> extends MatrixConstructorProps {
+  selectors: T[];
+  selected: T | null;
+  setSelect: (val: T | null) => void;
 }
 
-export function ObjectConstructor(props: ObjectConstructorProps) {
+export function ObjectConstructor<T>(props: ObjectConstructorProps<T>) {
   return (
     <EditorBlock text="CREATE">
-      {props.geoTypes.map((geoType) => (
+      {props.selectors.map((selector) => (
         <CreatorBlock
-          selector={geoType}
-          key={geoType}
-          selected={props.selected === geoType}
+          selector={selector}
+          selected={props.selected === selector}
+          key={selector as string}
           setSelect={props.setSelect}
         >
           <MatrixConstructor
-            key={geoType}
+            key={selector as string}
             position={props.position}
             rotation={props.rotation}
             scale={props.scale}

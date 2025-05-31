@@ -4,10 +4,6 @@ import { useState, useMemo, useCallback } from "react";
 
 import redirectUser from "@/hook/redirectUser";
 import { useChat } from "@/hook/useChat";
-import { useUserInfo } from "@/hook/useUserInfo";
-import { useObjectEditor } from "@/hook/useObjectEditor";
-import { useProjectStore } from "@/store/useProjectStore";
-
 import {
   LeftAisleContainer,
   AisleModule,
@@ -20,33 +16,68 @@ import {
   ChatModule,
   SocketHeader,
   SceneLayer,
+  InfoBlock,
 } from "@repo/ui/components/module";
-import { useSceneStore } from "@/store/useSceneStore";
-import { SceneData, TObject3DData } from "@/@types/api";
+import { SubmitButton } from "@repo/ui/components/editor";
+import { TObject3DData } from "@/@types/api";
+import { useModals } from "@/hook/useModals";
+import { ModalType } from "@/store/useModalStore";
+import { useProjectInfo } from "@/hook/useProjectInfo";
+import { useScene } from "@/hook/useScene";
+import { ProjectEditor } from "../editor/ProjectEditor";
+import { useObject3D } from "@/hook/useObject3D";
+import { useUser } from "@/hook/useUser";
+import { useParticipant } from "@/hook/useParticipant";
 
 const SELECTIONS = ["Layer", "Chat"];
 
 export default function WorkspaceAisle({}: { id?: string }) {
-  const { title, id } = useProjectStore();
-  const scenes = useSceneStore((s) => s.scenes);
+  const { projectInfo, projectId } = useProjectInfo();
+  const { fetchParticipants } = useParticipant();
+  const { open } = useModals();
 
-  const username = useUserInfo((s) => s.username);
+  const { userInfo } = useUser();
   const { isConnected, logs, users, sendMessage } = useChat(
-    username,
-    id ? id.toString() : undefined,
+    userInfo.username,
+    projectId,
   );
 
   const [tag, setTag] = useState(SELECTIONS[0]!!);
   const [showSocket, setShowSocket] = useState(true);
+  const [showProjectInfo, setShowProjectInfo] = useState(false);
+
+  const handleSettings = async () => {
+    const response = await fetchParticipants();
+    if (!response.success) {
+      alert(`Not allowed to edit project : ${response.error}`);
+      return;
+    }
+    open(ProjectEditor, {}, ModalType.FORM);
+  };
 
   return (
     <LeftAisleContainer>
       <AisleModule
         style={{ height: "auto", flexShrink: 0 }}
         header={
-          <WorkspaceHeader title={title} onClick={() => redirectUser()} />
+          <WorkspaceHeader
+            title={projectInfo.title}
+            handleExit={() => redirectUser()}
+            show={showProjectInfo}
+            handleToggle={() => setShowProjectInfo(!showProjectInfo)}
+          />
         }
-      />
+      >
+        {showProjectInfo && (
+          <ProjectInfoModule
+            title={projectInfo.title}
+            subtitle={projectInfo.subtitle}
+            createdAt={projectInfo.createdAt ?? ""}
+            updatedAt={projectInfo.updatedAt ?? ""}
+            onEdit={handleSettings}
+          />
+        )}
+      </AisleModule>
       <div style={{ marginBottom: "12px" }} />
       <AisleModule
         style={{ height: "auto", maxHeight: "180px", flexShrink: 0 }}
@@ -72,7 +103,7 @@ export default function WorkspaceAisle({}: { id?: string }) {
         }
       >
         {tag === "Layer" ? (
-          <SceneModule scenes={scenes} />
+          <SceneModule />
         ) : (
           <ChatModule logs={logs} sendMessage={sendMessage} />
         )}
@@ -81,26 +112,26 @@ export default function WorkspaceAisle({}: { id?: string }) {
   );
 }
 
-function SceneModule({ scenes }: { scenes: Map<string, SceneData> }) {
-  const { setSelected, selectedScene, children } = useSceneStore();
+function SceneModule() {
+  const { sceneId, setSceneId, sceneMap } = useScene();
   return (
-    <>
-      {Array.from(scenes.values()).map((scene) => (
+    <div>
+      {Object.entries(sceneMap).map(([id, scene]) => (
         <SceneLayer
-          key={scene.id}
+          key={id}
           scene={scene}
-          selected={selectedScene?.id === scene.id}
-          onSelect={() => setSelected(scene.id)}
+          selected={sceneId === id}
+          onSelect={() => setSceneId(id)}
         >
-          <LayerModule objects={children} />
+          <LayerModule objects={scene.children} />
         </SceneLayer>
       ))}
-    </>
+    </div>
   );
 }
 
 function LayerModule({ objects }: { objects: TObject3DData[] }) {
-  const { selected, setSelected } = useObjectEditor();
+  const { selected, selectObject3D } = useObject3D();
   // memoize the object map to avoid unnecessary re-renders
   const objectMap = useMemo(() => {
     const map = new Map<string, TObject3DData>();
@@ -116,15 +147,47 @@ function LayerModule({ objects }: { objects: TObject3DData[] }) {
       if (!id) return;
 
       const found = objectMap.get(id);
-      if (found) setSelected(found);
+      if (found) selectObject3D(found);
     },
-    [objectMap, setSelected],
+    [objectMap, selectObject3D],
   );
   return (
     <div onClickCapture={handleClickCapture}>
-      {objects?.map((o, i) => {
-        return <Layer key={o.id} object={o} selected={selected?.id === o.id} />;
+      {objects.map((o, i) => {
+        return (
+          <Layer
+            key={o.id}
+            object={o}
+            selected={selected[o.id] ? true : false}
+          />
+        );
       })}
     </div>
+  );
+}
+
+interface ProjectInfoProps {
+  title: string;
+  subtitle?: string;
+  createdAt: string;
+  updatedAt: string;
+  onEdit?: () => void;
+}
+
+function ProjectInfoModule(props: ProjectInfoProps) {
+  const created = new Date(props.createdAt);
+  created.setHours(created.getHours() + 9);
+  const updated = new Date(props.updatedAt);
+  updated.setHours(updated.getHours() + 9);
+  return (
+    <>
+      {/* <InfoBlock title="TITLE" info={props.title} /> */}
+      {props.subtitle && <InfoBlock title="SUBTITLE" info={props.subtitle} />}
+      <InfoBlock title="CREATED AT" info={created.toLocaleString()} />
+      <InfoBlock title="UPDATED AT" info={updated.toLocaleString()} />
+      {props.onEdit && (
+        <SubmitButton title="EDIT PROJECT" handler={props.onEdit} />
+      )}
+    </>
   );
 }

@@ -1,6 +1,6 @@
 "use server";
 
-import { ProjectData, SceneData } from "@/@types/api";
+import { ProjectData, SceneData, UserCore } from "@/@types/api";
 import { BaseFrontResponse } from "@/@types/common";
 import { API_ENDPOINTS } from "../api/constants/constants";
 
@@ -19,7 +19,7 @@ export async function searchArchive({
     `${ENDPOINT}/project?q=${keyword}&page=${pageNum}&size=${pageSize}`,
     { method: "GET" },
   );
-  const result: BaseFrontResponse<{ projects: ProjectData[] }> =
+  const result: BaseFrontResponse<{ content: ProjectData[] }> =
     await response.json();
   return result;
 }
@@ -34,6 +34,7 @@ export async function searchUser({ username }: { username: string }) {
     method: "GET",
   });
 
-  const result: BaseFrontResponse<SceneData[]> = await response.json();
+  const result: BaseFrontResponse<{ content: UserCore[] }> =
+    await response.json();
   return result;
 }

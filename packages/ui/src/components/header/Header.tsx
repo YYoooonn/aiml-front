@@ -1,14 +1,16 @@
 import * as styles from "./header.css";
 import Link from "next/link";
 import { HeaderProfile } from "./HeaderProfile";
+import Image from "next/image";
 
 interface HeaderProps {
-  signedIn: boolean;
+  username?: string;
   handleVisible: () => void;
+  profileImg: string;
   children?: React.ReactNode;
 }
 
-export function Header({ signedIn, handleVisible }: HeaderProps) {
+export function Header({ username, profileImg, handleVisible }: HeaderProps) {
   return (
     <div className={styles.headerContainer}>
       <div className={styles.headerWrapper}>
@@ -26,10 +28,23 @@ export function Header({ signedIn, handleVisible }: HeaderProps) {
           {/* 
           <HeaderLink href={"/documentation"} text="Documentation" />
           <HeaderLink href={"/contact"} text="Contact" /> */}
-          <HeaderProfile signedIn={signedIn} handleVisible={handleVisible}>
-            <HeaderLink href={"/register"} text="SignUp" />
-            <HeaderLink href={"/login"} text="LogIn" />
-          </HeaderProfile>
+          {username ? (
+            <HeaderProfile>
+              <Image
+                src={profileImg}
+                alt={username}
+                onClick={handleVisible}
+                width={24}
+                height={24}
+                style={{ borderRadius: "50%", cursor: "pointer" }}
+              />
+            </HeaderProfile>
+          ) : (
+            <>
+              <HeaderLink href={"/register"} text="SignUp" />
+              <HeaderLink href={"/login"} text="LogIn" />
+            </>
+          )}
         </Links>
       </div>
     </div>
