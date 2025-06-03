@@ -3,10 +3,10 @@
 > _git subtree for [aiml-mono](https://github.com/YYoooonn/aiml-mono)_ \
 > \*front repository **`WIP`\***
 
-[**LABit : A Collaborative Lab in Space** - explore the cosmos of creativity](http://ec2-15-165-90-147.ap-northeast-2.compute.amazonaws.com/) \
+[**A Collaborative Workspace for 3D** - edit and archive 3D projects](http://ec2-3-39-43-240.ap-northeast-2.compute.amazonaws.com/) \
 온라인으로 동료들과 함께 3D 작업하고, 작업물들을 아카이빙 해보세요!
 
-![Screenshot 2025-03-16 at 2 43 07 AM](https://github.com/user-attachments/assets/f8bdd1c3-c507-404a-beb5-d8704dc444d0)
+![mainworkspace](https://github.com/user-attachments/assets/320d4223-1960-4a94-a89d-ee400cd14bcf)
 
 ## _about_
 
@@ -48,9 +48,7 @@
 #### frontend system architecture
 
 <center>
-  
-![Screenshot 2025-03-16 at 2 41 34 AM](https://github.com/user-attachments/assets/c763412b-9e64-4f70-8a9d-84f5476a7a5d)
-
+  <img width="984" alt="Screenshot 2025-06-03 at 11 35 53 AM" src="https://github.com/user-attachments/assets/29043ada-bf7a-4b85-a7ad-85955df07518" />
 </center>
 
 ## _how?_
@@ -58,7 +56,7 @@
 **ENV `development`**
 
 ```bash
-# at /aiml-front directory
+# at root
 
 # 1. install required packages
 pnpm i
@@ -66,39 +64,25 @@ pnpm i
 # 2. run as dev
 pnpm dev
 
-# result
-> front@0.1.0 dev ~/aiml-front
-> nodemon
+> aiml-front@0.0.0 dev ~/aiml-front
+> pnpm --filter web --filter socket-server dev
 
-[nodemon] 3.1.7
-[nodemon] to restart at any time, enter `rs`
-[nodemon] watching path(s): server.ts
-[nodemon] watching extensions: json,js,ts
-[nodemon] starting `ts-node --project tsconfig.server.json server.ts`
-
+Scope: 2 of 6 workspace projects
+apps/socket-server dev$ tsx watch src/index.ts
+│ ✅ Socket.IO server is running on http://localhost:3001
+└─ Running...
+apps/web dev$ next dev
+│   ▲ Next.js 14.2.25
+│   - Local:        http://localhost:3000
+│   - Environments: .env
+│  ✓ Starting...
+│  ✓ Ready in 1652ms
+└─ Running...
 ```
 
-_and you will be able to access through `localhost:${port number}`_
+_and you will be able to access through `localhost:3000`_
 
 #### ENV `production`
-
-`.env` 파일 설정
-
-`docker-compose.yml`에서 사용하는 credential한 값을 .env파일에 넣어준다.
-
-```markdown
-# /.env
-
-# HOSTNAME -> ex) localhost
-
-NEXT_PUBLIC_HOSTNAME: XXXXXXXXXX
-
-# API endpoint url
-
-BACKEND_API_BASE: XXXXXXXXXX
-```
-
-현재는 `FRONTEND` 의 hostname 과 `BACKEND`의 api endpoint 두개 설정
 
 ```bash
 # 1. build with docker-compose
@@ -126,25 +110,21 @@ free-tier의 성능 한계로 인해 빌드 과정에서 너무 오래 걸리고
 
 # on your computer
 # 1. build image using docker-compose
-docker-compose build
+docker compose build
 
 # 2. push to repository
-docker push {repo name}/aimlfront
-docker push {repo name}/aimlfrontnginx
-
+docker compose push
 
 # on ec2 instance
 # 3. pull docker image from hub
-docker pull {repo name}/aimlfront
-docker pull {repo name}/aimlfrontnginx
+# where docker-compose.yaml exists
+docker compose pull
 
 # 4. run docker images with detached
-docker-compose up -d
+docker compose up -d
 ```
 
-현재 github action를 사용하여 `main` 브랜치에 push를 트리거로 받으면 자동으로 docker file 들이 build, push 자동화 설정
-
-_ec2 서버 작업인 3,4번 작업만 진행_
+현재 github action를 사용하여 `dev`에서 빌드 테스트, `main` 브랜치에서 docker build, push 자동화
 
 <center>
 
