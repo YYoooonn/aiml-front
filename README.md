@@ -17,31 +17,22 @@
 
 <img src="https://img.shields.io/badge/docker-2496ED?style=for-the-badge&logo=docker&logoColor=white"><img src="https://img.shields.io/badge/githubactions-2088FF?style=for-the-badge&logo=githubactions&logoColor=white"><img src="https://img.shields.io/badge/amazonec2-FF9900?style=for-the-badge&logo=amazonec2&logoColor=white">
 
-<p align="center">
-  
-  <img src="https://github.com/user-attachments/assets/efae7a32-2ade-4a54-b2e3-f629f2634c74">
 
-</p>
+<img src="https://github.com/user-attachments/assets/efae7a32-2ade-4a54-b2e3-f629f2634c74">
 
 ### _preview_
 
 | landing                                                                                  | archive                                                                                     | workspace                                                                                  |
 | ---------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------ |
-| ![land](https://github.com/user-attachments/assets/e80f4308-de9d-4af7-be8a-a6305b8f3fb0) | ![archive](https://github.com/user-attachments/assets/38c8cc99-70bb-4933-8058-a8a499e87306) | ![wspace](https://github.com/user-attachments/assets/848ebd1e-8440-492d-8a41-e6e9bd64ce94) |
+| ![landing0603](https://github.com/user-attachments/assets/6c3ade8f-6501-4ca3-98af-6ba138482432) | ![archive0603](https://github.com/user-attachments/assets/af89ce32-cd7d-4305-9ca6-18275ae4d160) | ![workspace0603](https://github.com/user-attachments/assets/d69a874e-9041-4d7e-b85a-3de18a67f07a) |
 
-#### [**PRJT) LABit 기획**](https://velog.io/@yyoooonn/PRJT-LABit-%EA%B8%B0%ED%9A%8D)
 
-`front` 윤종욱
-`back` 안준영
-`design` 박성원
+#### [**PRJT) aiml project 기획**](https://velog.io/@yyoooonn/PRJT-LABit-%EA%B8%B0%ED%9A%8D)
 
 #### _flow_
 
-<center>
-  
-![Screenshot 2025-03-16 at 2 25 00 AM](https://github.com/user-attachments/assets/87d364f0-85af-4402-98a0-10bf5a0e2e38)
+![Screenshot 2025-06-05 at 11 08 46 PM](https://github.com/user-attachments/assets/386293c4-a801-43e8-b833-c7a19a94dd1c)
 
-</center>
 
 ### _architecture_
 
@@ -106,21 +97,17 @@ free-tier의 성능 한계로 인해 빌드 과정에서 너무 오래 걸리고
 직접 image를 빌드하고, 서버에서 `docker-hub`를 통하여 pull 받는 방식으로 변경
 
 ```bash
-# manual deployment process
+# CI : github actions - ./.github/workflows/docker-build-push.yml
 
-# on your computer
-# 1. build image using docker-compose
-docker compose build
-
-# 2. push to repository
-docker compose push
-
+# manual deployment
 # on ec2 instance
-# 3. pull docker image from hub
-# where docker-compose.yaml exists
+# 1. copy necessary files
+# .env, nginx/nginx.prod.conf, docker-compose.yml
+
+# 2. pull docker image from hub
 docker compose pull
 
-# 4. run docker images with detached
+# 3. run docker images with detached
 docker compose up -d
 ```
 
@@ -335,88 +322,57 @@ export const ChatSocket = (io: Server, name: string) => {
 
 ### _folder structure_
 
-```
+```bash
 aiml-front
-├── docker : dockerfile
-│   ├── next.Dockerfile
-│   ├── nginx.Dockerfile
-│   └── conf.d : configuration for nginx
-│       └── default.conf
-├── server : websocket server
-│   ├── chat.ts
-│   ├── project.ts
-│   └── ...
-├── src : nextjs source
-│   ├── @types : global types
-│   ├── app
-│   │   ├── (header) : pages with same layout scoped, static pages
-│   │   │   ├── about
-│   │   │   ├── contact
-│   │   │   └── documentation
-│   │   ├── _actions : user actions - api call, navigate, ...
-│   │   │   ├── actions.d.ts
-│   │   │   ├── auth.ts
-│   │   │   ├── object.ts
-│   │   │   ├── project.ts
-│   │   │   ├── user.ts
-│   │   │   └── ...
-│   │   ├── api : RESTful API
-│   │   │   ├── auth : authentication requests
-│   │   │   │   └── route.ts
-│   │   │   ├── projects : requests for projects
-│   │   │   │   ├── [id]
-│   │   │   │   │   ├── [entity]
-│   │   │   │   │   │   ├── [entityId]
-│   │   │   │   │   │   │   └── route.ts
-│   │   │   │   │   │   └── route.ts
-│   │   │   │   │   └── route.ts
-│   │   │   │   └── route.ts
-│   │   │   ├── users : requests for users
-│   │   │   │   └── [id]
-│   │   │   │       ├── [entity]
-│   │   │   │       │   └── route.ts
-│   │   │   │       └── route.ts
-│   │   │   └── objects : requests for objects
-│   │   │       ├── [id]
-│   │   │       │   └── route.ts
-│   │   │       └── route.ts
-│   │   ├── archive
-│   │   ├── login
-│   │   ├── register
-│   │   ├── user : user profile, workspaces
-│   │   │   ├── edit
-│   │   │   └── [id] : user profile
-│   │   ├── workspace : workspace - editing
-│   │   ├── layout.tsx
-│   │   └── page.tsx
-│   ├── assets
-│   ├── components : 웹 뷰 구성 요소
-│   │   ├── header
-│   │   ├── footer
-│   │   ├── aisle
+├── apps
+│   ├── web # nextjs
+│   │   ├── public
+│   │   ├── src
+│   │   │   ├── @types
+│   │   │   ├── app
+│   │   │   │   ├── (auth) # for auth required pages
+│   │   │   │   ├── (header) # header pages : doc, about, etc.
+│   │   │   │   ├── actions # server actions
+│   │   │   │   ├── api # api router
+│   │   │   │   └── ...(pages)
+│   │   │   ├── assets
+│   │   │   ├── components
+│   │   │   ├── constants
+│   │   │   ├── hook
+│   │   │   ├── lib
+│   │   │   ├── services # client fetch actions
+│   │   │   ├── socket
+│   │   │   ├── store # zustand stores, global states
+│   │   │   ├── styles
+│   │   │   └── utils
+│   │   ├── package.json
 │   │   └── ...
-│   ├── hook : hook 저장
-│   │   ├── useModals.ts
-│   │   ├── useChat.ts
-│   │   ├── useUserInfo.ts
-│   │   └── ...
-│   ├── sockets
-│   │   ├── chat.ts : 채팅 관련 웹소켓
-│   │   ├── project.ts : 프로젝트 관련 웹소켓
-│   │   └── ...
-│   ├── store : 전역 상태 관리 zustand
-│   │   ├── useObjectStore.ts : 3차원 오브젝트 전역 상태
-│   │   └── useModalStore.ts : modal 전역 상태
-│   ├── styles
-│   ├── utils
-│   └── middleware.ts
-├── server.ts : front server + init websocket
-├── docker-compose.yml : docker-compose set-ups
+│   └── socket-server
+│       ├── src
+│       │   ├── server
+│       │   │   ├── utils
+│       │   │   ├── chat.ts # chat socket
+│       │   │   └── project.ts # project socket
+│       │   └── index.ts
+│       └── package.json
+├── packages
+│   ├── eslint-config
+│   ├── typescript-config
+│   └── ui
+│       ├── src
+│       │   ├── components
+│       │   ├── layout
+│       │   ├── styles
+│       │   └── index.ts
+│       └── package.json
+├── docker # for docker build
+│   ├── web.Dockerfile
+│   ├── socket.Dockerfile
+│   └── nginx.Dockerfile
+├── nginx # nginx configuration
+│   └── nginx.prod.conf
+├── docker-compose.yml
 ├── package.json
-├── tsconfig.json
-├── tsconfig.server.json
-├── .env
-├── .dockerignore
-├── .gitignore
-└── next-env.d.ts
+├── pnpm-lock.yaml
+└── pnpm-workspace.yaml
 ```
